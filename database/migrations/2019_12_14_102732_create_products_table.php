@@ -24,9 +24,9 @@ class CreateProductsTable extends Migration
             $table->boolean('favorite')->default(0);
             $table->string('keywords')->nullable();
             $table->integer('company_id')->nullable()->unsigned();
+            //$table->foreign('company_id')->references('id')->on('companies');
             $table->integer('category_id')->nullable()->unsigned();
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->foreign('category_id')->references('id')->on('categories');
+            //$table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }

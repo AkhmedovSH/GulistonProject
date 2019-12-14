@@ -21,9 +21,9 @@ class CreateOrdersTable extends Migration
             $table->integer('status')->default(0)->unsigned();
             $table->string('status_text')->nullable();
             $table->integer('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products');
+            //$table->foreign('product_id')->references('id')->on('products');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            //$table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
