@@ -9,16 +9,16 @@ use App\Http\Resources\UserResourceCollection;
 
 class UserController extends Controller
 {
-    public function show(User $user): UserResource
-    {
-        return new UserResource($user);
-    }
 
     public function index(): UserResourceCollection
     {
         return new UserResourceCollection(User::orderby('id', 'ASC')->paginate());
     }
 
+    public function show(User $user): UserResource
+    {
+        return new UserResource($user);
+    }
 
     public function store(Request $request)
     {
@@ -34,7 +34,6 @@ class UserController extends Controller
        
         return new UserResource($user);
     }
-
 
     public function update(Person $user, Request $request): UserResource
     {
