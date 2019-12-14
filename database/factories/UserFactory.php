@@ -2,15 +2,14 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Person;
+use App\User;
 use Faker\Generator as Faker;
 
-$factory->define(Person::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
-        'first_name' => $faker->firstName,
-        'last_name' => $faker->lastName,
+        'name' => $faker->firstName,
         'email' => $faker->safeEmail,
         'phone' => $faker->phoneNumber,
-        'city' => $faker->city,
+        'password' => $faker->firstName
     ];
 });

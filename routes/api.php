@@ -1,7 +1,17 @@
 <?php
 
-use App\Person;
+use App\User;
 use Illuminate\Http\Request;
 
-//Route::get('/person/{person}', 'PersonController@show');
-Route::apiResource('/person', 'PersonController');
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+    Route::post('register', 'AuthController@register');
+});
+
+
+Route::apiResource('/user', 'UserController');
