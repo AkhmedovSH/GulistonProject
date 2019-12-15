@@ -60,7 +60,7 @@ class Category extends Model
         }
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-        $image->move('uploads/categories/' . '/', $filename);
+        $image->move('uploads/categories/', $filename);
         $this->image = $filename;
         $this->save();
     }

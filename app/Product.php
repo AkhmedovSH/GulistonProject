@@ -59,7 +59,7 @@ class Product extends Model
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
         
-        $image->move('uploads/products/' . '/', $filename);
+        $image->move('uploads/products/', $filename);
         $this->image = $filename;
         $this->save();
     }
@@ -79,5 +79,34 @@ class Product extends Model
         }
         $this->company_id = $id;
         $this->save();
+    }
+
+
+
+    public function uploadMultipleImages($images){
+        if ($images == null) { return; }
+        $names = array();
+        $incI = 0;
+        foreach($images as $image)
+        {
+            $filename = rand(1, 1000000). '.' . $image->extension();
+            $image->storeAs('uploads/products/', $filename);
+            $image->move('uploads/products/', $filename);
+
+            $names[$incI] = $filename;
+            $incI++;
+            
+        }
+        $this->images = json_encode($names);
+        $this->save();
+    }
+
+    public function removeMultipleImages(){
+        if ($this->slider_image != null){
+            $images = json_decode($this->images, true);
+            foreach($images as $item){
+                unlink('uploads/products/'. $item);
+            }
+        }
     }
 }

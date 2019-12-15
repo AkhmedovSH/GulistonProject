@@ -54,7 +54,7 @@ class Company extends Model
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
 
-        $image->move('uploads/companies/' . '/', $filename);
+        $image->move('uploads/companies/', $filename);
         $this->image = $filename;
         $this->save();
     }
