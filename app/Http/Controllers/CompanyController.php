@@ -10,11 +10,22 @@ class CompanyController extends Controller
     public function index()
     {
         $company = Company::all();
-        return response()->json([$company], 200);
+
+        $allCompany = $company->map(function ($company) {
+            return [
+                "id" => $company->id,
+                "title" => $company->title,
+                "description" => $company->description,
+                "image" => asset('uploads/companies/' . $company->image),
+                "created_at" => $company->created_at,
+            ];
+        });
+ 
+        return response()->json($allCompany, 200);
     }
 
     public function show(Company $company)
     {
-        return response()->json([$company], 200);
+        return response()->json($company, 200);
     }
 }
