@@ -3,11 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
     protected $fillable = [
-        'title'
+        'title', 'parent_id'
     ];
 
 
@@ -16,11 +17,16 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
 
     public static function add($fields)
     {
         $category = new static;
-        $category->fill($fields);
+        $category->title = $fields['title'];
+        $category->parent_id = isset($fields['parent_id']) ? (int)$fields['parent_id'] : null;
         $category->save();
 
         return $category;
@@ -29,6 +35,33 @@ class Category extends Model
     public function edit($fields)
     {
         $this->fill($fields);
+        $this->save();
+    }
+
+
+    public function remove()
+    {
+        $this->removeImage();
+        $this->delete();
+    }
+
+    public function removeImage()
+    {
+        if ($this->image != null) {
+            unlink('uploads/categories/' . $this->image);
+        }
+    }
+
+    function uploadImage($image)
+    {
+        
+        if ($image == null) {
+            return;
+        }
+        $this->removeImage();
+        $filename = $this->id . '.' . $image->extension();
+        $image->move('uploads/categories/' . '/', $filename);
+        $this->image = $filename;
         $this->save();
     }
 }

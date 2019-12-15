@@ -47,7 +47,7 @@ class Product extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            Storage::delete('uploads/posts/' . $this->image);
+            unlink('uploads/products/' . $this->image);
         }
     }
 
@@ -58,8 +58,8 @@ class Product extends Model
         }
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-
-        $image->storeAs('uploads/products/', $filename);
+        
+        $image->move('uploads/products/' . '/', $filename);
         $this->image = $filename;
         $this->save();
     }

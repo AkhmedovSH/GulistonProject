@@ -42,7 +42,7 @@ class Company extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            Storage::delete('uploads/companies/' . $this->image);
+            unlink('uploads/companies/' . $this->image);
         }
     }
 
@@ -54,7 +54,7 @@ class Company extends Model
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
 
-        $image->storeAs('uploads/companies/', $filename);
+        $image->move('uploads/companies/' . '/', $filename);
         $this->image = $filename;
         $this->save();
     }
