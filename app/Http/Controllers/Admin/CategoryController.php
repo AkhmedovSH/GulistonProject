@@ -28,7 +28,6 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        dd('here');
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'parent_id' => ['nullable'],
