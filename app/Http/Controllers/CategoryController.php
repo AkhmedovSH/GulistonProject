@@ -15,11 +15,13 @@ class CategoryController extends Controller
 
         $allCategory = $category->map(function ($category) {
             return [
-                "id" => $category->id,
-                "title" => $category->title,
-                "image" => asset('uploads/categories/' . $category->image),
-                "parent_id" => $category->parent_id,
-                "created_at" => $category->created_at,
+                "result" => [
+                    "id" => $category->id,
+                    "title" => $category->title,
+                    "image" => asset('uploads/categories/' . $category->image),
+                    "parent_id" => $category->parent_id,
+                    "created_at" => $category->created_at,
+                ]
             ];
         });
  
@@ -29,7 +31,12 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        return response()->json($category, 200);
+        return response()->json(
+            [
+                "result" => [
+                    $category
+                ]
+            ], 200);
     }
 
 }

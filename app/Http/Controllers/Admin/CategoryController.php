@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -27,11 +28,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'parent_id' => 'nullable',
-            'image' => 'nullable'
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'parent_id' => ['nullable'],
+            'image' => ['nullable'],
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
 
         $category = Category::add($request->all());
         $category->uploadImage($request->file('image'));
@@ -61,11 +69,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'parent_id' => 'nullable',
-            'image' => 'nullable'
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'parent_id' => ['nullable'],
+            'image' => ['nullable'],
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
        
         $category = Category::find($id);
         $category->edit($request->all());

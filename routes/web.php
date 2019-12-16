@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json(
+        [
+            'error' => '404 not found'
+        ]
+        , 404);
 });

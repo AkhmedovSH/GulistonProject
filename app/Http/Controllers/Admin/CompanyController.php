@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
@@ -16,7 +17,7 @@ class CompanyController extends Controller
     public function index()
     {
         $company = Company::all();
-        return response()->json([$company], 200);
+        return response()->json($company, 200);
     }
 
 
@@ -28,11 +29,19 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'parent_id' => 'nullable',
-            'image' => 'nullable'
+
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable'],
+            'image' => ['nullable'],
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
 
         $company = Company::add($request->all());
         $company->uploadImage($request->file('image'));
@@ -49,7 +58,7 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $company = Company::find($id);
-        return response()->json([$company], 200);
+        return response()->json($company, 200);
     }
 
     /**

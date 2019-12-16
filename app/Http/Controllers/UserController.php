@@ -4,42 +4,30 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\UserResource;
-use App\Http\Resources\UserResourceCollection;
+
 
 class UserController extends Controller
 {
 
-    public function index(): UserResourceCollection
+    public function index()
     {
-        return new UserResourceCollection(User::orderby('id', 'ASC')->paginate());
+        return response()->json(
+            [
+                'result' => User::orderby('id', 'ASC')->get()
+            ], 200);
+
     }
 
-    public function show(User $user): UserResource
+    public function show(User $user)
     {
-        return new UserResource($user);
+        return $user;
     }
 
-    public function store(Request $request)
+
+    public function update(Person $user, Request $request)
     {
-       $request->validate([
-           'first_name' => 'required',
-           'last_name' => 'required',
-           'email' => 'required',
-           'phone' => 'required',
-           'city' => 'required'
-       ]);
-
-       $user = User::create($request->all());
-       
-        return new UserResource($user);
-    }
-
-    public function update(Person $user, Request $request): UserResource
-    {
-
         $user->update($request->all());
-        return new UserResource($user);
+        return $user;
     }
 
     public function destroy(Person $user){

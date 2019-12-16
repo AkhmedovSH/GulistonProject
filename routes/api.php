@@ -19,7 +19,7 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::apiResource('/user', 'UserController');
+    Route::apiResource('/user', 'UserController', ['except' => ['store', 'create', 'edit']]);
     Route::apiResource('/category', 'CategoryController');
     Route::apiResource('/product', 'ProductController');
     Route::apiResource('/company', 'CompanyController');
