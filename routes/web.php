@@ -11,10 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-    return response()->json(
-        [
-            'error' => '404 not found'
-        ]
-        , 404);
-});
+

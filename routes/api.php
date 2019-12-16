@@ -1,13 +1,5 @@
 <?php
 
-use App\User;
-use Illuminate\Http\Request;
-
-/* Route::group(['prefix' => 'auth'], function () {
-   
-    
-}); */
-
 Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/logout', 'AuthController@logout');

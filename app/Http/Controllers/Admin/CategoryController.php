@@ -24,10 +24,11 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
+        dd('here');
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'parent_id' => ['nullable'],
@@ -43,7 +44,7 @@ class CategoryController extends Controller
 
         $category = Category::add($request->all());
         $category->uploadImage($request->file('image'));
-        
+
          return $category;
     }
 
@@ -81,11 +82,11 @@ class CategoryController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-       
+
         $category = Category::find($id);
         $category->edit($request->all());
         $category->uploadImage($request->file('image'));
-        
+
         return $category;
     }
 
