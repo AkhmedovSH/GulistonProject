@@ -44,7 +44,10 @@ class CategoryController extends Controller
         $category = Category::add($request->all());
         $category->uploadImage($request->file('image'));
 
-         return $category;
+        return response()->json(
+            [
+                'result' =>$category
+            ], 200);
     }
 
 
@@ -57,7 +60,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::find($id);
-        return response()->json([$category], 200);
+        return response()->json([
+                'result' => $category
+            ], 200);
     }
 
     /**
@@ -86,7 +91,9 @@ class CategoryController extends Controller
         $category->edit($request->all());
         $category->uploadImage($request->file('image'));
 
-        return $category;
+        return response()->json([
+            'result' => $category
+        ], 200);
     }
 
     /**
@@ -100,9 +107,11 @@ class CategoryController extends Controller
         try {
             Category::find($id)->remove();
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Cannot delete'], 200);
+            return response()->json(['error' => 'Cannot delete'], 400);
         }
 
-        return response()->json(['success' => 'Deleted'], 200);
+        return response()->json([
+            'success' => 'Deleted'
+        ], 200);
     }
 }

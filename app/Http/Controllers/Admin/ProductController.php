@@ -35,7 +35,9 @@ class ProductController extends Controller
             ];
         });
 
-        return response()->json($allProduct, 200);
+        return response()->json([
+            'result' => $allProduct
+        ], 200);
     }
 
     /**
@@ -46,7 +48,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required'],
@@ -64,7 +65,9 @@ class ProductController extends Controller
         $product->uploadImage($request->file('image'));
         $product->uploadMultipleImages($request->file('images'));
         
-        return $product;
+        return response()->json([
+            'result' => $product
+        ], 200);
     }
 
 
@@ -89,17 +92,26 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'parent_id' => 'nullable',
-            'image' => 'nullable'
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:255'],
+            'price' => ['required'],
+            'image' => ['nullable'],
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
        
         $product = Product::find($id);
         $product->edit($request->all());
         $product->uploadImage($request->file('image'));
         
-        return $product;
+        return response()->json([
+            'result' => $product
+            ], 200);
     }
 
     /**
@@ -113,9 +125,13 @@ class ProductController extends Controller
         try {
             Product::find($id)->remove();
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Cannot delete'], 200);
+            return response()->json([
+                'error' => 'Cannot delete'
+                ], 400);
         }
 
-        return response()->json(['success' => 'Deleted'], 200);
+        return response()->json([
+            'success' => 'Deleted'
+            ], 200);
     }
 }

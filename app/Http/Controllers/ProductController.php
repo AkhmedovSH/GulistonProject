@@ -35,7 +35,10 @@ class ProductController extends Controller
             ];
         });
 
-        return response()->json($allProduct, 200);
+        return response()->json(
+            [
+                'result' => $allProduct
+            ], 200);
     }
 
 
@@ -48,6 +51,9 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product['image'] = asset('uploads/products/' . $product->image);
-        return response()->json($product, 200);
+        return response()->json(
+            [
+                'result' => $product
+            ], 200);
     }
 }

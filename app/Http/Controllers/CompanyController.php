@@ -20,12 +20,17 @@ class CompanyController extends Controller
                 "created_at" => $company->created_at,
             ];
         });
- 
-        return response()->json($allCompany, 200);
+        return response()->json(
+            [
+                'result' => $allCompany
+            ], 200);
     }
 
     public function show(Company $company)
     {
-        return response()->json($company, 200);
+        return response()->json(
+            [
+                'result' => $company
+            ], 200);
     }
 }

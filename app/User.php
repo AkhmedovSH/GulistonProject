@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -28,6 +29,17 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Product::class);
     }
 
+    public function edit($fields)
+    {
+        $this->fill($fields);
+
+        if(isset($fields['password'])){
+            $this->password = Hash::make($fields['password']);
+        }
+
+        $this->save();
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -36,5 +48,31 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function remove()
+    {
+        $this->removeImage();
+        $this->delete();
+    }
+
+    public function removeImage()
+    {
+        if ($this->image != null) {
+            unlink('uploads/users/' . $this->image);
+        }
+    }
+
+    function uploadImage($image)
+    {
+        if ($image == null) {
+            return;
+        }
+        $this->removeImage();
+        $filename = $this->id . '.' . $image->extension();
+        
+        $image->move('uploads/users/', $filename);
+        $this->image = $filename;
+        $this->save();
     }
 }

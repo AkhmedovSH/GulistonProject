@@ -17,7 +17,9 @@ class CompanyController extends Controller
     public function index()
     {
         $company = Company::all();
-        return response()->json($company, 200);
+        return response()->json([
+            'result' => $company
+        ], 200);
     }
 
 
@@ -46,7 +48,9 @@ class CompanyController extends Controller
         $company = Company::add($request->all());
         $company->uploadImage($request->file('image'));
         
-         return $company;
+        return response()->json([
+            'result' => $company
+        ], 200);
     }
 
     /**
@@ -58,7 +62,9 @@ class CompanyController extends Controller
     public function edit($id)
     {
         $company = Company::find($id);
-        return response()->json($company, 200);
+        return response()->json([
+            'result' => $company
+        ], 200);
     }
 
     /**
@@ -80,7 +86,9 @@ class CompanyController extends Controller
         $company->edit($request->all());
         $company->uploadImage($request->file('image'));
         
-        return $company;
+        return response()->json([
+            'result' => $company
+        ], 200);
     }
 
     /**
@@ -94,9 +102,11 @@ class CompanyController extends Controller
         try {
             Company::find($id)->remove();
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Cannot delete'], 200);
+            return response()->json(['error' => 'Cannot delete'], 400);
         }
 
-        return response()->json(['success' => 'Deleted'], 200);
+        return response()->json([
+            'success' => 'Deleted'
+            ], 200);
     }
 }

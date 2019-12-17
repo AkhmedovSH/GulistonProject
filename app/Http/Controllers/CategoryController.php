@@ -24,18 +24,18 @@ class CategoryController extends Controller
                 ]
             ];
         });
- 
-        return response()->json($allCategory, 200);
 
+        return response()->json(
+            [
+                'result' => $allCategory
+            ], 200);
     }
 
     public function show(Category $category)
     {
         return response()->json(
             [
-                "result" => [
-                    $category
-                ]
+                'result' => $category
             ], 200);
     }
 

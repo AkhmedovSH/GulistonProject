@@ -41,9 +41,10 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json([
-            'user' => $user,
-        ]);
+        return response()->json(
+            [
+                'result' => $user
+            ], 200);
     }
 
     /**
@@ -72,7 +73,10 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(
+            [
+                'result' => auth()->user()
+            ], 200);
     }
 
     /**
@@ -84,7 +88,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['success' => 'Successfully logged out']);
     }
 
     /**
@@ -107,9 +111,12 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+            "result" => 
+                [
+                    'access_token' => $token,
+                    'token_type' => 'bearer',
+                    'expires_in' => auth()->factory()->getTTL() * 60
+                ]
+            ], 200);
     }
 }
