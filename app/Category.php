@@ -26,7 +26,7 @@ class Category extends Model
     {
         $category = new static;
         $category->title = $fields['title'];
-        $category->parent_id = isset($fields['parent_id']) ? (int)$fields['parent_id'] : null;
+        $category->parent_id = isset($fields['parent_id']) ? $fields['parent_id'] : null;
         $category->save();
 
         return $category;

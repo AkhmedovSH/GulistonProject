@@ -10,10 +10,14 @@ use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements JWTSubject
 {
+    /* User types column type
+            0 - simple user
+            1 - admin
+    */
     use Notifiable;
 
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'surname', 'last_login',
+        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'type'
     ];
 
     protected $hidden = [
