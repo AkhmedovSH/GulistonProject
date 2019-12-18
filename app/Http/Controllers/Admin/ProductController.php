@@ -122,7 +122,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        try {
+        
+        $product = Product::find($id);
+        $product->removeMultipleImages($product->images);
+
+        /* try {
             Product::find($id)->remove();
         } catch (\Throwable $th) {
             return response()->json([
@@ -132,6 +136,6 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => 'Deleted'
-            ], 200);
+            ], 200); */
     }
 }

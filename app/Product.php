@@ -85,27 +85,32 @@ class Product extends Model
 
     public function uploadMultipleImages($images){
         if ($images == null) { return; }
-        $names = array();
-        $incI = 0;
-        foreach($images as $image)
-        {
-            $filename = rand(1, 1000000). '.' . $image->extension();
-            $image->storeAs('uploads/products/', $filename);
-            $image->move('uploads/products/', $filename);
 
-            $names[$incI] = $filename;
-            $incI++;
-            
+        
+        $arrayItemsCount = count($images);
+        $i = 0;
+        $imgConcatenate = ";";
+        foreach($images as $key => $image)
+        {
+            $filename = "product_id" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
+            $image->move('uploads/products/', $filename);
+            if(++$i === $arrayItemsCount) {
+                $imgConcatenate = $imgConcatenate . $filename;
+            }else{
+                $imgConcatenate = $imgConcatenate . $filename . ";";
+            }
         }
-        $this->images = json_encode($names);
+
+        $this->images = $imgConcatenate;
         $this->save();
     }
 
-    public function removeMultipleImages(){
-        if ($this->slider_image != null){
-            $images = json_decode($this->images, true);
-            foreach($images as $item){
-                unlink('uploads/products/'. $item);
+    public function removeMultipleImages($images){
+        if ($this->images != null){
+            $imagesArray = explode(";",$this->images);
+
+            foreach($imagesArray as $image){
+                unlink('uploads/products/'. $image);
             }
         }
     }
