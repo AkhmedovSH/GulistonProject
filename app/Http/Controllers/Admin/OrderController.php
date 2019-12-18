@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Product;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,27 +15,24 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+        $order = Order::all();
 
-        $allProduct = $product->map(function ($product) {
+        $allOrder = $order->map(function ($order) {
             return [
-                "id" => $product->id,
-                "title" => $product->title,
-                "description" => $product->description,
-                "price" => $product->price,
-                "image" => asset('uploads/products/' . $product->image),
-                "images" => $product->images,
-                "available" => $product->available,
-                "favorite" => $product->favorite,
-                "keywords" => $product->keywords,
-                "company_id" => $product->company_id,
-                "category_id" => $product->category_id,
-                "created_at" => $product->created_at,
+                "id" => $order->id,
+                "longitude" => $order->longitude,
+                "latitude" => $order->latitude,
+                "time" => $order->time,
+                "status" => $order->status,
+                "status_text" => $order->status_text,
+                "product_id" => $order->product_id,
+                "user_id" => $order->user_id,
+                "created_at" => $order->created_at,
             ];
         });
 
         return response()->json([
-            'result' => $allProduct
+            'result' => $allOrder
         ], 200);
     }
 
@@ -61,12 +57,12 @@ class ProductController extends Controller
                 ], 400);
         }
        
-        $product = Product::add($request->all());
-        $product->uploadImage($request->file('image'));
-        $product->uploadMultipleImages($request->file('images'));
+        $order = Order::add($request->all());
+        $order->uploadImage($request->file('image'));
+        $order->uploadMultipleImages($request->file('images'));
         
         return response()->json([
-            'result' => $product
+            'result' => $order
         ], 200);
     }
 
@@ -79,9 +75,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::find($id);
+        $order = Order::find($id);
         return response()->json([
-            'result' => $product
+            'result' => $order
         ], 200);
     }
 
@@ -107,12 +103,12 @@ class ProductController extends Controller
                 ], 400);
         }
        
-        $product = Product::find($id);
-        $product->edit($request->all());
-        $product->uploadImage($request->file('image'));
+        $order = Order::find($id);
+        $order->edit($request->all());
+        $order->uploadImage($request->file('image'));
         
         return response()->json([
-            'result' => $product
+            'result' => $order
             ], 200);
     }
 
@@ -125,7 +121,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            Product::find($id)->remove();
+            Order::find($id)->remove();
             return response()->json([
                 'success' => 'Deleted'
                 ], 200);

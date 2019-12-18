@@ -38,9 +38,27 @@ class Product extends Model
         $this->save();
     }
 
+    public function setCategory($id)
+    {
+        if ($id == null) {
+            return;
+        }
+        $this->category_id = $id;
+        $this->save();
+    }
+    public function setCompany($id)
+    {
+        if ($id == null) {
+            return;
+        }
+        $this->company_id = $id;
+        $this->save();
+    }
+
     public function remove()
     {
         $this->removeImage();
+        $this->removeMultipleImages();
         $this->delete();
     }
 
@@ -63,25 +81,6 @@ class Product extends Model
         $this->image = $filename;
         $this->save();
     }
-
-    public function setCategory($id)
-    {
-        if ($id == null) {
-            return;
-        }
-        $this->category_id = $id;
-        $this->save();
-    }
-    public function setCompany($id)
-    {
-        if ($id == null) {
-            return;
-        }
-        $this->company_id = $id;
-        $this->save();
-    }
-
-
 
     public function uploadMultipleImages($images){
         if ($images == null) { return; }
@@ -108,9 +107,9 @@ class Product extends Model
     public function removeMultipleImages($images){
         if ($this->images != null){
             $imagesArray = explode(";",$this->images);
-
-            foreach($imagesArray as $image){
-                unlink('uploads/products/'. $image);
+            
+            for($i = 1; $i < count($imagesArray); $i++){
+                unlink('uploads/products/'. $imagesArray[$i]);
             }
         }
     }
