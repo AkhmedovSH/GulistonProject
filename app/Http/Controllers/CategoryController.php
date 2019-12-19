@@ -11,14 +11,14 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $category = Category::all();
+        $allCategory = Category::all();
 
        /*  $category->getCollection()->transform(function ($category) {
             $category->image = isset($category->image) ? asset('uploads/categories/' . $category->image) : null;
             return $category;
         }); */
 
-        $allCategory = $category->map(function ($category) {
+        /* $allCategory = $category->map(function ($category) {
             return [
                 "id" => $category->id,
                 "title" => $category->title,
@@ -26,7 +26,7 @@ class CategoryController extends Controller
                 "parent_id" => $category->parent_id,
                 "created_at" => $category->created_at,
             ];
-        });
+        }); */
 
         return response()->json(
             [

@@ -9,9 +9,9 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $company = Company::all();
+        $allCompany = Company::all();
 
-        $allCompany = $company->map(function ($company) {
+        /* $allCompany = $company->map(function ($company) {
             return [
                 "id" => $company->id,
                 "title" => $company->title,
@@ -19,7 +19,7 @@ class CompanyController extends Controller
                 "image" => asset('uploads/companies/' . $company->image),
                 "created_at" => $company->created_at,
             ];
-        });
+        }); */
         return response()->json(
             [
                 'result' => $allCompany

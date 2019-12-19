@@ -14,9 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
+        $allProduct = Product::all();
 
-        $allProduct = $product->map(function ($product) {
+        /* $allProduct = $product->map(function ($product) {
             return [
                 "result" => [
                     "id" => $product->id,
@@ -33,7 +33,7 @@ class ProductController extends Controller
                     "created_at" => $product->created_at,
                 ]
             ];
-        });
+        }); */
 
         return response()->json(
             [
@@ -50,7 +50,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product['image'] = asset('uploads/products/' . $product->image);
+        //$product['image'] = asset('uploads/products/' . $product->image);
         return response()->json(
             [
                 'result' => $product

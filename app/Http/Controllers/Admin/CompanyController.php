@@ -16,9 +16,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $company = Company::all();
+        $allCompany = Company::all();
         return response()->json([
-            'result' => $company
+            'result' => $allCompany
         ], 200);
     }
 
