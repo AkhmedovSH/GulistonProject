@@ -54,12 +54,12 @@ class ProductController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function show($id)
     {
         $product = Product::find($id);
         return response()->json([
@@ -109,7 +109,7 @@ class ProductController extends Controller
         try {
             Product::find($id)->remove();
             return response()->json([
-                'success' => 'Deleted'
+                'success' => true
                 ], 200);
         } catch (\Throwable $th) {
             return response()->json([

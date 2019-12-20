@@ -68,12 +68,12 @@ class OrderController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function show($id)
     {
         $order = Order::find($id);
         return response()->json([
@@ -123,7 +123,7 @@ class OrderController extends Controller
         try {
             Order::find($id)->remove();
             return response()->json([
-                'success' => 'Deleted'
+                'success' => true
                 ], 200);
         } catch (\Throwable $th) {
             return response()->json([

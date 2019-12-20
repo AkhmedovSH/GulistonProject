@@ -56,12 +56,12 @@ class CategoryController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function show($id)
     {
         $category = Category::find($id);
         return response()->json([
@@ -108,6 +108,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        dd('here');
         try {
             Category::find($id)->remove();
         } catch (\Throwable $th) {
@@ -115,7 +116,7 @@ class CategoryController extends Controller
         }
 
         return response()->json([
-            'success' => 'Deleted'
+            'success' => true
         ], 200);
     }
 }

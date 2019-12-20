@@ -53,13 +53,13 @@ class CompanyController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
+   /**
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function show($id)
     {
         $company = Company::find($id);
         return response()->json([
@@ -106,7 +106,7 @@ class CompanyController extends Controller
         }
 
         return response()->json([
-            'success' => 'Deleted'
+            'success' => true
             ], 200);
     }
 }
