@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $allProduct = Product::all();
+        $allProduct = Product::orderBy('id', 'DESC')->get();
         return response()->json([
             'result' => $allProduct
         ], 200);
@@ -74,9 +74,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id' => ['required'],
             'title' => ['required', 'string', 'max:255'],
             'price' => ['required'],
             'image' => ['nullable'],
@@ -89,7 +90,7 @@ class ProductController extends Controller
                 ], 400);
         }
        
-        $product = Product::find($id);
+        $product = Product::find($request->id);
         $product->edit($request->all());
         $product->uploadImage($request->file('image'));
         
