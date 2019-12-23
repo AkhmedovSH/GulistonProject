@@ -21,11 +21,13 @@ class CreateProductsTable extends Migration
             $table->string('image')->nullable();
             $table->text('images')->nullable();
             $table->boolean('available')->default(1);
+            $table->boolean('deliver')->default(1);
             $table->boolean('favorite')->default(0);
+            $table->text('parameters')->nullable()->comment('JSON array of parameters');
             $table->string('keywords')->nullable();
             $table->integer('company_id')->nullable()->unsigned();
-            //$table->foreign('company_id')->references('id')->on('companies');
             $table->integer('category_id')->nullable()->unsigned();
+            //$table->foreign('company_id')->references('id')->on('companies');
             //$table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });

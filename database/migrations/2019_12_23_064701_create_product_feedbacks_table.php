@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreateProductFeedbackTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('product_feedbacks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->integer('parent_id')->unsigned()->default(0);
-            $table->string('image')->nullable();
-            $table->integer('position')->unsigned()->nullable();
+            $table->string('description')->nullable();
+            $table->boolean('status')->default(0);
+            $table->integer('product_id');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('product_feedbacks');
     }
 }
