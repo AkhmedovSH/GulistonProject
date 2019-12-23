@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $order = Order::all();
+        $order = Order::orderBy('id', 'DESC')->get();
 
         $allOrder = $order->map(function ($order) {
             return [

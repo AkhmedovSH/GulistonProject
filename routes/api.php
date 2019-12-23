@@ -22,12 +22,14 @@ Route::group(['middleware' => ['cors']], function () {
 Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
     //Route::apiResource('/user', 'UserController');
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
-    Route::post('/category/{category}', 'CategoryController@update');
+    Route::post('/categoryUpdate', 'CategoryController@update');
 
-    Route::apiResource('/product', 'ProductController', ['except' => ['update', 'show' , 'create']]);
-    Route::post('/product/{product}', 'ProductController@update');
+    Route::apiResource('/product', 'ProductController', ['except' => ['update', 'create']]);
+    Route::post('/productUpdate', 'ProductController@update');
 
-    Route::apiResource('/company', 'CompanyController', ['except' => ['update', 'show' , 'create']]);
-    Route::post('/company/{company}', 'CompanyController@update');
-    Route::apiResource('/order', 'OrderController', ['except' => ['store', 'show' , 'create']]);
+    Route::apiResource('/company', 'CompanyController', ['except' => ['update', 'create']]);
+    Route::post('/companyUpdate', 'CompanyController@update');
+
+
+    Route::apiResource('/order', 'OrderController', ['except' => ['store', 'create']]);
 });

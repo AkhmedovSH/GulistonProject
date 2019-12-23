@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $allCategory = Category::all();
+        $allCategory = Category::orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
@@ -76,9 +76,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'id' => ['required'],
             'title' => ['required', 'string', 'max:255'],
             'parent_id' => ['nullable'],
             'image' => ['nullable'],
@@ -91,7 +92,7 @@ class CategoryController extends Controller
                 ], 400);
         }
 
-        $category = Category::find($id);
+        $category = Category::find($request->id);
         $category->edit($request->all());
         $category->uploadImage($request->file('image'));
 
@@ -108,15 +109,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        dd('here');
+
         try {
             Category::find($id)->remove();
+            return response()->json([
+                'success' => true
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Cannot delete'], 400);
         }
-
-        return response()->json([
-            'success' => true
-        ], 200);
+        
     }
 }

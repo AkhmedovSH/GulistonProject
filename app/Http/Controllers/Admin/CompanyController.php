@@ -16,7 +16,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $allCompany = Company::all();
+        $allCompany = Company::orderBy('id', 'DESC')->get();
         return response()->json([
             'result' => $allCompany
         ], 200);
@@ -74,15 +74,23 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'parent_id' => 'nullable',
-            'image' => 'nullable'
+        $validator = Validator::make($request->all(), [
+            'id' => ['required'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable'],
+            'image' => ['nullable']
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
        
-        $company = Company::find($id);
+        $company = Company::find($request->id);
         $company->edit($request->all());
         $company->uploadImage($request->file('image'));
         
