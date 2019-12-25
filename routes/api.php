@@ -21,6 +21,8 @@ Route::group(['middleware' => ['cors']], function () {
 
 Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
     //Route::apiResource('/user', 'UserController');
+    Route::get('/mainProjectStatistics', 'MainController@ProjectStatistics');
+
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
     Route::post('/categoryUpdate', 'CategoryController@update');
 
