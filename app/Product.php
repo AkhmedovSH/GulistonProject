@@ -27,9 +27,17 @@ class Product extends Model
     {
         $product = new static;
         $product->fill($fields);
+
         $product->save();
 
         return $product;
+    }
+
+    public function addParameters($parameters)
+    {
+        if ($parameters == null) { return; }
+        $this->parameters = $parameters;
+        $this->save();
     }
 
     public function edit($fields)
@@ -91,7 +99,7 @@ class Product extends Model
         $imgConcatenate = ";";
         foreach($images as $key => $image)
         {
-            $filename = "product_id" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
+            $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
             $image->move('uploads/products/', $filename);
             if(++$i === $arrayItemsCount) {
                 $imgConcatenate = $imgConcatenate . $filename;

@@ -44,6 +44,7 @@ class ProductController extends Controller
         }
        
         $product = Product::add($request->all());
+        $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
         $product->uploadMultipleImages($request->file('images'));
         
