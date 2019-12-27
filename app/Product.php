@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'description', 'price', 'available', 'favorite', 'keywords', 'company_id', 'category_id'
+        'title', 'description', 'price', 'available', 'favorite', 'deliver', 'keywords', 'company_id', 'category_id'
     ];
 
 
@@ -25,9 +25,13 @@ class Product extends Model
 
     public static function add($fields)
     {
+        
         $product = new static;
         $product->fill($fields);
 
+        $product->available = $fields['available'] == true ? 1 : 0;
+        $product->deliver = $fields['deliver'] == true ? 1 : 0;
+        $product->favorite = $fields['favorite'] == true ? 1 : 0;
         $product->save();
 
         return $product;

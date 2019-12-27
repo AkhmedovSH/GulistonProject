@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdvertisingTable extends Migration
+class CreateUserFavoriteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateAdvertisingTable extends Migration
      */
     public function up()
     {
-        Schema::create('advertising', function (Blueprint $table) {
+        Schema::create('user_favorite', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('type');
-            $table->integer('company_id')->nullable();
-            $table->interger('product_id')->nullable();
+            $table->integer('user_id');
+            $table->integer('product_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateAdvertisingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advertising');
+        Schema::dropIfExists('user_favorite');
     }
 }

@@ -42,7 +42,7 @@ class ProductController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-       
+
         $product = Product::add($request->all());
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
