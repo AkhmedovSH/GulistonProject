@@ -34,6 +34,8 @@ class ProductController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required'],
             'price' => ['required'],
+            'category_id' => ['required'],
+            'company_id' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -63,6 +65,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
+        $product['parameters'] = json_decode($product['parameters']);
         return response()->json([
             'result' => $product
         ], 200);
@@ -81,7 +84,8 @@ class ProductController extends Controller
             'id' => ['required'],
             'title' => ['required', 'string', 'max:255'],
             'price' => ['required'],
-            'image' => ['nullable'],
+            'category_id' => ['required'],
+            'company_id' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -93,8 +97,10 @@ class ProductController extends Controller
        
         $product = Product::find($request->id);
         $product->edit($request->all());
+        $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
-        
+        $product->uploadMultipleImages($request->file('images'));
+
         return response()->json([
             'result' => $product
             ], 200);

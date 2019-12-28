@@ -17,8 +17,8 @@ class CreateAdvertisingTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('type');
-            $table->integer('company_id')->nullable();
-            $table->interger('product_id')->nullable();
+            $table->integer('company_id')->default(0)->unsigned();
+            $table->integer('product_id')->default(0)->unsigned();
             $table->timestamps();
         });
     }

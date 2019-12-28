@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
+    const STATUS_CREATED  = 0;// ADD TO CART
+    const STATUS_ORDERED  = 1;// CART ITEM PURCHASED
+    const STATUS_ACCEPTED = 2;// PURCHASED ITEM ACCEPTED
+    const STATUS_REJECT  = -1;// PURCHASED ITEM REJECTED
+
     protected $fillable = [
         'longitude', 'latitude', 'time', 'status', 'status_text', 'product_id', 'user_id'
     ];
-
 
     public function user()
     {
@@ -19,5 +24,28 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public static function add($fields)
+    {
+        $order = new static;
+        $order->fill($fields);
+        $order->user_id = auth()->user()->id;
+        $order->save();
+
+        return $order;
+    }
+
+    public function edit($fields)
+    {
+        $this->fill($fields);
+        $this->save();
+    }
+
+    public function deleteAll($orders)
+    {
+        foreach ($orders as $order) {
+           $order->delete();
+        }
     }
 }

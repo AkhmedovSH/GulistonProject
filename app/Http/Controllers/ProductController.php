@@ -50,10 +50,33 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //$product['image'] = asset('uploads/products/' . $product->image);
+        $product['parameters'] = json_decode($product['parameters']);
         return response()->json(
             [
                 'result' => $product
             ], 200);
+    }
+
+
+    public function addFeedback(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'description' => ['required', 'max:500'],
+            'product_id' => ['required'],
+            'user_id' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $order = Order::add($request->all());
+        
+        return response()->json([
+            'result' => $order
+        ], 200);
     }
 }

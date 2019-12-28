@@ -12,10 +12,20 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 Route::group(['middleware' => ['cors']], function () {
     Route::apiResource('/user', 'UserController', ['except' => ['store', 'create', 'edit']]);
+
     Route::apiResource('/category', 'CategoryController');
+
     Route::apiResource('/product', 'ProductController');
+    Route::post('/productFeedback', 'ProductController@Feedback');
+
     Route::apiResource('/company', 'CompanyController');
-    Route::apiResource('/order', 'OrderController');
+
+    Route::get('/cart', 'OrderController@cart');
+    Route::post('/cartAdd', 'OrderController@cartAdd');
+    Route::post('/cartUpdate', 'OrderController@cartUpdate');
+    Route::post('/cartDestroyOne', 'OrderController@cartDestroyOne');
+    Route::post('/cartDestroyAll', 'OrderController@cartDestroyAll');
+    Route::post('/order', 'OrderController@order');
 });
 
 
@@ -33,5 +43,5 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::post('/companyUpdate', 'CompanyController@update');
 
 
-    Route::apiResource('/order', 'OrderController', ['except' => ['store', 'create']]);
+    Route::apiResource('/order', 'OrderController', ['except' => ['edit', 'create']]);
 });

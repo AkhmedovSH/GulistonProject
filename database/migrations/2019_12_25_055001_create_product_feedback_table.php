@@ -15,10 +15,10 @@ class CreateProductFeedbackTable extends Migration
     {
         Schema::create('product_feedback', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('description')->nullable();
+            $table->text('description');
             $table->boolean('status')->default(0);
             $table->integer('product_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

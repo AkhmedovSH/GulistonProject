@@ -28,10 +28,6 @@ class Product extends Model
         
         $product = new static;
         $product->fill($fields);
-
-        $product->available = $fields['available'] == true ? 1 : 0;
-        $product->deliver = $fields['deliver'] == true ? 1 : 0;
-        $product->favorite = $fields['favorite'] == true ? 1 : 0;
         $product->save();
 
         return $product;
