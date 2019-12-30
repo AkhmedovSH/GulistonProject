@@ -11,7 +11,10 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 
 Route::group(['middleware' => ['cors']], function () {
+    Route::get('/userShow', 'UserController@userShow');
     Route::post('/userUpdate', 'UserController@update');
+    Route::post('/userAddressAdd', 'UserController@userAddressAdd');
+    Route::post('/userAddressUpdate', 'UserController@userAddressUpdate');
     Route::delete('/userDestroy', 'UserController@destroy');
 
     Route::get('/category', 'CategoryController@index');
@@ -19,15 +22,15 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/advertising', 'AdvertisingController@index');
 
     Route::apiResource('/product', 'ProductController');
-    Route::post('/productFeedback', 'ProductController@Feedback');
+    Route::post('/productFeedback', 'ProductController@addFeedback');
 
     Route::apiResource('/company', 'CompanyController');
 
-    Route::get('/cart', 'OrderController@cart');
+    Route::get('/cart', 'OrderController@cartIndex');
     Route::post('/cartAdd', 'OrderController@cartAdd');
     Route::post('/cartUpdate', 'OrderController@cartUpdate');
-    Route::post('/cartDestroyOne', 'OrderController@cartDestroyOne');
-    Route::post('/cartDestroyAll', 'OrderController@cartDestroyAll');
+    Route::delete('/cartDestroyOne/{id}', 'OrderController@cartDestroyOne');
+    Route::delete('/cartDestroyAll', 'OrderController@cartDestroyAll');
     Route::post('/order', 'OrderController@order');
 });
 

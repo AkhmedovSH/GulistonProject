@@ -3,12 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
 class UserController extends Controller
 {
+    public function userShow(){
+        
+        $user = User::with(['orders', 'userAddresses'])->findOrFail(auth()->user()->id);
+        
+        return response()->json([
+            'result' => $user
+            ], 200);
+    }
+
+
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -32,6 +43,59 @@ class UserController extends Controller
         return response()->json(
             [
                 'result' => $user
+            ], 200);
+    }
+
+    public function userAddressAdd(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['nullable', 'string', 'max:15'],
+            'phone' => ['nullable', 'string', 'max:15'],
+            'street' => ['nullable'],
+            'state' => ['nullable'],
+            'city' => ['nullable'],
+            'postal_code' => ['nullable'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $user_address = new UserAddress;
+        $user_address = $user_address->add($request->all());
+        return response()->json(
+            [
+                'result' => $user_address
+            ], 200);
+    }
+
+    public function userAddressUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => ['required'],
+            'name' => ['nullable', 'string', 'max:15'],
+            'phone' => ['nullable', 'string', 'max:15'],
+            'street' => ['nullable'],
+            'state' => ['nullable'],
+            'city' => ['nullable'],
+            'postal_code' => ['nullable'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $user_address = UserAddress::find($request->id);
+        $user_address = $user_address->edit($request->all());
+        return response()->json(
+            [
+                'result' => $user_address
             ], 200);
     }
 

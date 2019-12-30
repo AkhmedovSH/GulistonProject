@@ -13,7 +13,7 @@ class Order extends Model
     const STATUS_REJECT  = -1;// PURCHASED ITEM REJECTED
 
     protected $fillable = [
-        'longitude', 'latitude', 'time', 'status', 'status_text', 'product_id', 'user_id'
+        'longitude', 'latitude', 'time', 'status', 'quantity', 'status_text', 'product_id', 'user_id'
     ];
 
     public function user()
@@ -40,9 +40,10 @@ class Order extends Model
     {
         $this->fill($fields);
         $this->save();
+        return $this;
     }
 
-    public function deleteAll($orders)
+    public static function deleteAll($orders)
     {
         foreach ($orders as $order) {
            $order->delete();

@@ -107,7 +107,6 @@ class AdvertisingController extends Controller
      */
     public function destroy($id)
     {
-
         try {
             Advertising::find($id)->remove();
             return response()->json([
@@ -116,6 +115,5 @@ class AdvertisingController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Cannot delete'], 400);
         }
-        
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -12,13 +13,62 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function cart()
+    public function cartIndex()
     {
         $allOrder = Order::orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
                 'result' => $allOrder
+            ], 200);
+    }
+
+    public function cartAdd(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'quantity' => ['required'],
+            'product_id' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $order = Order::add($request->all());
+        
+        return response()->json([
+            'result' => $order
+        ], 200);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Order  $order
+     * @return \Illuminate\Http\Response
+     */
+    public function cartUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+       
+        $order = Order::find($request->id);
+        $order->edit($request->all());
+
+        return response()->json([
+            'result' => $order
             ], 200);
     }
 
@@ -50,42 +100,16 @@ class OrderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function cartUpdate(Request $request, Order $order)
-    {
-        $validator = Validator::make($request->all(), [
-            'id' => ['required']
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'error' => $validator->errors()->first()
-                ], 400);
-        }
-       
-        $product = Order::find($request->id);
-        $product->edit($request->all());
-
-        return response()->json([
-            'result' => $product
-            ], 200);
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function cartDestroyOne(Order $order)
+    public function cartDestroyOne($id)
     {
+        
         try {
+            $order = Order::findOrFail($id);
             $order->delete();
             return response()->json([
                 'success' => true
@@ -103,10 +127,10 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function cartDestroyAll(Request $request)
+    public function cartDestroyAll()
     {
         try {
-            $orders = Order::find($request->id)->get();
+            $orders = Order::where('user_id', auth()->user()->id)->get();
             Order::deleteAll($orders);
             return response()->json([
                 'success' => true

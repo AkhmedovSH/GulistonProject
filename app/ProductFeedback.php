@@ -24,6 +24,7 @@ class ProductFeedback extends Model
     {
         $feedback = new static;
         $feedback->fill($fields);
+        $feedback->user_id = auth()->user()->id;
         $feedback->save();
 
         return $feedback;

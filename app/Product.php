@@ -22,6 +22,11 @@ class Product extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function feedback()
+    {
+        return $this->hasMany(ProductFeedback::class, 'product_id', 'id');
+    }
+
 
     public static function add($fields)
     {
