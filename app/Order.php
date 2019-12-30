@@ -49,4 +49,13 @@ class Order extends Model
            $order->delete();
         }
     }
+
+    public static function statusPurchased($orders, $address_id)
+    {
+        foreach ($orders as $order) {
+           $order->status = $order::STATUS_ORDERED;
+           $order->address_id = $address_id;
+           $order->save();
+        }
+    }
 }

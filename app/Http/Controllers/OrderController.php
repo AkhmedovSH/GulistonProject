@@ -8,14 +8,9 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function cartIndex()
     {
-        $allOrder = Order::orderBy('id', 'DESC')->get();
+        $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 0)->orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
@@ -44,13 +39,6 @@ class OrderController extends Controller
         ], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function cartUpdate(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -72,39 +60,6 @@ class OrderController extends Controller
             ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function order(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'product_id' => ['required'],
-            'user_id' => ['required']
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'error' => $validator->errors()->first()
-                ], 400);
-        }
-
-        $order = Order::add($request->all());
-        
-        return response()->json([
-            'result' => $order
-        ], 200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function cartDestroyOne($id)
     {
         
@@ -121,12 +76,6 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function cartDestroyAll()
     {
         try {
@@ -140,5 +89,36 @@ class OrderController extends Controller
                 'error' => 'Cannot delete'
                 ], 400);
         }
+    }
+
+    public function orderIndex()
+    {
+        $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 1)->orderBy('id', 'DESC')->get();
+
+        return response()->json(
+            [
+                'result' => $allOrder
+            ], 200);
+    }
+
+    public function order(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'address_id' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $orders = Order::where('user_id', auth()->user()->id)->get();
+        Order::statusPurchased($orders, $request->address_id);
+        
+        return response()->json([
+            'success' => true
+        ], 200);
     }
 }
