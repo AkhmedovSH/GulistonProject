@@ -11,9 +11,12 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::apiResource('/user', 'UserController', ['except' => ['store', 'create', 'edit']]);
+    Route::post('/userUpdate', 'UserController@update');
+    Route::delete('/userDestroy', 'UserController@destroy');
 
-    Route::apiResource('/category', 'CategoryController');
+    Route::get('/category', 'CategoryController@index');
+
+    Route::get('/advertising', 'AdvertisingController@index');
 
     Route::apiResource('/product', 'ProductController');
     Route::post('/productFeedback', 'ProductController@Feedback');
@@ -35,6 +38,9 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
 
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
     Route::post('/categoryUpdate', 'CategoryController@update');
+
+    Route::apiResource('/advertising', 'AdvertisingController', ['except' => ['update', 'create']]);
+    Route::post('/advertisingUpdate', 'AdvertisingController@update');
 
     Route::apiResource('/product', 'ProductController', ['except' => ['update', 'create']]);
     Route::post('/productUpdate', 'ProductController@update');

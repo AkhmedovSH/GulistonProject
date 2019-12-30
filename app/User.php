@@ -37,6 +37,7 @@ class User extends Authenticatable implements JWTSubject
     {
         $this->fill($fields);
 
+        
         if(isset($fields['password'])){
             $this->password = Hash::make($fields['password']);
         }

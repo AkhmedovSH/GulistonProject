@@ -9,28 +9,23 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $allCompany = Company::all();
+        $allCompany = Company::orderBy('id', 'DESC')->get();
 
-        /* $allCompany = $company->map(function ($company) {
-            return [
-                "id" => $company->id,
-                "title" => $company->title,
-                "description" => $company->description,
-                "image" => asset('uploads/companies/' . $company->image),
-                "created_at" => $company->created_at,
-            ];
-        }); */
         return response()->json(
             [
                 'result' => $allCompany
             ], 200);
     }
 
-    public function show(Company $company)
+
+    public function companyProducts($id)
     {
+
+        $allCompanyProducts = Company::where('id', $id)->with('product')->get();
+
         return response()->json(
             [
-                'result' => $company
+                'result' => $allCompanyProducts
             ], 200);
     }
 }

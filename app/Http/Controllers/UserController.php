@@ -4,36 +4,18 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class UserController extends Controller
 {
-
-    public function index()
-    {
-        return response()->json(
-            [
-                'result' => User::orderby('id', 'ASC')->get()
-            ], 200);
-
-    }
-
-    public function show(User $user)
-    {
-        return response()->json(
-            [
-                'result' => $user
-            ], 200);
-    }
-
-
-    public function update(User $user, Request $request)
+    public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['nullable', 'string', 'max:255'],
-            'surname' => ['nullable', 'string', 'max:255'],
+            'name' => ['nullable', 'string', 'max:15'],
+            'surname' => ['nullable', 'string', 'max:15'],
             'email' => ['nullable', 'email'],
-            'password' => ['nullable', 'min:3','max:255'],
+            'password' => ['nullable', 'min:3','max:30'],
             'image' => ['nullable'],
         ]);
 
@@ -44,7 +26,8 @@ class UserController extends Controller
                 ], 400);
         }
 
-        $user = $user->update($request->all());
+        $user = auth()->user();
+        $user->edit($request->all());
         $user->uploadImage($request->file('image'));
         return response()->json(
             [
@@ -52,7 +35,9 @@ class UserController extends Controller
             ], 200);
     }
 
-    public function destroy(User $user){
+    public function destroy(){
+        
+        $user = auth()->user();
         try {
             $user->remove();
         } catch (\Throwable $th) {
