@@ -58,4 +58,16 @@ class Order extends Model
            $order->save();
         }
     }
+
+    public function statusAccepted($orders, $address_id)
+    {
+        $this->status = $this::STATUS_ORDERED;
+        $this->save();
+    }
+
+    public function statusRejected()
+    {
+        $this->status = $this::STATUS_REJECT;
+        $this->save();
+    }
 }

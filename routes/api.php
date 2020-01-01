@@ -12,6 +12,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 Route::group(['middleware' => ['cors']], function () {
     Route::get('/userShow', 'UserController@userShow');
+    Route::get('/userFavorite', 'UserController@userFavorite');
+    Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
     Route::post('/userUpdate', 'UserController@update');
     Route::post('/userAddressAdd', 'UserController@userAddressAdd');
     Route::post('/userAddressUpdate', 'UserController@userAddressUpdate');
@@ -22,6 +24,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/advertising', 'AdvertisingController@index');
 
     Route::apiResource('/product', 'ProductController');
+    Route::post('/productSearch', 'ProductController@productSearch');
     Route::post('/productFeedback', 'ProductController@addFeedback');
 
     Route::apiResource('/company', 'CompanyController');
@@ -32,7 +35,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::delete('/cartDestroyOne/{id}', 'OrderController@cartDestroyOne');
     Route::delete('/cartDestroyAll', 'OrderController@cartDestroyAll');
     Route::get('/orderIndex', 'OrderController@orderIndex');
-    Route::post('/order', 'OrderController@order');
+    Route::post('/orderCreate', 'OrderController@orderCreate');
+    Route::post('/orderAccepted', 'OrderController@orderAccepted');
+    Route::post('/orderRejected', 'OrderController@orderRejected');
 });
 
 

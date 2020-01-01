@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\UserAddress;
+use App\UserFavorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,6 +17,19 @@ class UserController extends Controller
         
         return response()->json([
             'result' => $user
+            ], 200);
+    }
+
+    public function userFavorite(){
+
+        $userFavorite = UserFavorite::with('products')->findOrFail(auth()->user()->id);
+        $favorites = $userFavorite['products'];
+        //I have to do foreach becouse favorites collection for decoding parameters
+        //dd($favorites[0]['parameters']);
+        //$favorites = json_decode($favorites['parameters']);
+
+        return response()->json([
+            'result' => $favorites
             ], 200);
     }
 
@@ -50,7 +64,8 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['nullable', 'string', 'max:15'],
-            'phone' => ['nullable', 'string', 'max:15'],
+            'phone' => ['nullable', 'string', 'min:12', 'max:12'],
+            'default' => ['nullable'],
             'street' => ['nullable'],
             'state' => ['nullable'],
             'city' => ['nullable'],
@@ -64,11 +79,11 @@ class UserController extends Controller
                 ], 400);
         }
 
-        $user_address = new UserAddress;
-        $user_address = $user_address->add($request->all());
+        $userAddress = new UserAddress;
+        $userAddress = $userAddress->add($request->all());
         return response()->json(
             [
-                'result' => $user_address
+                'result' => $userAddress
             ], 200);
     }
 
@@ -91,11 +106,32 @@ class UserController extends Controller
                 ], 400);
         }
 
-        $user_address = UserAddress::find($request->id);
-        $user_address = $user_address->edit($request->all());
+        $userAddress = UserAddress::find($request->id);
+        $userAddress = $userAddress->edit($request->all());
         return response()->json(
             [
-                'result' => $user_address
+                'result' => $userAddress
+            ], 200);
+    }
+
+    public function userFavoriteAdd(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $userFavorite = new UserFavorite;
+        $userFavorite = $userFavorite->add($request->all());
+        return response()->json(
+            [
+                'result' => $userFavorite
             ], 200);
     }
 

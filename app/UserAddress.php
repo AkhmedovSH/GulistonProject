@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserAddress extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'phone', 'street', 'state', 'city', 'postal_code'
+        'user_id', 'default', 'name', 'phone', 'street', 'state', 'city', 'postal_code'
     ];
 
     public function user()
@@ -17,12 +17,12 @@ class UserAddress extends Model
 
     public static function add($fields)
     {
-        $user_address = new static;
-        $user_address->fill($fields);
-        $user_address->user_id = auth()->user()->id;
-        $user_address->save();
+        $userAddress = new static;
+        $userAddress->fill($fields);
+        $userAddress->user_id = auth()->user()->id;
+        $userAddress->save();
 
-        return $user_address;
+        return $userAddress;
     }
 
     public function edit($fields)

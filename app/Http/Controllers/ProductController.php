@@ -24,6 +24,29 @@ class ProductController extends Controller
             ], 200);
     }
 
+    public function productSearch(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'min:2'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $allProduct =  Product::where('title', 'LIKE', "%$request->title%")
+        ->orWhere('keywords', 'LIKE', "%$request->title%")->get();
+
+        dd($allProduct);
+        return response()->json(
+            [
+                'result' => $allProduct
+            ], 200);
+    }
+
     /**
      * Display the specified resource.
      *

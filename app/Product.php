@@ -72,7 +72,16 @@ class Product extends Model
     {
         $this->removeImage();
         $this->removeMultipleImages();
+        $this->removeFromUserFavorites();
         $this->delete();
+    }
+
+    public function removeFromUserFavorites()
+    {
+        $userFavorites = UserFavorite::where('product_id', $this->id)->get();
+        foreach ($userFavorites as $favorite) {
+            $favorite->delete();
+        }
     }
 
     public function removeImage()
