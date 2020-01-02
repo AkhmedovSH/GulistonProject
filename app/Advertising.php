@@ -19,6 +19,16 @@ class Advertising extends Model
         return $advertising;
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
     public function edit($fields)
     {
         $this->fill($fields);

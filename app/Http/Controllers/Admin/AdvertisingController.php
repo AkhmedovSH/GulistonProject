@@ -16,7 +16,7 @@ class AdvertisingController extends Controller
      */
     public function index()
     {
-        $allAdvertising = Advertising::orderBy('id', 'DESC')->get();
+        $allAdvertising = Advertising::with(['company', 'product'])->orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
