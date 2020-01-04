@@ -59,4 +59,6 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
 
 
     Route::apiResource('/order', 'OrderController', ['except' => ['edit', 'create']]);
+
+    Route::apiResource('/adminFeedback', 'AdminFeedbackController', ['except' => ['edit', 'create']]);
 });

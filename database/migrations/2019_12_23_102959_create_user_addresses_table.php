@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserAddressTable extends Migration
+class CreateUserAddressesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,8 +17,8 @@ class CreateUserAddressTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->boolean('default')->default(0);
-            $table->string('longitude')->nullable();
-            $table->string('latitude')->nullable();
+            $table->double('longitude')->default(0);
+            $table->double('latitude')->default(0);
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('street')->nullable();

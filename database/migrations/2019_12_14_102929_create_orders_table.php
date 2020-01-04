@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->integer('quantity')->default(1);
             $table->string('time')->nullable();
             $table->integer('status')->default(0)->unsigned();
+            $table->boolean('is_read')->default(0)->unsigned();
             //$table->string('status_text')->nullable();
             $table->integer('product_id')->unsigned();
             $table->integer('user_id')->unsigned();

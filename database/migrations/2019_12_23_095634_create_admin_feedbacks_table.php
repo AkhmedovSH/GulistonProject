@@ -17,7 +17,7 @@ class CreateAdminFeedbacksTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('description')->nullable();
-            $table->boolean('status')->default(0);
+            $table->boolean('is_read')->default(0)->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
         });
