@@ -21,49 +21,6 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-/*     protected function register(Request $request)
-    {
-        $request->validate([
-            'phone' => 'required|min:12|max:12',
-            'password' => 'required|min:3'
-        ]);
-
-        try {
-            $user = User::create([
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'error' => 'Phone is unique, user already created!',
-            ]);
-        }
-
-        return response()->json(
-            [
-                'result' => $user
-            ], 200);
-    } */
-
-
-    protected function register($credentials)
-    {
-        try {
-            $user = User::create([
-                'phone' => $credentials['phone'],
-                'password' => Hash::make($credentials['password']),
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'error' => 'Phone is unique, user already created!',
-            ]);
-        }
-
-        $token = auth()->attempt($credentials);
-        return $token;
-    }
-
-
     /**
      * Get a JWT via given credentials.
      *
@@ -71,6 +28,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'phone' => ['required', 'min:12', 'max:12'],
             'password' => ['required', 'min:3'],
@@ -82,13 +40,41 @@ class AuthController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-
+        
         $credentials = request(['phone', 'password']);
-
+       
         if (! $token = auth()->attempt($credentials)) {
-            $token = $this->register($credentials);
-        }
 
+            //If login not found register user
+            $userWithLogin = User::where('phone', $credentials['phone'])->first();
+            if($userWithLogin == null){
+                try {
+                    User::create([
+                        'phone' => $credentials['phone'],
+                        'password' => Hash::make($credentials['password']),
+                    ]);
+                    $token = auth()->attempt($credentials);
+                } catch (\Throwable $th) {
+                    return response()->json([
+                        'error' => $th->getMessage()
+                        ], 400);
+                }
+            }
+
+            $userWithPassword = User::where('password',  Hash::make($credentials['password']))->first();
+            if($userWithLogin != null && $userWithPassword == null){
+                return response()->json([
+                    'error' => 'The password is incorrect.'
+                    ], 400);
+            }
+            
+            $user = User::where('phone', $credentials['phone'])
+            ->where('password',  Hash::make($credentials['password']))->first();
+            if($user){
+                $token = auth()->attempt($credentials);
+            }         
+        }
+       
         $user = auth()->user();
         $user->last_login = Carbon::now();
         $user->save();

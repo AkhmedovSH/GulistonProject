@@ -115,7 +115,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            Product::find($id)->remove();
+            Product::findOrFail($id)->remove();
             return response()->json([
                 'success' => true
                 ], 200);

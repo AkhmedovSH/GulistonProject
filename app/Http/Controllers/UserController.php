@@ -22,8 +22,14 @@ class UserController extends Controller
 
     public function userFavorite(){
 
+       try {
         $userFavorite = UserFavorite::with('products')->findOrFail(auth()->user()->id);
         $favorites = $userFavorite['products'];
+       } catch (\Throwable $th) {
+        return response()->json([
+            'error' => 'Unauthorized'
+            ], 401);
+       }
         //I have to do foreach becouse favorites collection for decoding parameters
         //dd($favorites[0]['parameters']);
         //$favorites = json_decode($favorites['parameters']);
