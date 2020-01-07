@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -20,7 +21,7 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    protected function register(Request $request)
+/*     protected function register(Request $request)
     {
         $request->validate([
             'phone' => 'required|min:12|max:12',
@@ -31,9 +32,6 @@ class AuthController extends Controller
             $user = User::create([
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
-                'name' => isset($request->name) ? $request->name : null,
-                'surname' => isset($request->surname) ? $request->surname : null,
-                'email' => isset($request->email) ? $request->email : null,
             ]);
         } catch (\Throwable $th) {
             return response()->json([
@@ -45,19 +43,50 @@ class AuthController extends Controller
             [
                 'result' => $user
             ], 200);
+    } */
+
+
+    protected function register($credentials)
+    {
+        try {
+            $user = User::create([
+                'phone' => $credentials['phone'],
+                'password' => Hash::make($credentials['password']),
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'Phone is unique, user already created!',
+            ]);
+        }
+
+        $token = auth()->attempt($credentials);
+        return $this->respondWithToken($token);
     }
+
 
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required', 'min:12', 'max:12'],
+            'password' => ['required', 'min:3'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
         $credentials = request(['phone', 'password']);
-        
+
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            $this->register($credentials);
         }
 
         $user = auth()->user();
