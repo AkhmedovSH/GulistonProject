@@ -60,7 +60,7 @@ class AuthController extends Controller
         }
 
         $token = auth()->attempt($credentials);
-        return $this->respondWithToken($token);
+        return $token;
     }
 
 
@@ -86,7 +86,7 @@ class AuthController extends Controller
         $credentials = request(['phone', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            $this->register($credentials);
+            $token = $this->register($credentials);
         }
 
         $user = auth()->user();
