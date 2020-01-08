@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Category;
+use App\CompanyCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class CompanyCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $allCategory = Category::orderBy('id', 'DESC')->get();
+        $allCategory = CompanyCategory::orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
@@ -28,13 +27,13 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
-            'parent_id' => ['nullable'],
+            'company_id' => ['required'],
             'image' => ['nullable'],
         ]);
 
@@ -45,7 +44,7 @@ class CategoryController extends Controller
                 ], 400);
         }
 
-        $category = Category::add($request->all());
+        $category = CompanyCategory::add($request->all());
         $category->uploadImage($request->file('image'));
 
         return response()->json(
@@ -53,7 +52,6 @@ class CategoryController extends Controller
                 'result' => $category
             ], 200);
     }
-
 
     /**
      * Display the specified resource.
@@ -63,7 +61,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
+        $category = CompanyCategory::find($id);
         return response()->json([
                 'result' => $category
             ], 200);
@@ -80,8 +78,8 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => ['required'],
+            'company_id' => ['required'],
             'title' => ['required', 'string', 'max:255'],
-            'parent_id' => ['nullable'],
             'image' => ['nullable'],
         ]);
 
@@ -92,7 +90,7 @@ class CategoryController extends Controller
                 ], 400);
         }
 
-        $category = Category::find($request->id);
+        $category = CompanyCategory::find($request->id);
         $category->edit($request->all());
         $category->uploadImage($request->file('image'));
 
@@ -111,7 +109,7 @@ class CategoryController extends Controller
     {
 
         try {
-            Category::find($id)->remove();
+            CompanyCategory::find($id)->remove();
             return response()->json([
                 'success' => true
             ], 200);

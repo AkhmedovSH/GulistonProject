@@ -127,7 +127,7 @@ class OrderController extends Controller
                 ], 200);
         } catch (\Throwable $th) {
             return response()->json([
-                'error' => 'Cannot delete'
+                'error' => $th->getMessage()
                 ], 400);
         }
     }

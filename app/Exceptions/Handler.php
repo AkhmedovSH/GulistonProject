@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
     {
         
         if ($exception instanceof NotFoundHttpException) {
-            return response()->json(['error' => 'Page Not Found. If error persists, contact shurikaxmedov1@gmail.com'], 404);
+            return response()->json(['error' => 'Page Not Found. If error persists, contact +998998035034'], 404);
         }
 
         if ($exception instanceof ModelNotFoundException) {

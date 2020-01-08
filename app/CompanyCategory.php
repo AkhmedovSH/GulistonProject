@@ -3,30 +3,27 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
-class Category extends Model
+class CompanyCategory extends Model
 {
     protected $fillable = [
-        'title', 'parent_id', 'position'
+        'title', 'company_id', 'image', 'position'
     ];
-
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class, 'id', 'company_category_id');
     }
 
-    public function parent()
+    public function company()
     {
-        return $this->belongsTo(self::class, 'parent_id');
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
     public static function add($fields)
     {
         $category = new static;
-        $category->title = $fields['title'];
-        $category->parent_id = isset($fields['parent_id']) ? $fields['parent_id'] : null;
+        $category->fill($fields);
         $category->save();
 
         return $category;
@@ -38,7 +35,6 @@ class Category extends Model
         $this->save();
     }
 
-
     public function remove()
     {
         $this->removeImage();
@@ -48,19 +44,18 @@ class Category extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            unlink('uploads/categories/' . $this->image);
+            unlink('uploads/company_categories/' . $this->image);
         }
     }
 
     function uploadImage($image)
     {
-        
         if ($image == null) {
             return;
         }
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-        $image->move('uploads/categories/', $filename);
+        $image->move('uploads/company_categories/', $filename);
         $this->image = $filename;
         $this->save();
     }

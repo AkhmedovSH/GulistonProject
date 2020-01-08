@@ -113,7 +113,10 @@ class AdvertisingController extends Controller
                 'success' => true
             ], 200);
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Cannot delete'], 400);
+            return response()->json(
+                [
+                    'error' => $th->getMessage()
+                ], 400);
         }
     }
 }

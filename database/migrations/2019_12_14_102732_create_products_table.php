@@ -27,6 +27,7 @@ class CreateProductsTable extends Migration
             $table->text('parameters')->nullable()->comment('JSON array of parameters');
             $table->string('keywords')->nullable();
             $table->integer('company_id')->nullable()->unsigned();
+            $table->integer('company_category_id')->nullable()->unsigned();
             $table->integer('category_id')->nullable()->unsigned();
             //$table->foreign('company_id')->references('id')->on('companies');
             //$table->foreign('category_id')->references('id')->on('categories');

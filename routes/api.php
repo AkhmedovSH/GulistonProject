@@ -57,6 +57,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::apiResource('/company', 'CompanyController', ['except' => ['update', 'create']]);
     Route::post('/companyUpdate', 'CompanyController@update');
 
+    Route::apiResource('/companyCategory', 'CompanyCategoryController', ['except' => ['update', 'create']]);
+    Route::post('/companyCategoryUpdate', 'CompanyCategoryController@update');
 
     Route::apiResource('/order', 'OrderController', ['except' => ['edit', 'create']]);
 

@@ -110,7 +110,10 @@ class CompanyController extends Controller
         try {
             Company::find($id)->remove();
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Cannot delete'], 400);
+            return response()->json(
+                [
+                    'error' => $th->getMessage()
+                ], 400);
         }
 
         return response()->json([
