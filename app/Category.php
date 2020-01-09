@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class Category extends Model
 {
     protected $fillable = [
-        'title', 'parent_id', 'position'
+        'title', 'parent_id', 'description'
     ];
 
 
@@ -27,6 +27,9 @@ class Category extends Model
         $category = new static;
         $category->title = $fields['title'];
         $category->parent_id = isset($fields['parent_id']) ? $fields['parent_id'] : null;
+        if($fields['position'] != 'null'){
+            $category->position = $fields['position'];
+        }
         $category->save();
 
         return $category;
@@ -35,6 +38,9 @@ class Category extends Model
     public function edit($fields)
     {
         $this->fill($fields);
+        if($fields['position'] != 'null'){
+            $category->position = $fields['position'];
+        }
         $this->save();
     }
 

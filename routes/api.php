@@ -33,6 +33,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/cartUpdate', 'OrderController@cartUpdate');
     Route::delete('/cartDestroyOne/{id}', 'OrderController@cartDestroyOne');
     Route::delete('/cartDestroyAll', 'OrderController@cartDestroyAll');
+    
     Route::get('/orderIndex', 'OrderController@orderIndex');
     Route::post('/orderCreate', 'OrderController@orderCreate');
     Route::post('/orderAccepted', 'OrderController@orderAccepted');
@@ -41,7 +42,6 @@ Route::group(['middleware' => ['cors']], function () {
 
 
 Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
-    //Route::apiResource('/user', 'UserController');
     Route::get('/mainProjectStatistics', 'MainController@ProjectStatistics');
     Route::apiResource('/user', 'UserController');
 

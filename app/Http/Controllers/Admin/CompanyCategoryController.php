@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\CompanyCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyCategoryController extends Controller
 {
@@ -15,7 +16,8 @@ class CompanyCategoryController extends Controller
      */
     public function index()
     {
-        $allCategory = CompanyCategory::orderBy('id', 'DESC')->get();
+        $allCategory = CompanyCategory::orderBy('position', 'DESC')->get();
+        //$allCategory = CompanyCategory::orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
@@ -31,12 +33,13 @@ class CompanyCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'company_id' => ['required'],
             'image' => ['nullable'],
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json(
                 [
