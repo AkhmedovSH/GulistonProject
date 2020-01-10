@@ -18,6 +18,16 @@ class CompanyController extends Controller
     }
 
 
+    public function companyCategories($company_id)
+    {
+        $allCompanyCategories = CompanyCategory::where('company_id', $company_id)->orderBy('position', 'ASC')->get();
+
+        return response()->json(
+            [
+                'result' => $allCompanyCategories
+            ], 200);
+    }
+
     public function companyProducts($id)
     {
 

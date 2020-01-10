@@ -60,10 +60,16 @@ class Category extends Model
 
     function uploadImage($image)
     {
-        
         if ($image == null) {
             return;
         }
+
+        $path = public_path().'/uploads/categories';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
         $image->move('uploads/categories/', $filename);

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class CompanyCategory extends Model
 {
     protected $fillable = [
-        'title', 'company_id', 'image'
+        'title', 'company_id'
     ];
 
     public function products()
@@ -25,7 +25,7 @@ class CompanyCategory extends Model
     {
         $category = new static;
         $category->fill($fields);
-        if($fields['position'] != 'null' && isset($fields['position'])){
+        if(isset($fields['position']) && $fields['position'] != 'null'){
             $category->position = $fields['position'];
         }
         $category->save();
@@ -36,7 +36,7 @@ class CompanyCategory extends Model
     public function edit($fields)
     {
         $this->fill($fields);
-        if($fields['position'] != 'null'){
+        if(isset($fields['position']) && $fields['position'] != 'null'){
             $this->position = $fields['position'];
         }
         $this->save();
@@ -51,13 +51,15 @@ class CompanyCategory extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            //unlink('uploads/company_categories/' . $this->image);
-            Storage::delete('uploads/company_categories/' . $this->image);
+            unlink('uploads/company_categories/' . $this->image);
         }
     }
-
     function uploadImage($image)
-    {   
+    {
+        if ($image == null) {
+            return;
+        }
+
         $path = public_path().'/uploads/company_categories';
         if (!file_exists($path)) {
             mkdir($path, 0777, true);

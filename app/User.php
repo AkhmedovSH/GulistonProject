@@ -83,9 +83,14 @@ class User extends Authenticatable implements JWTSubject
         if ($image == null) {
             return;
         }
+
+        $path = public_path().'/uploads/users';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-        
         $image->move('uploads/users/', $filename);
         $this->image = $filename;
         $this->save();

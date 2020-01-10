@@ -50,20 +50,19 @@ class Advertising extends Model
 
     function uploadImage($image)
     {
-        
         if ($image == null) {
             return;
         }
+
+        $path = public_path().'/uploads/advertising';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
        
         $this->removeImage();
-        
         $filename = $this->id . '.' . $image->extension();
-       
         $image->move('uploads/advertising/', $filename);
-       
         $this->image = $filename;
-       
         $this->save();
-        
     }
 }

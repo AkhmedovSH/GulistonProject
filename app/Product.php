@@ -106,7 +106,6 @@ class Product extends Model
 
     public function uploadMultipleImages($images){
         if ($images == null) { return; }
-
         
         $arrayItemsCount = count($images);
         $i = 0;

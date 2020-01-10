@@ -51,9 +51,14 @@ class Company extends Model
         if ($image == null) {
             return;
         }
+
+        $path = public_path().'/uploads/companies';
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-
         $image->move('uploads/companies/', $filename);
         $this->image = $filename;
         $this->save();
