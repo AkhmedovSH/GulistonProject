@@ -9,7 +9,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $allCompany = Company::orderBy('id', 'DESC')->get();
+        $allCompany = Company::orderBy('id', 'DESC')->with('categories')->get();
 
         return response()->json(
             [
@@ -17,25 +17,14 @@ class CompanyController extends Controller
             ], 200);
     }
 
-
-    public function companyCategories($company_id)
+    public function companyCategoryProducts($company_category_id)
     {
-        $allCompanyCategories = CompanyCategory::where('company_id', $company_id)->orderBy('position', 'ASC')->get();
+
+        $allProducts = Product::where('company_category_id', $company_category_id)->get();
 
         return response()->json(
             [
-                'result' => $allCompanyCategories
-            ], 200);
-    }
-
-    public function companyProducts($id)
-    {
-
-        $allCompanyProducts = Company::where('id', $id)->with('product')->get();
-
-        return response()->json(
-            [
-                'result' => $allCompanyProducts
+                'result' => $allProducts
             ], 200);
     }
 }

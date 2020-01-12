@@ -40,7 +40,6 @@ class ProductController extends Controller
         $allProduct =  Product::where('title', 'LIKE', "%$request->title%")
         ->orWhere('keywords', 'LIKE', "%$request->title%")->get();
 
-        dd($allProduct);
         return response()->json(
             [
                 'result' => $allProduct

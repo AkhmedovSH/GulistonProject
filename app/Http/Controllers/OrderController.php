@@ -11,7 +11,11 @@ class OrderController extends Controller
 {
     public function cartIndex()
     {
-        $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 0)->orderBy('id', 'DESC')->get();
+        $allOrder = Order::where('user_id', auth()->user()->id)
+        ->where('status', 0)
+        ->orderBy('id', 'DESC')
+        ->with('product')
+        ->get();
 
         return response()->json(
             [

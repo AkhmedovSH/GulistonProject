@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -15,25 +16,34 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $order = Order::orderBy('id', 'DESC')->get();
-
-        $allOrder = $order->map(function ($order) {
-            return [
-                "id" => $order->id,
-                "longitude" => $order->longitude,
-                "latitude" => $order->latitude,
-                "time" => $order->time,
-                "status" => $order->status,
-                "status_text" => $order->status_text,
-                "product_id" => $order->product_id,
-                "user_id" => $order->user_id,
-                "created_at" => $order->created_at,
-            ];
-        });
+        $allOrder = Order::orderBy('id', 'DESC')
+        ->with(['user','product'])
+        ->get();
 
         return response()->json([
             'result' => $allOrder
         ], 200);
+    }
+
+    public function orderSearch(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_number' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $order =  Order::where('order_number', 'LIKE', "%$request->order_number%")->get();
+
+        return response()->json(
+            [
+                'result' => $order
+            ], 200);
     }
 
     /**

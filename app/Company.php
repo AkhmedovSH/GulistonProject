@@ -16,6 +16,11 @@ class Company extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function categories()
+    {
+        return $this->hasMany(CompanyCategory::class);
+    }
+
 
     public static function add($fields)
     {

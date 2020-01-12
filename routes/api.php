@@ -22,11 +22,13 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('/advertising', 'AdvertisingController@index');
 
-    Route::apiResource('/product', 'ProductController');
+    Route::get('/product', 'ProductController@index');
+    Route::get('/product/{id}', 'ProductController@show');
     Route::post('/productSearch', 'ProductController@productSearch');
     Route::post('/productFeedback', 'ProductController@addFeedback');
 
-    Route::apiResource('/company', 'CompanyController');
+    Route::get('/company', 'CompanyController@index');
+    Route::get('/companyCategoryProducts/{id}', 'CompanyController@companyCategoryProducts');
 
     Route::get('/cart', 'OrderController@cartIndex');
     Route::post('/cartAdd', 'OrderController@cartAdd');
@@ -61,6 +63,7 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::post('/companyCategoryUpdate', 'CompanyCategoryController@update');
 
     Route::apiResource('/order', 'OrderController', ['except' => ['edit', 'create']]);
+    Route::post('/orderSearch', 'OrderController@orderSearch');
 
     Route::apiResource('/adminFeedback', 'AdminFeedbackController', ['except' => ['edit', 'create']]);
 });
