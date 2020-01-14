@@ -28,7 +28,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/productFeedback', 'ProductController@addFeedback');
 
     Route::get('/company', 'CompanyController@index');
-    Route::get('/companyCategoryProducts/{id}', 'CompanyController@companyCategoryProducts');
+    Route::get('/companiesCategories', 'CompanyController@companiesCategories');
+    Route::get('/oneCompanyCategories/{company_id}', 'CompanyController@oneCompanyCategories');
+    Route::get('/companyCategoryProducts/{company_id}', 'CompanyController@companyCategoryProducts');
 
     Route::get('/cart', 'OrderController@cartIndex');
     Route::post('/cartAdd', 'OrderController@cartAdd');

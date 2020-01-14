@@ -133,6 +133,16 @@ class UserController extends Controller
                 ], 400);
         }
 
+        $exist = UserFavorite::where('user_id', auth()->user()->id)
+        ->where('product_id', $request->product_id)->first();
+        
+        if($exist != null){
+            return response()->json(
+                [
+                    'error' => 'Already added!'
+                ], 400);
+        }
+
         $userFavorite = new UserFavorite;
         $userFavorite = $userFavorite->add($request->all());
         return response()->json(

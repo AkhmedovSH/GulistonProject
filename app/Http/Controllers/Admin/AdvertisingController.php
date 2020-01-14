@@ -35,6 +35,8 @@ class AdvertisingController extends Controller
         
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
+            'company_id' => ['nullable'],
+            'product_id' => ['nullable'],
             'image' => ['nullable'],
         ]);
        
