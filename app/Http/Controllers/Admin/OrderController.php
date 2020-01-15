@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         $allOrder = Order::orderBy('id', 'DESC')
         ->with(['user','product'])
-        ->get();
+        ->paginate(25);
 
         return response()->json([
             'result' => $allOrder
@@ -38,11 +38,12 @@ class OrderController extends Controller
                 ], 400);
         }
 
-        $order =  Order::where('order_number', 'LIKE', "%$request->order_number%")->get();
+        $orders =  Order::where('order_number', 'LIKE', "%$request->order_number%")
+        ->with(['user','product'])->paginate(25);
 
         return response()->json(
             [
-                'result' => $order
+                'result' => $orders
             ], 200);
     }
 

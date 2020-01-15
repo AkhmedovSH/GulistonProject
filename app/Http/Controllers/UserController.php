@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function userShow(){
         
-        $user = User::with(['orders', 'userAddresses'])->findOrFail(auth()->user()->id);
+        $user = User::findOrFail(auth()->user()->id);
         
         return response()->json([
             'result' => $user
@@ -63,6 +63,15 @@ class UserController extends Controller
         return response()->json(
             [
                 'result' => $user
+            ], 200);
+    }
+
+    public function userAddress(){
+        
+        $userAddress = UserAddress::where('user_id',auth()->user()->id)->first();
+        
+        return response()->json([
+            'result' => $userAddress
             ], 200);
     }
 

@@ -17,8 +17,8 @@ class CreateUserAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->boolean('default')->default(0);
-            $table->double('longitude')->default(0);
-            $table->double('latitude')->default(0);
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
             $table->string('street')->nullable();

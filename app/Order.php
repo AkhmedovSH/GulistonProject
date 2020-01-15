@@ -18,12 +18,17 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function userAddress()
+    {
+        return $this->hasOne(UserAddress::class, 'id', 'user_id');
     }
 
     public static function add($fields)
@@ -55,6 +60,7 @@ class Order extends Model
         foreach ($orders as $order) {
            $order->status = $order::STATUS_ORDERED;
            $order->address_id = $address_id;
+           $order->order_number = $order->id . $order->product_id;
            $order->save();
         }
     }

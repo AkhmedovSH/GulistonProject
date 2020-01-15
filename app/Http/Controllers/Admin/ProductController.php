@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $allProduct = Product::orderBy('id', 'DESC')->paginate(10);
+        $allProduct = Product::orderBy('id', 'DESC')->paginate(25);
         return response()->json([
             'result' => $allProduct
         ], 200);
@@ -124,5 +124,25 @@ class ProductController extends Controller
                 'error' => $th->getMessage()
                 ], 400);
         }
+    }
+
+    public function productSearch(Request $request)
+    {
+        $query = Product::query();
+
+        if($request->has('title')){
+            $query->where('title', 'LIKE', "%$request->title%");
+        }
+
+        if($request->has('price')){
+            $query->where('price', $request->price);
+        }
+
+        $products = $query->orderBy('id', 'DESC')->paginate(25);
+
+        return response()->json(
+            [
+                'result' => $products
+            ], 200);
     }
 }

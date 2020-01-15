@@ -51,6 +51,7 @@ class Product extends Model
         $this->save();
     }
 
+
     public function setCategory($id)
     {
         if ($id == null) {

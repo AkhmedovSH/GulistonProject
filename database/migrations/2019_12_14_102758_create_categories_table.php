@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('description')->nullable();
             $table->integer('parent_id')->unsigned()->default(0);
             $table->string('image')->nullable();
-            $table->integer('position')->unsigned()->nullable();
+            $table->integer('position')->unsigned()->default(0);
             $table->timestamps();
         });
     }

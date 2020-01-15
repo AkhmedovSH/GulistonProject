@@ -98,7 +98,9 @@ class OrderController extends Controller
 
     public function orderIndex()
     {
-        $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 1)->orderBy('id', 'DESC')->get();
+        $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 1)
+        ->with(['user', 'userAddress', 'product'])
+        ->orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
@@ -127,6 +129,7 @@ class OrderController extends Controller
         ->get();
         Order::statusPurchased($orders, $request->address_id);
         
+       
         return response()->json([
             'success' => true
         ], 200);
