@@ -16,7 +16,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $allProduct = Product::orderBy('id', 'DESC')->with('feedback')->get();
+        $allProduct = Product::orderBy('id', 'DESC')
+        ->with(['feedback'=>function($query){
+            $query->with('user');
+        }])->get();
 
         return response()->json(
             [
