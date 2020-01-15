@@ -20,12 +20,13 @@ Route::group(['middleware' => ['cors']], function () {
     Route::delete('/userDestroy', 'UserController@destroy');
 
     Route::get('/category', 'CategoryController@index');
+    
     Route::get('/getCategoryProducts/{category_id}', 'CategoryController@getCategoryProducts');
 
     Route::get('/advertising', 'AdvertisingController@index');
 
-    Route::get('/product', 'ProductController@index');
     Route::get('/product/{id}', 'ProductController@show');
+    Route::get('/productByCategories', 'ProductController@productByCategories');
     Route::post('/productSearch', 'ProductController@productSearch');
     Route::post('/productFeedback', 'ProductController@addFeedback');
 

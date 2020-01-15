@@ -9,21 +9,18 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function productByCategories()
     {
-        $allProduct = Product::orderBy('id', 'DESC')
-        ->with(['feedback'=>function($query){
-            $query->with('user');
-        }])->get();
+        $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
+        $mostSales = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
 
         return response()->json(
             [
-                'result' => $allProduct
+                'result' => [
+                    'mostFamous' => $mostFamous,
+                    'mostSales' => $mostSales,
+                ]
             ], 200);
     }
 
