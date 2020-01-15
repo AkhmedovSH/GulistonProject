@@ -57,7 +57,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with('feedback')->findOrFail($id);
+        $product = Product::with(['feedback'=>function($query){
+            $query->with('user');
+        }])->findOrFail($id);
         $product['parameters'] = json_decode($product['parameters']);
         return response()->json(
             [
