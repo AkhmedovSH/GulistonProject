@@ -100,7 +100,7 @@ class OrderController extends Controller
     {
         $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 1)
         ->with(['user', 'userAddress', 'product'])
-        ->orderBy('id', 'DESC')->get();
+        ->orderBy('id', 'DESC')->paginate(20);
 
         return response()->json(
             [

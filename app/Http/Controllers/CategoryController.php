@@ -22,7 +22,7 @@ class CategoryController extends Controller
 
     public function getCategoryProducts($category_id)
     {
-        $allCategoryProducts = Product::where('category_id', $category_id)->get();
+        $allCategoryProducts = Product::where('category_id', $category_id)->paginate(20);
         return response()->json(
             [
                 'result' => $allCategoryProducts

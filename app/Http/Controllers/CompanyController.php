@@ -10,7 +10,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $allCompany = Company::orderBy('id', 'DESC')->get();
+        $allCompany = Company::orderBy('id', 'DESC')->paginate(20);
 
         return response()->json(
             [
