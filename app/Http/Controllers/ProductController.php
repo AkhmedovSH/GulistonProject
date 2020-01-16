@@ -10,17 +10,45 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
 
-    public function productByCategories()
+    public function productAll()
+    {
+        $allProducts = Product::orderBy('id', 'DESC')->paginate(20);
+
+        return response()->json(
+            [
+                'result' => $allProducts
+            ], 200);
+    }
+
+    public function productTopHome()
     {
         $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
-        $mostSales = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
+        $mostSaled = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
 
         return response()->json(
             [
                 'result' => [
                     'mostFamous' => $mostFamous,
-                    'mostSales' => $mostSales,
+                    'mostSaled' => $mostSaled,
                 ]
+            ], 200);
+    }
+
+    public function productMostFamous()
+    {
+        $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate();
+        return response()->json(
+            [
+                'result' => $mostFamous
+            ], 200);
+    }
+
+    public function productMostSales()
+    {
+        $mostSaled = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate();
+        return response()->json(
+            [
+                'result' => $mostSaled
             ], 200);
     }
 

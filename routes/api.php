@@ -25,8 +25,11 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('/advertising', 'AdvertisingController@index');
 
+    Route::get('/productAll', 'ProductController@productAll');
     Route::get('/product/{id}', 'ProductController@show');
-    Route::get('/productByCategories', 'ProductController@productByCategories');
+    Route::get('/productTopHome', 'ProductController@productTopHome');
+    Route::get('/productMostFamous', 'ProductController@productMostFamous');
+    Route::get('/productMostSaled', 'ProductController@productMostSales');
     Route::post('/productSearch', 'ProductController@productSearch');
     Route::post('/productFeedback', 'ProductController@addFeedback');
 
