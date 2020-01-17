@@ -14,6 +14,12 @@ class ProductController extends Controller
     {
         $allProducts = Product::orderBy('id', 'DESC')->paginate(20);
 
+        $allProducts->getCollection()->transform(function ($product) {
+            $product->parameters = json_decode($product->parameters);
+            return $product;
+        });
+
+
         return response()->json(
             [
                 'result' => $allProducts

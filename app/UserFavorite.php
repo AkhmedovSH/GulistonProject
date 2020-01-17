@@ -15,9 +15,9 @@ class UserFavorite extends Model
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany(Product::class, 'id', 'product_id');
+        return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
     public static function add($fields)

@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function userFavorite()
     {
-        $favorites = UserFavorite::where('user_id', auth()->user()->id)->with('products')->paginate(20);
+        $favorites = UserFavorite::where('user_id', auth()->user()->id)->with('product')->paginate(20);
         //I have to do foreach becouse favorites collection for decoding parameters
         //dd($favorites[0]['parameters']);
         //$favorites = json_decode($favorites['parameters']);
