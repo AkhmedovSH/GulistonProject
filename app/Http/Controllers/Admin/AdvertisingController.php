@@ -14,7 +14,7 @@ class AdvertisingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAdvertising()
     {
         $allAdvertising = Advertising::with(['company', 'product'])->orderBy('id', 'DESC')->get();
 

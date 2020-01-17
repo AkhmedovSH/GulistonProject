@@ -19,11 +19,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/userAddressUpdate', 'UserController@userAddressUpdate');
     Route::delete('/userDestroy', 'UserController@destroy');
 
-    Route::get('/category', 'CategoryController@index');
+    Route::get('/getCategories', 'CategoryController@getCategories');
     
     Route::get('/getCategoryProducts/{category_id}', 'CategoryController@getCategoryProducts');
 
-    Route::get('/advertising', 'AdvertisingController@index');
+    Route::get('/getAdvertising', 'AdvertisingController@getAdvertising');
 
     Route::get('/productAll', 'ProductController@productAll');
     Route::get('/product/{id}', 'ProductController@show');
@@ -33,18 +33,18 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/productSearch', 'ProductController@productSearch');
     Route::post('/productFeedback', 'ProductController@addFeedback');
 
-    Route::get('/company', 'CompanyController@index');
-    Route::get('/companiesCategories', 'CompanyController@companiesCategories');
+    Route::get('/getCompanies', 'CompanyController@getCompanies');
+    Route::get('/companyCategories', 'CompanyController@companyCategories');
     Route::get('/oneCompanyCategories/{company_id}', 'CompanyController@oneCompanyCategories');
     Route::get('/companyCategoryProducts/{company_id}', 'CompanyController@companyCategoryProducts');
 
-    Route::get('/cart', 'OrderController@cartIndex');
+    Route::get('/getCart', 'OrderController@getCart');
     Route::post('/cartAdd', 'OrderController@cartAdd');
     Route::post('/cartUpdate', 'OrderController@cartUpdate');
-    Route::delete('/cartDestroyOne/{id}', 'OrderController@cartDestroyOne');
-    Route::delete('/cartDestroyAll', 'OrderController@cartDestroyAll');
+    Route::delete('/cartDeleteOne/{id}', 'OrderController@cartDestroyOne');
+    Route::delete('/cartDeleteAll', 'OrderController@cartDeleteAll');
     
-    Route::get('/orderIndex', 'OrderController@orderIndex');
+    Route::get('/getOrders', 'OrderController@getOrders');
     Route::post('/orderCreate', 'OrderController@orderCreate');
     Route::post('/orderAccepted', 'OrderController@orderAccepted');
     Route::post('/orderRejected', 'OrderController@orderRejected');

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function index()
+    public function getCompanies()
     {
         $allCompany = Company::orderBy('id', 'DESC')->paginate(20);
 
@@ -18,7 +18,7 @@ class CompanyController extends Controller
             ], 200);
     }
 
-    public function companiesCategories()
+    public function companyCategories()
     {
         $allCompanyCategories = CompanyCategory::get();
 

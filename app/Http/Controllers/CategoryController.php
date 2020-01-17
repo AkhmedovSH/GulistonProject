@@ -10,7 +10,7 @@ use App\Http\Resources\CategoryResourceCollection;
 class CategoryController extends Controller
 {
 
-    public function index()
+    public function getCategories()
     {
         $allCategory = Category::get();
         return response()->json(

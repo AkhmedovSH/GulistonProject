@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
-    public function cartIndex()
+    public function getCart()
     {
         $allOrder = Order::where('user_id', auth()->user()->id)
         ->where('status', 0)
@@ -57,7 +57,7 @@ class OrderController extends Controller
                 ], 400);
         }
        
-        $order = Order::find($request->id);
+        $order = Order::where('id', $request->id)->where('user_id', auth()->user()->id)->first();
         $order->edit($request->all());
 
         return response()->json([
@@ -65,7 +65,7 @@ class OrderController extends Controller
             ], 200);
     }
 
-    public function cartDestroyOne($id)
+    public function cartDeleteOne($id)
     {
         
         try {
@@ -81,7 +81,7 @@ class OrderController extends Controller
         }
     }
 
-    public function cartDestroyAll()
+    public function cartDeleteAll()
     {
         try {
             $orders = Order::where('user_id', auth()->user()->id)->get();
@@ -96,7 +96,7 @@ class OrderController extends Controller
         }
     }
 
-    public function orderIndex()
+    public function getOrders()
     {
         $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 1)
         ->with(['user', 'userAddress', 'product'])

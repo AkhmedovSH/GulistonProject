@@ -23,7 +23,7 @@ class UserController extends Controller
     public function userFavorite(){
 
        try {
-        $userFavorite = UserFavorite::with('products')->findOrFail(auth()->user()->id);
+        $userFavorite = UserFavorite::with('products')->where('user_id', auth()->user()->id)->get();
         $favorites = $userFavorite['products'];
        } catch (\Throwable $th) {
         return response()->json([
