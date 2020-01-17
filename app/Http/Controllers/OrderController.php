@@ -58,7 +58,7 @@ class OrderController extends Controller
         }
        
         $order = Order::where('product_id', $request->product_id)->where('user_id', auth()->user()->id)->first();
-        $order->edit($request->all());
+        $order = $order->edit($request->all());
 
         return response()->json([
             'result' => $order

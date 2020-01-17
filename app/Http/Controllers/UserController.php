@@ -20,16 +20,9 @@ class UserController extends Controller
             ], 200);
     }
 
-    public function userFavorite(){
-
-       try {
-        $userFavorite = UserFavorite::with('products')->where('user_id', auth()->user()->id)->get();
-        $favorites = $userFavorite['products'];
-       } catch (\Throwable $th) {
-        return response()->json([
-            'error' => 'Unauthorized'
-            ], 401);
-       }
+    public function userFavorite()
+    {
+        $favorites = UserFavorite::where('user_id', auth()->user()->id)->with('products')->paginate(20);
         //I have to do foreach becouse favorites collection for decoding parameters
         //dd($favorites[0]['parameters']);
         //$favorites = json_decode($favorites['parameters']);
