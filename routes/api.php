@@ -13,6 +13,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
     Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
+    Route::delete('/userFavoriteDelete', 'UserController@userFavoriteDelete');
     Route::post('/userUpdate', 'UserController@update');
     Route::get('/userAddress', 'UserController@userAddress');
     Route::post('/userAddressAdd', 'UserController@userAddressAdd');

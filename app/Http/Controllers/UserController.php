@@ -22,16 +22,15 @@ class UserController extends Controller
 
     public function userFavorite()
     {
-        $favorites = UserFavorite::where('user_id', auth()->user()->id)->with('product')->paginate(20);
+        $favorites = UserFavorite::where('user_id', auth()->user()->id)->with('product')->get();
         //I have to do foreach becouse favorites collection for decoding parameters
         //dd($favorites[0]['parameters']);
         //$favorites = json_decode($favorites['parameters']);
-
+ 
         return response()->json([
             'result' => $favorites
             ], 200);
     }
-
 
     public function update(Request $request)
     {
@@ -153,17 +152,22 @@ class UserController extends Controller
             ], 200);
     }
 
+    public function userFavoriteDelete(Request $request)
+    {    
+        $userFavorite = UserFavorite::where('user_id', auth()->user()->id)
+        ->where('product_id', $request->product_id)->first();
+        $userFavorite->delete();
+
+        return response()->json([
+            'success' => true
+            ], 200);
+    }
+
     public function destroy(){
         
         $user = auth()->user();
-        try {
-            $user->remove();
-        } catch (\Throwable $th) {
-            return response()->json([
-                'error' => 'Cannot delete'
-                ], 400);
-        }
-        
+        $user->remove();
+
         return response()->json([
             'errors' => $user
             ], 200);
