@@ -9,7 +9,7 @@ class AdminFeedback extends Model
     protected $fillable = [
         'title', 'description', 'user_id'
     ];
-
+    protected $table = 'admin_feedbacks';
 
     public function user()
     {

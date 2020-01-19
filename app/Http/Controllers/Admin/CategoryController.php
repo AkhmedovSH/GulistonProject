@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Logic\Converter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -16,11 +17,28 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $allCategory = Category::orderBy('id', 'DESC')->get();
-
+        $allCategory = Category::orderBy('id', 'DESC')->with('parent')->get();
+        
         return response()->json(
             [
                 'result' => $allCategory
+            ], 200);
+    }
+
+    public function categoryPluck()
+    {
+        $categoriesPluck = Category::pluck('title', 'id')->all();
+        
+        $converter = new Converter();
+        $ojbectsInArray = $converter->ArrayContainsObjects($categoriesPluck);
+        
+
+        return response()->json(
+            [
+                'result' => [
+                    'ojbectsInArray' => $ojbectsInArray,
+                    'array' => $categoriesPluck
+                ]
             ], 200);
     }
 

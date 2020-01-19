@@ -14,7 +14,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
 
@@ -22,12 +22,6 @@ class Product extends Model
     {
         return $this->belongsTo(Company::class);
     }
-
-    public function feedback()
-    {
-        return $this->hasMany(ProductFeedback::class, 'product_id', 'id');
-    }
-
 
     public static function add($fields)
     {
@@ -95,9 +89,9 @@ class Product extends Model
 
     function uploadImage($image)
     {
-        if ($image == null) {
-            return;
-        }
+        if ($image == null) { return; }
+
+
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
         
@@ -108,7 +102,9 @@ class Product extends Model
 
     public function uploadMultipleImages($images){
         if ($images == null) { return; }
-        
+
+        $this->removeMultipleImages();
+
         $arrayItemsCount = count($images);
         $i = 0;
         $imgConcatenate = ";";
@@ -127,7 +123,7 @@ class Product extends Model
         $this->save();
     }
 
-    public function removeMultipleImages($images){
+    public function removeMultipleImages(){
         if ($this->images != null){
             $imagesArray = explode(";",$this->images);
             

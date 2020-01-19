@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\ProductFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,10 +11,14 @@ class ProductController extends Controller
 
     public function productAll()
     {
-        $allProducts = Product::orderBy('id', 'DESC')->paginate(20);
+        $allProducts = Product::orderBy('id', 'DESC')
+        ->paginate(20);
 
         $allProducts->getCollection()->transform(function ($product) {
             $product->parameters = json_decode($product->parameters);
+            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
+            $product->similar = Product::where('category_id', $product->category_id)
+                                ->where('id', '!=', $product->id)->limit(3)->get();
             return $product;
         });
 
@@ -88,9 +91,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with(['feedback'=>function($query){
-            $query->with('user');
-        }])->findOrFail($id);
+        $product = Product::findOrFail($id);
         $product['parameters'] = json_decode($product['parameters']);
         return response()->json(
             [
@@ -98,24 +99,4 @@ class ProductController extends Controller
             ], 200);
     }
 
-    public function addFeedback(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'description' => ['required', 'max:500'],
-            'product_id' => ['required']
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'error' => $validator->errors()->first()
-                ], 400);
-        }
-
-        $feedback = ProductFeedback::add($request->all());
-        
-        return response()->json([
-            'result' => $feedback
-        ], 200);
-    }
 }

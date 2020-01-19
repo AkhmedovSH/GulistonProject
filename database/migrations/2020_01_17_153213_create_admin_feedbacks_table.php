@@ -1,10 +1,11 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductFeedbackTable extends Migration
+class CreateAdminFeedbacksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,12 @@ class CreateProductFeedbackTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_feedback', function (Blueprint $table) {
+        Schema::create('admin_feedbacks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('description');
-            $table->boolean('status')->default(0);
-            $table->integer('product_id');
-            $table->integer('user_id');
+            $table->string('title');
+            $table->string('description')->nullable();
+            $table->boolean('is_read')->default(0)->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateProductFeedbackTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_feedback');
+        Schema::dropIfExists('admin_feedbacks');
     }
 }

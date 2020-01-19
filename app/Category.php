@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class Category extends Model
 {
     protected $fillable = [
-        'title', 'parent_id', 'description'
+        'title', 'parent_id'
     ];
 
 

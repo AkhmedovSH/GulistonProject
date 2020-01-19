@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\UserAddress;
 use App\UserFavorite;
+use App\AdminFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -160,6 +161,29 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true
+            ], 200);
+    }
+
+
+    public function userRequestToAdmin(Request $request)
+    {    
+        $validator = Validator::make($request->all(), [
+            'title' => ['required'],
+            'description' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $adminFeedback = new AdminFeedback;
+        $adminFeedback = $adminFeedback->add($request->all());
+
+        return response()->json([
+            'result' => $adminFeedback
             ], 200);
     }
 

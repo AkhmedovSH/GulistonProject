@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AdvertisingController extends Controller
 {
-    public function index()
+    public function getAdvertising()
     {
         $allAdvertising = Advertising::orderBy('id', 'DESC')->get();
         return response()->json(

@@ -18,6 +18,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/userAddress', 'UserController@userAddress');
     Route::post('/userAddressAdd', 'UserController@userAddressAdd');
     Route::post('/userAddressUpdate', 'UserController@userAddressUpdate');
+    Route::post('/userRequestToAdmin', 'UserController@userRequestToAdmin');
     Route::delete('/userDestroy', 'UserController@destroy');
 
     Route::get('/getCategories', 'CategoryController@getCategories');
@@ -32,7 +33,6 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/productMostFamous', 'ProductController@productMostFamous');
     Route::get('/productMostSaled', 'ProductController@productMostSales');
     Route::post('/productSearch', 'ProductController@productSearch');
-    Route::post('/productFeedback', 'ProductController@addFeedback');
 
     Route::get('/getCompanies', 'CompanyController@getCompanies');
     Route::get('/companyCategories', 'CompanyController@companyCategories');
@@ -57,6 +57,7 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::apiResource('/user', 'UserController');
 
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
+    Route::get('/categoryPluck', 'CategoryController@categoryPluck');
     Route::post('/categoryUpdate', 'CategoryController@update');
 
     Route::apiResource('/advertising', 'AdvertisingController', ['except' => ['update', 'create']]);
@@ -75,5 +76,6 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::apiResource('/order', 'OrderController', ['except' => ['edit', 'create']]);
     Route::get('/orderSearch', 'OrderController@orderSearch');
 
-    Route::apiResource('/adminFeedback', 'AdminFeedbackController', ['except' => ['edit', 'create']]);
+    Route::get('/adminFeedback', 'AdminFeedbackController@index');
+    Route::delete('/adminFeedbackDestroy/{id}', 'AdminFeedbackController@destroy');
 });
