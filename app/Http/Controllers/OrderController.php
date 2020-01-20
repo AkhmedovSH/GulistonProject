@@ -126,12 +126,23 @@ class OrderController extends Controller
         $orders = Order::where('user_id', auth()->user()->id)
         ->where('status', 0)
         ->whereIn('product_id', $request->product_ids)
+        ->with('user', 'product')
         ->get();
-        Order::statusPurchased($orders, $request->address_id);
+        try {
+            //Order::statusPurchased($orders, $request->address_id);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        try {
+            $this->orderSendTelegram($orders);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         
        
         return response()->json([
-            'success' => true
+            'success' => $orders
         ], 200);
     }
 
@@ -177,6 +188,31 @@ class OrderController extends Controller
             ], 200);
     }
 
+    public function orderSendTelegram($orders)
+    {
+        /* https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
+        где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
+        $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
+        $chat_id = "-329561281";
+        foreach ($orders as $order) {
+            
+            $arr = array(
+                'Заказ раками: ' => $order['id'],
+                'Микдори: ' => $order['quantity'],
+                'Фойдаланувчи: ' => $order->user['phone'],
+                'Название: ' => $order->product['title'],
+                'Цена: ' => $order->product['price'],
+                'Скидка: ' => $order->product['discount'],
+            );
+            $txt = "";
+            foreach ($arr as $key => $value) {
+                $txt .= "<b>" . $key . "</b> " . $value . "%0A";
+            };
+
+            fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
+
+        };
+    }
 
     public function orderSendMail($orders)
     {
@@ -196,38 +232,5 @@ class OrderController extends Controller
                     ->subject('DolphinDelivery.uz | Сизнинг янги заказларингиз');
             $message->from('shurikaxmedov1@gmail.com','Хурмат билан');
         });
-    }
-
-    public function orderSendTelegram($orders)
-    {
-        /* https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
-        где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
-        $task = Task::where('id', $task_id)->with(['task_category', 'task_level', 'users'])->first();
-        if (isset($task->users['telegram'])) {
-            $userTelegram = $task->users['telegram'];
-        } else {
-            $userTelegram = "Не задано";
-        }
-        $token = "922176950:AAFTt_kGMey2-nuL8FOST2JgchdGgC5WcY0";
-        $chat_id = "-1001452078227";
-        $arr = array(
-            'id: ' => $task['id'],
-            'Категория: ' => $task->task_category['title'],
-            'Класс:' => $task->task_level['title_ru'],
-            'Баллы:' => $task['points'],
-            'Язык:' => $task['language'] == 0 ? 'Узбекский' : "Русский",
-            'Имя:' => $task->users['name'],
-            'Пользователь:' => $userTelegram,
-            'url:' => "https://$_SERVER[HTTP_HOST]/task/" . $task_id
-        );
-        $txt = "";
-        foreach ($arr as $key => $value) {
-            $txt .= "<b>" . $key . "</b> " . $value . "%0A";
-        };
-        try {
-            fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('success', 'Misol qo\'shildi');
-        }
     }
 }
