@@ -129,7 +129,7 @@ class OrderController extends Controller
         ->with('user', 'product')
         ->get();
         try {
-            //Order::statusPurchased($orders, $request->address_id);
+            Order::statusPurchased($orders, $request->address_id);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -195,15 +195,13 @@ class OrderController extends Controller
         $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
         $chat_id = "-329561281";
         foreach ($orders as $order) {
-            
-            $arr = array(
-                'Заказ раками: ' => $order['id'],
-                'Микдори: ' => $order['quantity'],
+            $arr = [
                 'Фойдаланувчи: ' => $order->user['phone'],
-                'Название: ' => $order->product['title'],
-                'Цена: ' => $order->product['price'],
-                'Скидка: ' => $order->product['discount'],
-            );
+                'Заказ раками: ' => $order['id'],
+                'Микдори:' => $order['quantity'],
+                'Номи: ' => $order->product['title'],
+                'Нархи: ' => $order->product['price'],
+            ];
             $txt = "";
             foreach ($arr as $key => $value) {
                 $txt .= "<b>" . $key . "</b> " . $value . "%0A";
