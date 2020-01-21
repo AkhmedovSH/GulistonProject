@@ -9,7 +9,7 @@ class AdvertisingController extends Controller
 {
     public function getAdvertising()
     {
-        $allAdvertising = Advertising::orderBy('id', 'DESC')->get();
+        $allAdvertising = Advertising::orderBy('id', 'DESC')->take(5)->get();
         return response()->json(
             [
                 'result' => $allAdvertising

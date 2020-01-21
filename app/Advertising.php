@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Advertising extends Model
 {
     protected $fillable = [
-        'title', 'company_id', 'product_id'
+        'title', 'description'
     ];
     
     public static function add($fields)
@@ -17,16 +17,6 @@ class Advertising extends Model
         $advertising->save();
 
         return $advertising;
-    }
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class, 'company_id', 'id');
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
     public function edit($fields)

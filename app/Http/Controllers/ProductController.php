@@ -17,8 +17,6 @@ class ProductController extends Controller
         $allProducts->getCollection()->transform(function ($product) {
             $product->parameters = json_decode($product->parameters);
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
-            $product->similar = Product::where('category_id', $product->category_id)
-                                ->where('id', '!=', $product->id)->limit(3)->get();
             return $product;
         });
 
@@ -31,8 +29,21 @@ class ProductController extends Controller
 
     public function productTopHome()
     {
-        $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
-        $mostSaled = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->limit(20);
+        $mostFamous = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
+
+        $mostFamous->getCollection()->transform(function ($product) {
+            $product->parameters = json_decode($product->parameters);
+            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
+            return $product;
+        });
+
+        $mostSaled = Product::where('sale', 1)->orderBy('id', 'DESC')->paginate(20);
+
+        $mostSaled->getCollection()->transform(function ($product) {
+            $product->parameters = json_decode($product->parameters);
+            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
+            return $product;
+        });
 
         return response()->json(
             [
@@ -43,9 +54,9 @@ class ProductController extends Controller
             ], 200);
     }
 
-    public function productMostFamous()
+    /* public function productMostFamous()
     {
-        $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate();
+        $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate(20);
         return response()->json(
             [
                 'result' => $mostFamous
@@ -54,12 +65,12 @@ class ProductController extends Controller
 
     public function productMostSales()
     {
-        $mostSaled = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate();
+        $mostSaled = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate(20);
         return response()->json(
             [
                 'result' => $mostSaled
             ], 200);
-    }
+    } */
 
     public function productSearch(Request $request)
     {

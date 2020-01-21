@@ -13,7 +13,7 @@ class Order extends Model
     const STATUS_REJECT  = -1;// PURCHASED ITEM REJECTED
 
     protected $fillable = [
-        'longitude', 'latitude', 'time', 'status', 'quantity', 'status_text', 'product_id', 'user_id'
+        'longitude', 'latitude', 'time_id', 'status', 'quantity', 'status_text', 'product_id', 'user_id'
     ];
 
     public function user()

@@ -16,7 +16,7 @@ class AdvertisingController extends Controller
      */
     public function index()
     {
-        $allAdvertising = Advertising::with(['company', 'product'])->orderBy('id', 'DESC')->get();
+        $allAdvertising = Advertising::orderBy('id', 'DESC')->get();
 
         return response()->json(
             [
@@ -35,8 +35,7 @@ class AdvertisingController extends Controller
         
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
-            'company_id' => ['nullable'],
-            'product_id' => ['nullable'],
+            'description' => ['required'],
             'image' => ['nullable'],
         ]);
        
@@ -82,6 +81,7 @@ class AdvertisingController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => ['required'],
             'title' => ['required', 'string', 'max:255'],
+            'description' => ['required'],
             'image' => ['nullable'],
         ]);
 
