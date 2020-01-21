@@ -16,6 +16,7 @@ class ProductController extends Controller
 
         $allProducts->getCollection()->transform(function ($product) {
             $product->parameters = json_decode($product->parameters);
+            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;
         });
@@ -33,6 +34,7 @@ class ProductController extends Controller
 
         $mostFamous->getCollection()->transform(function ($product) {
             $product->parameters = json_decode($product->parameters);
+            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;
         });
@@ -41,36 +43,21 @@ class ProductController extends Controller
 
         $mostSaled->getCollection()->transform(function ($product) {
             $product->parameters = json_decode($product->parameters);
+            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;
         });
 
         return response()->json(
             [
-                'result' => [
-                    'mostFamous' => $mostFamous,
-                    'mostSaled' => $mostSaled,
-                ]
+                'result' => 
+                    [
+                        $mostFamous,
+                        $mostSaled,
+                    ]
             ], 200);
     }
 
-    /* public function productMostFamous()
-    {
-        $mostFamous = Product::where('famous', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate(20);
-        return response()->json(
-            [
-                'result' => $mostFamous
-            ], 200);
-    }
-
-    public function productMostSales()
-    {
-        $mostSaled = Product::where('sale', 1)->orderBy(['id', 'DESC', 'created_at', 'DESC'])->paginate(20);
-        return response()->json(
-            [
-                'result' => $mostSaled
-            ], 200);
-    } */
 
     public function productSearch(Request $request)
     {
@@ -104,6 +91,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product['parameters'] = json_decode($product['parameters']);
+        $product['image'] = isset($product['image']) ? secure_asset('uploads/products/' . $product['image']) : null;
         return response()->json(
             [
                 'result' => $product
