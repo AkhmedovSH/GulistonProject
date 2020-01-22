@@ -12,6 +12,11 @@ class CompanyController extends Controller
     {
         $allCompany = Company::orderBy('id', 'DESC')->paginate(20);
 
+        $allCompany->getCollection()->transform(function ($company) {
+            $company->image = isset($company->image) ? secure_asset('uploads/companies/' . $company->image) : null;
+            return $company;
+        });
+
         return response()->json(
             [
                 'result' => $allCompany
@@ -31,6 +36,7 @@ class CompanyController extends Controller
     public function oneCompanyCategories($company_id)
     {
         $oneCompanyCategories = CompanyCategory::where('company_id', $company_id)->firstOrFail();
+        
         return response()->json(
             [
                 'result' => $oneCompanyCategories
@@ -41,6 +47,10 @@ class CompanyController extends Controller
     {
 
         $allProducts = Product::where('company_category_id', $company_category_id)->get();
+        $allProducts->map(function ($product) {
+            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
+            return $product;
+        });
 
         return response()->json(
             [
