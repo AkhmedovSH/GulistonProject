@@ -96,6 +96,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request)
     {
+        dd($request->id);
         $validator = Validator::make($request->all(), [
             'id' => ['required'],
             'title' => ['required', 'string', 'max:255'],
@@ -111,6 +112,7 @@ class CategoryController extends Controller
         }
 
         $category = Category::find($request->id);
+       
         $category->edit($request->all());
         $category->uploadImage($request->file('image'));
 

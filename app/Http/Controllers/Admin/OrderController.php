@@ -17,6 +17,7 @@ class OrderController extends Controller
     public function index()
     {
         $allOrder = Order::orderBy('id', 'DESC')
+        ->where('status', 1)
         ->with(['user','product'])
         ->paginate(25);
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Intervention\Image\Facades\Image;
 
 class Advertising extends Model
 {
@@ -39,7 +40,9 @@ class Advertising extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            unlink('uploads/advertising/' . $this->image);
+            $image = explode("/", $this->image);
+
+            unlink('uploads/advertising/' . $image[count($image)-1]);
         }
     }
 
@@ -56,7 +59,11 @@ class Advertising extends Model
        
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-        $image->move('uploads/advertising/', $filename);
+
+        $img = Image::make($image);
+        $img->save('uploads/advertising/' . $filename, 60);
+
+        //$image->move('uploads/advertising/', $filename);
         $this->image = $filename;
         $this->save();
     }

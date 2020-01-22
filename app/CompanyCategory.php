@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class CompanyCategory extends Model
 {
@@ -51,7 +51,9 @@ class CompanyCategory extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            unlink('uploads/company_categories/' . $this->image);
+            $image = explode("/", $this->image);
+
+            unlink('uploads/company_categories/' . $image[count($image)-1]);
         }
     }
     function uploadImage($image)
@@ -67,7 +69,11 @@ class CompanyCategory extends Model
 
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-        $image->move('uploads/company_categories/', $filename);
+        
+        $img = Image::make($image);
+        $img->save('uploads/company_categories/' . $filename, 60);
+
+        //$image->move('uploads/company_categories/', $filename);
         $this->image = $filename;
         $this->save();
     }

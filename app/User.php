@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -79,7 +80,9 @@ class User extends Authenticatable implements JWTSubject
     public function removeImage()
     {
         if ($this->image != null) {
-            unlink('uploads/users/' . $this->image);
+            $image = explode("/", $this->image);
+
+            unlink('uploads/users/' . $image[count($image)-1]);
         }
     }
 
@@ -96,7 +99,11 @@ class User extends Authenticatable implements JWTSubject
 
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-        $image->move('uploads/users/', $filename);
+
+        $img = Image::make($image);
+        $img->save('uploads/users/' . $filename, 60);
+
+        //$image->move('uploads/users/', $filename);
         $this->image = $filename;
         $this->save();
     }

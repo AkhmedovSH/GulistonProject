@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Intervention\Image\Facades\Image;
 
 class Product extends Model
 {
@@ -88,7 +89,9 @@ class Product extends Model
     public function removeImage()
     {
         if ($this->image != null) {
-            unlink('uploads/products/' . $this->image);
+            $image = explode("/", $this->image);
+
+            unlink('uploads/products/' . $image[count($image)-1]);
         }
     }
 
@@ -100,7 +103,10 @@ class Product extends Model
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
         
-        $image->move('uploads/products/', $filename);
+        $img = Image::make($image);
+        $img->save('uploads/products/' . $filename, 60);
+
+        //$image->move('uploads/products/', $filename);
         $this->image = $filename;
         $this->save();
     }
