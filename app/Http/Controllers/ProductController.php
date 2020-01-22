@@ -21,15 +21,17 @@ class ProductController extends Controller
 
     public function productTopHome()
     {
-        $mostFamous = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
-        $mostSaled = Product::where('sale', 1)->orderBy('id', 'DESC')->paginate(20);
+        $famousProducts = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
+        $discountProducts = Product::where('discount', '!=', 0)->orderBy('id', 'DESC')->paginate(20);
+        $randomProducts = Product::inRandomOrder('id')->paginate(20);
 
         return response()->json(
             [
                 'result' => 
                     [
-                        $mostFamous,
-                        $mostSaled,
+                        $famousProducts,
+                        $discountProducts,
+                        $randomProducts,
                     ]
             ], 200);
     }
