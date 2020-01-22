@@ -29,7 +29,6 @@ class CategoryController extends Controller
         $allCategoryProducts = Product::where('category_id', $category_id)->paginate(20);
 
         $allCategoryProducts->getCollection()->transform(function ($product) {
-            $product->parameters = json_decode($product->parameters);
             $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;

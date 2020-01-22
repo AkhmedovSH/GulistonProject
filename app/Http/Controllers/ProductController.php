@@ -15,7 +15,6 @@ class ProductController extends Controller
         ->paginate(20);
 
         $allProducts->getCollection()->transform(function ($product) {
-            $product->parameters = json_decode($product->parameters);
             $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;
@@ -33,7 +32,6 @@ class ProductController extends Controller
         $mostFamous = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
 
         $mostFamous->getCollection()->transform(function ($product) {
-            $product->parameters = json_decode($product->parameters);
             $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;
@@ -42,7 +40,6 @@ class ProductController extends Controller
         $mostSaled = Product::where('sale', 1)->orderBy('id', 'DESC')->paginate(20);
 
         $mostSaled->getCollection()->transform(function ($product) {
-            $product->parameters = json_decode($product->parameters);
             $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
             $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
             return $product;
@@ -90,7 +87,6 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::findOrFail($id);
-        $product['parameters'] = json_decode($product['parameters']);
         $product['image'] = isset($product['image']) ? secure_asset('uploads/products/' . $product['image']) : null;
         return response()->json(
             [

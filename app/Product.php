@@ -23,6 +23,20 @@ class Product extends Model
         return $this->belongsTo(Company::class);
     }
 
+    /* public function setParametersAttribute()
+    {
+        $this->parameters = son_decode($this->parameters);
+    } */
+
+    /* public function getParametersAttribute()
+    {
+        return json_decode($this->parameters);
+    } */
+
+    protected $casts = [
+        'parameters' => 'array',
+    ];
+
     public static function add($fields)
     {
         

@@ -24,9 +24,6 @@ class UserController extends Controller
     public function userFavorite()
     {
         $favorites = UserFavorite::where('user_id', auth()->user()->id)->with('product')->get();
-        //I have to do foreach becouse favorites collection for decoding parameters
-        //dd($favorites[0]['parameters']);
-        //$favorites = json_decode($favorites['parameters']);
  
         return response()->json([
             'result' => $favorites
