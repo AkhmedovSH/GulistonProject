@@ -9,6 +9,11 @@ class Advertising extends Model
     protected $fillable = [
         'title', 'description'
     ];
+
+    public function getImageAttribute($value)
+    {
+        return isset($value) ? secure_asset('uploads/advertising/' . $value) : null;
+    }
     
     public static function add($fields)
     {

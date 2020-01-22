@@ -23,7 +23,6 @@ class CreateProductsTable extends Migration
             $table->boolean('available')->default(1);
             $table->boolean('sale')->default(1);
             $table->boolean('famous')->default(1);
-            $table->boolean('deliver')->default(1);
             $table->text('parameters')->nullable()->comment('JSON array of parameters');
             $table->string('keywords')->nullable();
             $table->integer('company_id')->nullable()->unsigned();

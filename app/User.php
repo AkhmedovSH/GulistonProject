@@ -43,6 +43,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserAddress::class, 'user_id', 'id');
     }
 
+    public function getImageAttribute($value)
+    {
+        return isset($value) ? secure_asset('uploads/users/' . $value) : null;
+    }
+
     public function edit($fields)
     {
         $this->fill($fields);

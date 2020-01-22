@@ -8,18 +8,10 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-
     public function productAll()
     {
         $allProducts = Product::orderBy('id', 'DESC')
         ->paginate(20);
-
-        $allProducts->getCollection()->transform(function ($product) {
-            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
-            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
-            return $product;
-        });
-
 
         return response()->json(
             [
@@ -30,20 +22,7 @@ class ProductController extends Controller
     public function productTopHome()
     {
         $mostFamous = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
-
-        $mostFamous->getCollection()->transform(function ($product) {
-            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
-            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
-            return $product;
-        });
-
         $mostSaled = Product::where('sale', 1)->orderBy('id', 'DESC')->paginate(20);
-
-        $mostSaled->getCollection()->transform(function ($product) {
-            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
-            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
-            return $product;
-        });
 
         return response()->json(
             [
@@ -87,7 +66,6 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::findOrFail($id);
-        $product['image'] = isset($product['image']) ? secure_asset('uploads/products/' . $product['image']) : null;
         return response()->json(
             [
                 'result' => $product

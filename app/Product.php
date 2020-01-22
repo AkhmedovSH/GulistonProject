@@ -7,39 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'price', 'available', 'deliver',
+        'title', 'price', 'available',
         'keywords', 'company_id', 'category_id', 'sale', 'famous', 'discount'
     ];
 
+    protected $casts = [
+        'parameters' => 'array',
+    ];
 
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
-
     public function company()
     {
         return $this->belongsTo(Company::class);
     }
 
-    /* public function setParametersAttribute()
+    public function getImageAttribute($value)
     {
-        $this->parameters = son_decode($this->parameters);
-    } */
-
-    /* public function getParametersAttribute()
-    {
-        return json_decode($this->parameters);
-    } */
-
-    protected $casts = [
-        'parameters' => 'array',
-    ];
+        return isset($value) ? secure_asset('uploads/products/' . $value) : null;
+    }
 
     public static function add($fields)
     {
-        
         $product = new static;
         $product->fill($fields);
         $product->save();
@@ -59,7 +51,6 @@ class Product extends Model
         $this->fill($fields);
         $this->save();
     }
-
 
     public function setCategory($id)
     {

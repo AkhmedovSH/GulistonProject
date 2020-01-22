@@ -22,6 +22,11 @@ class Category extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    public function getImageAttribute($value)
+    {
+        return isset($value) ? secure_asset('uploads/categories/' . $value) : null;
+    }
+
     public static function add($fields)
     {
         $category = new static;

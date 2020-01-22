@@ -13,11 +13,6 @@ class CategoryController extends Controller
     {
         $allCategory = Category::get();
 
-        $allCategory->map(function ($category) {
-            $category->image = isset($category->image) ? secure_asset('uploads/categories/' . $category->image) : null;
-            return $category;
-        });
-
         return response()->json(
             [
                 'result' => $allCategory
@@ -27,12 +22,6 @@ class CategoryController extends Controller
     public function getCategoryProducts($category_id)
     {
         $allCategoryProducts = Product::where('category_id', $category_id)->paginate(20);
-
-        $allCategoryProducts->getCollection()->transform(function ($product) {
-            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
-            $product->discountPrice = $product->discount != 0 ? $product->price - (($product->price / 100) * $product->discount) : null;
-            return $product;
-        });
         
         return response()->json(
             [

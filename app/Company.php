@@ -10,7 +10,6 @@ class Company extends Model
         'title', 'description'
     ];
 
-
     public function products()
     {
         return $this->hasMany(Product::class);
@@ -21,6 +20,10 @@ class Company extends Model
         return $this->hasMany(CompanyCategory::class);
     }
 
+    public function getImageAttribute($value)
+    {
+        return isset($value) ? secure_asset('uploads/companies/' . $value) : null;
+    }
 
     public static function add($fields)
     {
