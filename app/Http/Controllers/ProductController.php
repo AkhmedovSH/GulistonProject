@@ -67,7 +67,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::where('id', $id)->with('attribute')->first();
         return response()->json(
             [
                 'result' => $product

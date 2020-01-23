@@ -11,7 +11,7 @@ class Product extends Model
         'title', 'price', 'available',
         'keywords', 'company_id', 'category_id', 'famous', 'discount'
     ];
-
+    
     protected $casts = [
         'parameters' => 'array',
     ];
@@ -25,6 +25,24 @@ class Product extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function attribute(){
+        return $this->hasMany(ProductAttribute::class, 'product_id');
+    }
+
+    /* public function options(){
+        return $this->hasMany(ProductOptions::class, 'product_id');
+    }
+
+    public function sizes()
+    {
+        return $this->hasManyThrough(ProductOptions::class, ProductColor::class);
+    }
+
+    public function colors()
+    {
+        return $this->hasManyThrough(ProductSize::class, ProductOptions::class);
+    } */
 
     public function getImageAttribute($value)
     {
