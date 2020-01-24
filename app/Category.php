@@ -2,15 +2,14 @@
 
 namespace App;
 
+use Intervention\Image\Facades\Image as Image;
 use Illuminate\Database\Eloquent\Model;
-use Intervention\Image\Facades\Image;
 
 class Category extends Model
 {
     protected $fillable = [
         'title', 'parent_id'
     ];
-
 
     public function products()
     {
@@ -32,9 +31,12 @@ class Category extends Model
         $category = new static;
         $category->title = $fields['title'];
         $category->parent_id = isset($fields['parent_id']) ? $fields['parent_id'] : null;
-        if($fields['position'] != 'null'){
-            $category->position = $fields['position'];
+        if(isset($fields['position'])){
+            if($fields['position'] != 'null'){
+                $category->position = $fields['position'];
+            }
         }
+        
         $category->save();
 
         return $category;
@@ -75,11 +77,10 @@ class Category extends Model
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-
-
+       
         $this->removeImage();
         $filename = $this->id . '.' . $image->extension();
-
+        
         $img = Image::make($image);
         $img->save('uploads/categories/' . $filename, 60);
 
