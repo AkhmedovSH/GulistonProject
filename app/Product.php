@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\ProductAttribute;
 use Intervention\Image\Facades\Image;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
@@ -58,33 +59,57 @@ class Product extends Model
         return $product;
     }
 
-    public function addParameters($parameters)
-    {
-        if ($parameters == null) { return; }
-        $this->parameters = $parameters;
-        $this->save();
-    }
-
     public function edit($fields)
     {
         $this->fill($fields);
         $this->save();
     }
 
-    public function setCategory($id)
+    public function addParameters($parameters)
     {
-        if ($id == null) {
-            return;
-        }
-        $this->category_id = $id;
+        if ($parameters == null) { return; }
+        $this->parameters = json_decode($parameters);
         $this->save();
     }
-    public function setCompany($id)
+
+    public function addAttributes($attributes, $attributeImages)
     {
-        if ($id == null) {
-            return;
+        if ($attributes == null) { return; }
+        
+        $decodedAttributes = json_decode($attributes, true);
+
+        foreach($decodedAttributes as $key => $value){            
+            $productAttribute = new ProductAttribute();
+            $productAttribute->product_id = $this->id;
+            $productAttribute->color = $decodedAttributes[$key]['color'];
+            $productAttribute->size = $decodedAttributes[$key]['size'];
+            $productAttribute->save();
+            $productAttribute->uploadImage($attributeImages[$key]);
         }
-        $this->company_id = $id;
+        
+    }
+
+    public function uploadMultipleImages($images){
+        
+        if ($images == null) { return; }
+
+        $this->removeMultipleImages();
+
+        $arrayItemsCount = count($images);
+        $i = 0;
+        $imgConcatenate = ";";
+        foreach($images as $key => $image)
+        {
+            $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
+            $image->move('uploads/products/', $filename);
+            if(++$i === $arrayItemsCount) {
+                $imgConcatenate = $imgConcatenate . $filename;
+            }else{
+                $imgConcatenate = $imgConcatenate . $filename . ";";
+            }
+        }
+
+        $this->images = $imgConcatenate;
         $this->save();
     }
 
@@ -126,29 +151,6 @@ class Product extends Model
 
         //$image->move('uploads/products/', $filename);
         $this->image = $filename;
-        $this->save();
-    }
-
-    public function uploadMultipleImages($images){
-        if ($images == null) { return; }
-
-        $this->removeMultipleImages();
-
-        $arrayItemsCount = count($images);
-        $i = 0;
-        $imgConcatenate = ";";
-        foreach($images as $key => $image)
-        {
-            $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
-            $image->move('uploads/products/', $filename);
-            if(++$i === $arrayItemsCount) {
-                $imgConcatenate = $imgConcatenate . $filename;
-            }else{
-                $imgConcatenate = $imgConcatenate . $filename . ";";
-            }
-        }
-
-        $this->images = $imgConcatenate;
         $this->save();
     }
 

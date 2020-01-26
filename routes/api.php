@@ -65,6 +65,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::post('/productUpdate', 'ProductController@update');
     Route::get('/productSearch', 'ProductController@productSearch');
 
+    Route::get('/getColors', 'ProductAttributeController@getColors');
+
     Route::apiResource('/company', 'CompanyController', ['except' => ['update', 'create']]);
     Route::post('/companyUpdate', 'CompanyController@update');
 
