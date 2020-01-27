@@ -32,9 +32,9 @@ class Product extends Model
     }
 
     /* public function options(){
-        return $this->hasMany(ProductOptions::class, 'product_id');
+        return $this->hasMany(ProductOptions::class, 'product_id', 'id');
     }
-
+    
     public function sizes()
     {
         return $this->hasManyThrough(ProductOptions::class, ProductColor::class);
@@ -45,6 +45,7 @@ class Product extends Model
         return $this->hasManyThrough(ProductSize::class, ProductOptions::class);
     } */
 
+    
     public function getImageAttribute($value)
     {
         return isset($value) ? secure_asset('uploads/products/' . $value) : null;
@@ -134,7 +135,10 @@ class Product extends Model
         if ($this->image != null) {
             $image = explode("/", $this->image);
 
-            unlink('uploads/products/' . $image[count($image)-1]);
+            if(file_exists('uploads/products/' . $image[count($image)-1]  )){
+                unlink('uploads/products/' . $image[count($image)-1]);
+            }
+            
         }
     }
 

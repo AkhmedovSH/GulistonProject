@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Product;
 use App\CompanyCategory;
 use Illuminate\Http\Request;
 
@@ -11,11 +12,6 @@ class CompanyController extends Controller
     public function getCompanies()
     {
         $allCompany = Company::orderBy('id', 'DESC')->paginate(20);
-
-        $allCompany->getCollection()->transform(function ($company) {
-            $company->image = isset($company->image) ? secure_asset('uploads/companies/' . $company->image) : null;
-            return $company;
-        });
 
         return response()->json(
             [
@@ -47,10 +43,6 @@ class CompanyController extends Controller
     {
 
         $allProducts = Product::where('company_category_id', $company_category_id)->get();
-        $allProducts->map(function ($product) {
-            $product->image = isset($product->image) ? secure_asset('uploads/products/' . $product->image) : null;
-            return $product;
-        });
 
         return response()->json(
             [

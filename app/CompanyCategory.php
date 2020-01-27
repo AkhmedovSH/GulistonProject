@@ -21,6 +21,11 @@ class CompanyCategory extends Model
         return $this->belongsTo(Company::class, 'company_id', 'id');
     }
 
+    public function getImageAttribute($value)
+    {
+        return isset($value) ? secure_asset('uploads/company_categories/' . $value) : null;
+    }
+
     public static function add($fields)
     {
         $category = new static;

@@ -36,6 +36,7 @@ class ProductController extends Controller
             'price' => ['required'],
             'category_id' => ['required'],
             'company_id' => ['required'],
+            'company_category_id' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -47,9 +48,9 @@ class ProductController extends Controller
 
         $product = Product::add($request->all());
         $product->addAttributes($request->attribute, $request->file('attributeImages'));
-        //$product->uploadMultipleImages($request->file('images'));
-        //$product->addParameters($request->parameters);
-        //$product->uploadImage($request->file('image'));
+        $product->uploadMultipleImages($request->file('images'));
+        $product->addParameters($request->parameters);
+        $product->uploadImage($request->file('image'));
         
         
         return response()->json([

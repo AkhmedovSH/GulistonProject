@@ -35,7 +35,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/getCompanies', 'CompanyController@getCompanies');
     Route::get('/companyCategories', 'CompanyController@companyCategories');
     Route::get('/oneCompanyCategories/{company_id}', 'CompanyController@oneCompanyCategories');
-    Route::get('/companyCategoryProducts/{company_id}', 'CompanyController@companyCategoryProducts');
+    Route::get('/companyCategoryProducts/{company_category_id}', 'CompanyController@companyCategoryProducts');
 
     Route::get('/getCart', 'OrderController@getCart');
     Route::post('/cartAdd', 'OrderController@cartAdd');

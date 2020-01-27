@@ -190,7 +190,7 @@ class UserController extends Controller
         $user->remove();
 
         return response()->json([
-            'errors' => $user
+            'errors' => 'success'
             ], 200);
     }
 }
