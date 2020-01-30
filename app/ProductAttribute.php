@@ -11,14 +11,9 @@ class ProductAttribute extends Model
 
     protected $fillable = ['product_id', 'color', 'size', 'image'];
 
-    public function color()
+    public function getImageAttribute($value)
     {
-        return $this->hasOne(ProductColor::class, 'id', 'color');
-    }
-
-    public function size()
-    {
-        return $this->hasOne(ProductSize::class, 'size_id', 'id');
+        return isset($value) ? secure_asset('uploads/products/' . $value) : null;
     }
 
     function uploadImage($image)
