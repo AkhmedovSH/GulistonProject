@@ -36,7 +36,7 @@ class ProductController extends Controller
             'price' => ['required'],
             'category_id' => ['required'],
             'company_id' => ['required'],
-            'company_category_id' => ['required'],
+            //'company_category_id' => ['required'],
         ]);
 
         if ($validator->fails()) {

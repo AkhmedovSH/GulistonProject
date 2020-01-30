@@ -7,9 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductAttribute extends Model
 {
-    protected $hidden = ['id', 'created_at', 'updated_at'];
+    protected $hidden = ['id', 'created_at', 'updated_at', 'product_id'];
 
     protected $fillable = ['product_id', 'color', 'size', 'image'];
+
+    public function color()
+    {
+        return $this->hasOne(ProductColor::class, 'id', 'color');
+    }
+
+    public function size()
+    {
+        return $this->hasOne(ProductSize::class, 'size_id', 'id');
+    }
 
     function uploadImage($image)
     {

@@ -11,8 +11,8 @@ class ProductController extends Controller
     public function productAll()
     {
         $allProducts = Product::orderBy('id', 'DESC')
-        ->with('attribute')
-        ->paginate(20);
+        ->with(['attribute' => function($query){
+        }])->paginate(20);
 
         return response()->json(
             [
