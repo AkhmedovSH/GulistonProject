@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function getCategoryProducts($category_id)
     {
-        $allCategoryProducts = Product::where('category_id', $category_id)->paginate(20);
+        $allCategoryProducts = Product::where('category_id', $category_id)->with('attribus')->paginate(20);
         
         return response()->json(
             [
