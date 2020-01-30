@@ -11,7 +11,6 @@ class ProductController extends Controller
     public function productAll()
     {
         $allProducts = Product::orderBy('id', 'DESC')
-        ->with('attributes')
         ->paginate(20);
 
         return response()->json(
@@ -22,9 +21,9 @@ class ProductController extends Controller
 
     public function productTopHome()
     {
-        $famousProducts = Product::where('famous', 1)->with('attributes')->orderBy('id', 'DESC')->paginate(20);
-        $discountProducts = Product::where('discount', '!=', 0)->with('attributes')->orderBy('id', 'DESC')->paginate(20);
-        $randomProducts = Product::inRandomOrder('id')->with('attributes')->paginate(20);
+        $famousProducts = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
+        $discountProducts = Product::where('discount', '!=', 0)->orderBy('id', 'DESC')->paginate(20);
+        $randomProducts = Product::inRandomOrder('id')->paginate(20);
 
         return response()->json(
             [
@@ -68,7 +67,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('id', $id)->with('attribute')->first();
+        $product = Product::where('id', $id)->with('attributes')->first();
         return response()->json(
             [
                 'result' => $product
