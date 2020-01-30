@@ -47,11 +47,10 @@ class ProductController extends Controller
         }
 
         $product = Product::add($request->all());
-        $product->addAttributes($request->attribute, $request->file('attributeImages'));
-        $product->uploadMultipleImages($request->file('images'));
+        $product->addAttributes($request->attribute);
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
-        
+        $product->uploadMultipleImages($request->file('images'));
         
         return response()->json([
             'result' => $product
@@ -68,7 +67,6 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $product['parameters'] = json_decode($product['parameters']);
         return response()->json([
             'result' => $product
         ], 200);

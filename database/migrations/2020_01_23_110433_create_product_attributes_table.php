@@ -18,7 +18,6 @@ class CreateProductAttributesTable extends Migration
             $table->integer('product_id');
             $table->string('color')->nullable();
             $table->string('size')->nullable();
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

@@ -30,21 +30,6 @@ class Product extends Model
     public function attributes(){
         return $this->hasMany(ProductAttribute::class, 'product_id');
     }
-
-    /* public function options(){
-        return $this->hasMany(ProductOptions::class, 'product_id', 'id');
-    }
-    
-    public function sizes()
-    {
-        return $this->hasManyThrough(ProductOptions::class, ProductColor::class);
-    }
-
-    public function colors()
-    {
-        return $this->hasManyThrough(ProductSize::class, ProductOptions::class);
-    } */
-
     
     public function getImageAttribute($value)
     {
@@ -73,7 +58,7 @@ class Product extends Model
         $this->save();
     }
 
-    public function addAttributes($attributes, $attributeImages)
+    public function addAttributes($attributes)
     {
         if ($attributes == null) { return; }
         
@@ -85,7 +70,6 @@ class Product extends Model
             $productAttribute->color = $decodedAttributes[$key]['color'];
             $productAttribute->size = $decodedAttributes[$key]['size'];
             $productAttribute->save();
-            $productAttribute->uploadImage($attributeImages[$key]);
         }
         
     }
