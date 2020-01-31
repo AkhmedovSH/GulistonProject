@@ -16,7 +16,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $allProduct = Product::orderBy('id', 'DESC')->with('category')->paginate(25);
+        $allProduct = Product::orderBy('id', 'DESC')->with(['category'])->paginate(25);
 
         return response()->json([
             'result' => $allProduct
@@ -35,8 +35,8 @@ class ProductController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'price' => ['required'],
             'category_id' => ['required'],
-            'company_id' => ['required'],
-            //'company_category_id' => ['required'],
+            'company_id' => ['nullable'],
+            'company_category_id' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
@@ -50,7 +50,7 @@ class ProductController extends Controller
         $product->addAttributes($request->attribute);
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
-        $product->uploadMultipleImages($request->file('images'));
+        $product->uploadMultipleImages($request->file('attributeImages'));
         
         return response()->json([
             'result' => $product
@@ -66,7 +66,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::where('id', $id)->with('attributes')->first();
         return response()->json([
             'result' => $product
         ], 200);
@@ -86,7 +86,8 @@ class ProductController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'price' => ['required'],
             'category_id' => ['required'],
-            'company_id' => ['required'],
+            'company_id' => ['nullable'],
+            'company_category_id' => ['nullable'],
         ]);
 
         if ($validator->fails()) {
@@ -100,7 +101,7 @@ class ProductController extends Controller
         $product->edit($request->all());
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
-        $product->uploadMultipleImages($request->file('images'));
+        $product->uploadMultipleImages($request->file('attributeImages'));
 
         return response()->json([
             'result' => $product

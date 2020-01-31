@@ -75,8 +75,9 @@ class OrderController extends Controller
                 'success' => true
                 ], 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'error' => 'Cannot delete'
+            return response()->json(
+                [
+                    'error' => $th->getMessage()
                 ], 400);
         }
     }
@@ -90,8 +91,9 @@ class OrderController extends Controller
                 'success' => true
                 ], 200);
         } catch (\Throwable $th) {
-            return response()->json([
-                'error' => 'Cannot delete'
+            return response()->json(
+                [
+                    'error' => $th->getMessage()
                 ], 400);
         }
     }

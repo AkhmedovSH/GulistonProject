@@ -26,6 +26,21 @@ class CompanyCategoryController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getCompanyCategories($company_id)
+    {
+        $companyCategories = CompanyCategory::where('id', $company_id)->get();
+
+        return response()->json([
+                'result' => $companyCategories
+            ], 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -36,8 +51,7 @@ class CompanyCategoryController extends Controller
         
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
-            'company_id' => ['required'],
-            'image' => ['nullable'],
+            'company_id' => ['required']
         ]);
         
         if ($validator->fails()) {
