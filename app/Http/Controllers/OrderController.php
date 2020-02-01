@@ -69,8 +69,7 @@ class OrderController extends Controller
     {
         
         try {
-            $order = Order::findOrFail($id);
-            $order->delete();
+            $order = Order::findOrFail($id)->delete();
             return response()->json([
                 'success' => true
                 ], 200);
@@ -116,6 +115,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'address_id' => ['required'],
             'product_ids' => ['required'],
+            'payment_type' => ['nullable'],
         ]);
 
         if ($validator->fails()) {

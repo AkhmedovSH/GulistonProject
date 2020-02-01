@@ -8,7 +8,7 @@ class Transaction extends Model
 {
     protected $fillable = [
         'amount', 'status', 'uniques', 'transacID', 'systemsTraceAuditNumber',
-         'orderId', 'reversal', 'code', 'message'
+        'reversal', 'code', 'message'
     ];
 
     public static function add($fields)
@@ -23,6 +23,7 @@ class Transaction extends Model
     public function edit($fields)
     {
         $this->fill($fields);
+        $this->status = true;
         $this->save();
     }
 }
