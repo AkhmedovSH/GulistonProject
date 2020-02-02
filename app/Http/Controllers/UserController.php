@@ -58,7 +58,7 @@ class UserController extends Controller
 
     public function userAddress(){
         
-        $userAddress = UserAddress::where('user_id',auth()->user()->id)->first();
+        $userAddress = UserAddress::where('user_id',auth()->user()->id)->get();
         
         return response()->json([
             'result' => $userAddress
