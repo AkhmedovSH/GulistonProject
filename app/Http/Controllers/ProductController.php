@@ -36,6 +36,36 @@ class ProductController extends Controller
             ], 200);
     }
 
+    public function productFamous()
+    {
+        $famousProducts = Product::where('famous', 1)->orderBy('id', 'DESC')->paginate(20);
+
+        return response()->json(
+            [
+                'result' => $famousProducts,
+            ], 200);
+    }
+
+    public function productDiscount()
+    {
+        $discountProducts = Product::where('discount', '!=', 0)->orderBy('id', 'DESC')->paginate(20);
+
+        return response()->json(
+            [
+                'result' => $discountProducts,
+            ], 200);
+    }
+
+    public function productRandom()
+    {
+        $randomProducts = Product::inRandomOrder('id')->paginate(20);
+
+        return response()->json(
+            [
+                'result' => $randomProducts,
+            ], 200);
+    }
+
 
     public function productSearch(Request $request)
     {

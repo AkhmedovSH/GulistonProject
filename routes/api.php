@@ -13,7 +13,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
     Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
-    Route::post('/userFavoriteDelete', 'UserController@userFavoriteDelete');
+    Route::delete('/userAddressDelete/{id}', 'UserController@userAddressDelete');
+    Route::delete('/userFavoriteDelete/{product_id}', 'UserController@userFavoriteDelete');
     Route::post('/userUpdate', 'UserController@update');
     Route::get('/userAddress', 'UserController@userAddress');
     Route::post('/userAddressAdd', 'UserController@userAddressAdd');
@@ -31,6 +32,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/product/{id}', 'ProductController@show');
     Route::get('/productTopHome', 'ProductController@productTopHome');
     Route::post('/productSearch', 'ProductController@productSearch');
+    Route::get('/productFamous', 'ProductController@productFamous');
+    Route::get('/productDiscount', 'ProductController@productDiscount');
+    Route::get('/productRandom', 'ProductController@productRandom');
 
     Route::get('/getCompanies', 'CompanyController@getCompanies');
     Route::get('/companyCategories', 'CompanyController@companyCategories');

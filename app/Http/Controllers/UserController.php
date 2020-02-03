@@ -119,6 +119,14 @@ class UserController extends Controller
             ], 200);
     }
 
+    public function userAddressDelete($id){
+         UserAddress::find($id)->delete();
+
+        return response()->json([
+            'errors' => 'success'
+            ], 200);
+    }
+
     public function userFavoriteAdd(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -150,10 +158,10 @@ class UserController extends Controller
             ], 200);
     }
 
-    public function userFavoriteDelete(Request $request)
+    public function userFavoriteDelete($product_id)
     {    
         $userFavorite = UserFavorite::where('user_id', auth()->user()->id)
-        ->where('product_id', $request->product_id)->first();
+        ->where('product_id', $product_id)->first();
         $userFavorite->delete();
 
         return response()->json([

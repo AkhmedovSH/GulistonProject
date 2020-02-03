@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Order;
 use App\Product;
+use App\UserFavorite;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -117,7 +119,19 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            Product::findOrFail($id)->remove();
+            $product = Product::findOrFail($id);
+
+            $userFavorites = UserFavorite::where('product_id', $product->id)->get();
+            $orders = Order::where('product_id', $product->id)->get();
+
+            foreach($userFavorites as $favorite){
+                $favorite->delete();
+            }
+            foreach($orders as $order){
+                $order->delete();
+            }
+
+            $product->remove();
             return response()->json([
                 'success' => true
                 ], 200);
