@@ -111,6 +111,12 @@ class UserController extends Controller
                 ], 400);
         }
 
+        $userAddresses = UserAddress::where('user_id', auth()->user()->id)->get();
+        foreach($userAddresses as $address){
+            $address->is_default = 0;
+            $address->save();
+        }
+
         $userAddress = UserAddress::find($request->id);
         $userAddress = $userAddress->edit($request->all());
         return response()->json(

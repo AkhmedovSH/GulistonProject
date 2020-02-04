@@ -32,6 +32,7 @@ class UserAddress extends Model
 
     public function edit($fields)
     {
+
         $this->fill($fields);
         $this->save();
 
