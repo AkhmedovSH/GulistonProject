@@ -15,6 +15,8 @@ class Product extends Model
     
     protected $casts = [
         'parameters' => 'array',
+        'available' => 'boolean',
+        'famous' => 'boolean',
     ];
 
     public function category()

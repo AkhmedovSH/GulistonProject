@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class UserAddress extends Model
 {
     protected $fillable = [
-        'user_id', 'default', 'name', 'phone', 'street', 'state',
+        'user_id', 'is_default', 'name', 'phone', 'street', 'state',
         'city', 'postal_code', 'longitude', 'latitude'
+    ];
+
+    protected $casts = [
+        'is_default' => 'boolean',
     ];
 
     public function user()

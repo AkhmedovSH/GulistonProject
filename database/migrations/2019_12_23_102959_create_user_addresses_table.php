@@ -16,7 +16,7 @@ class CreateUserAddressesTable extends Migration
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
-            $table->boolean('default')->default(0);
+            $table->boolean('is_default')->default(0);
             $table->string('longitude')->nullable();
             $table->string('latitude')->nullable();
             $table->string('name')->nullable();
