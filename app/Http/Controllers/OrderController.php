@@ -130,6 +130,8 @@ class OrderController extends Controller
         ->whereIn('product_id', $request->product_ids)
         ->with('user', 'product')
         ->get();
+
+        dd($orders, $request->all());
         try {
             Order::statusPurchased($orders, $request->address_id);
         } catch (\Throwable $th) {
