@@ -131,7 +131,6 @@ class OrderController extends Controller
         ->with('user', 'product')
         ->get();
 
-        dd($orders, $request->all());
         try {
             Order::statusPurchased($orders, $request->address_id);
         } catch (\Throwable $th) {
