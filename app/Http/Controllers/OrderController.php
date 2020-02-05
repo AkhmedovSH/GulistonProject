@@ -114,7 +114,7 @@ class OrderController extends Controller
         
         $validator = Validator::make($request->all(), [
             'address_id' => ['required'],
-            'product_ids' => ['required'],
+            'order_ids' => ['required'],
             'payment_type' => ['nullable'],
         ]);
 
@@ -127,7 +127,7 @@ class OrderController extends Controller
 
         $orders = Order::where('user_id', auth()->user()->id)
         ->where('status', 0)
-        ->whereIn('product_id', $request->product_ids)
+        ->whereIn('id', $request->order_ids)
         ->with('user', 'product')
         ->get();
 
