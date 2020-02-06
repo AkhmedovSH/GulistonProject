@@ -47,7 +47,7 @@ class OrderController extends Controller
     public function cartUpdate(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'product_id' => ['required']
+            'order_id' => ['required']
         ]);
 
         if ($validator->fails()) {
@@ -57,7 +57,7 @@ class OrderController extends Controller
                 ], 400);
         }
        
-        $order = Order::where('product_id', $request->product_id)->where('user_id', auth()->user()->id)->first();
+        $order = Order::where('id', $request->order_id)->where('user_id', auth()->user()->id)->first();
         $order = $order->edit($request->all());
 
         return response()->json([
