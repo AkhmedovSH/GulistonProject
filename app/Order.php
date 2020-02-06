@@ -14,8 +14,13 @@ class Order extends Model
 
     protected $fillable = [
         'longitude', 'latitude', 'time_id', 'status', 'quantity', 'status_text',
-         'product_id', 'user_id', 'color', 'size'
+         'product_id', 'user_id', 'color', 'size', 'image'
     ];
+
+    public function getImageAttribute($value)
+    {
+        return isset($value) ? secure_asset('uploads/products/' . $value) : null;
+    }
 
     public function user()
     {
@@ -37,6 +42,10 @@ class Order extends Model
         $order = new static;
         $order->fill($fields);
         $order->user_id = auth()->user()->id;
+        if($fields['image'] && $fields['image'] != null){
+            $image = explode("/", $fields['image']);
+            $order->image = $image[count($image)-1];
+        }
         $order->save();
 
         return $order;

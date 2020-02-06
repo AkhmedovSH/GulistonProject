@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->boolean('is_read')->default(0)->unsigned();
             $table->string('color')->nullable()->default(NULL);
             $table->string('size')->nullable()->default(NULL);
+            $table->string('image')->nullable()->default(NULL);
             // Payed is for dedicate from  cash or card payed if card 1
             $table->string('payment_type')->default(0)->unsigned();
             //$table->string('status_text')->nullable();
