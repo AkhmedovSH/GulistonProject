@@ -34,7 +34,7 @@ class Order extends Model
 
     public function userAddress()
     {
-        return $this->hasOne(UserAddress::class, 'id', 'user_id');
+        return $this->hasOne(UserAddress::class, 'id', 'address_id');
     }
 
     public static function add($fields)

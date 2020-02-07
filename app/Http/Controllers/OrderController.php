@@ -84,7 +84,9 @@ class OrderController extends Controller
     public function cartDeleteAll()
     {
         try {
-            $orders = Order::where('user_id', auth()->user()->id)->get();
+            $orders = Order::where('user_id', auth()->user()->id)
+            ->where('status', 0)
+            ->get();
             Order::deleteAll($orders);
             return response()->json([
                 'success' => true
