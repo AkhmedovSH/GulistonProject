@@ -79,7 +79,7 @@ class Category extends Model
         }
        
         $this->removeImage();
-        $filename = $this->id . '.' . $image->extension();
+        $filename = $this->id . "_random_" . rand(1, 1000000) . '.' . $image->extension();
         
         $img = Image::make($image);
         $img->save('uploads/categories/' . $filename, 60);
