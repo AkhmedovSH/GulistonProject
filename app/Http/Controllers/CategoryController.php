@@ -21,11 +21,23 @@ class CategoryController extends Controller
 
     public function getCategoryProducts($category_id)
     {
-        $allCategoryProducts = Product::where('category_id', $category_id)->paginate(20);
+        $allCategoryProducts = Product::where('category_id', $category_id)
+        ->paginate(20);
         
         return response()->json(
             [
                 'result' => $allCategoryProducts
+            ], 200);
+    }
+
+    public function getCompanyCategoryProducts($company_category_id)
+    {
+        $allCompanyCategoryProducts = Product::where('company_category_id', $company_category_id)
+        ->paginate(20);
+        
+        return response()->json(
+            [
+                'result' => $allCompanyCategoryProducts
             ], 200);
     }
 }

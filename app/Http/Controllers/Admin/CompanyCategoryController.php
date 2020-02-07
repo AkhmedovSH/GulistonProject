@@ -33,7 +33,7 @@ class CompanyCategoryController extends Controller
      */
     public function getCompanyCategories($company_id)
     {
-        $companyCategories = CompanyCategory::where('id', $company_id)->get();
+        $companyCategories = CompanyCategory::where('company_id', $company_id)->get();
 
         return response()->json([
                 'result' => $companyCategories
