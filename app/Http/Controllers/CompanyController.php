@@ -31,7 +31,7 @@ class CompanyController extends Controller
 
     public function oneCompanyCategories($company_id)
     {
-        $oneCompanyCategories = CompanyCategory::where('company_id', $company_id)->firstOrFail();
+        $oneCompanyCategories = CompanyCategory::where('company_id', $company_id)->get();
         
         return response()->json(
             [
