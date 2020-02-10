@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'price', 'available', 'quantity_type',
+        'title', 'price', 'available', 'quantity_type', 'hasAttributes',
         'keywords', 'company_id', 'company_category_id', 'category_id', 'famous', 'discount'
     ];
     
     protected $casts = [
         'parameters' => 'array',
+        'hasAttributes' => 'boolean',
         'available' => 'boolean',
         'famous' => 'boolean',
     ];

@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->text('images')->nullable();
             $table->boolean('available')->default(1);
             $table->boolean('famous')->default(1);
+            $table->boolean('hasAttributes')->default(0);
             $table->text('parameters')->nullable()->comment('JSON array of parameters');
             $table->string('keywords')->nullable();
             $table->string('quantity_type')->default('piece');
