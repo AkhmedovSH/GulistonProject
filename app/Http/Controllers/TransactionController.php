@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Transaction;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use App\Http\OrderController;
 
 class TransactionController extends Controller
 {
@@ -14,7 +12,7 @@ class TransactionController extends Controller
     public $login = "998972461019";
     public $password = "12345";
 
-    public function checkPayment(Request $request)
+    public function checkTransaction(Request $request)
     {
         $payload = [
             'params' => [
@@ -47,7 +45,7 @@ class TransactionController extends Controller
             ], 200);
     }
 
-    public function performPayment(Request $request)
+    public function performTransaction(Request $request)
     {
         $payload = [
             'params' => [
@@ -91,7 +89,7 @@ class TransactionController extends Controller
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-       
+        
         $body = curl_exec($ch);
         $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 
@@ -102,3 +100,4 @@ class TransactionController extends Controller
         return $response;
     }
 }
+

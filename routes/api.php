@@ -10,12 +10,6 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::get('/fucker', 'TransactionController@checkPayment');
-    Route::get('/fucker2', 'TransactionController@performPayment');
-
-    Route::post('/fucker3', 'TransactionController@checkPayment');
-    Route::post('/fucker4', 'TransactionController@performPayment');
-
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
     Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
@@ -58,6 +52,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/orderCreate', 'OrderController@orderCreate');
     Route::post('/orderAccepted', 'OrderController@orderAccepted');
     Route::post('/orderRejected', 'OrderController@orderRejected');
+
+    Route::post('/checkTransaction', 'TransactionController@checkTransaction');
+    Route::post('/checkTransaction', 'TransactionController@checkTransaction');
 });
 
 
