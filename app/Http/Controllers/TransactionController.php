@@ -83,7 +83,7 @@ class TransactionController extends Controller
     public function curlRequest($payload){
         $ch = curl_init("https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_USERPWD, '998972461019' . ":" . '12345');
         curl_setopt($ch, CURLOPT_POST, 1);
