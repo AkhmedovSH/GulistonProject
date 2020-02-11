@@ -14,7 +14,7 @@ class TransactionController extends Controller
     public $login = "998972461019";
     public $password = "12345";
 
-    public function createСheck(Request $request)
+    public function checkPayment(Request $request)
     {
         $payload = [
             'params' => [
