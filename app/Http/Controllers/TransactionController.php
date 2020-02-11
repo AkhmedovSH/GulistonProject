@@ -35,7 +35,7 @@ class TransactionController extends Controller
         }else{
             return response()->json(
                 [
-                    'error' => $response->message
+                    'error' => $response->error->message
                 ], 200);
         }
 
@@ -64,13 +64,14 @@ class TransactionController extends Controller
         
         $response = $this->curlRequest($payload);
 
+        dd($response);
         if($response->result != null){
             $transaction = Transaction::where('uniques', $request->uniques)->first();
             $transaction->update($request->all());
         }else{
             return response()->json(
                 [
-                    'error' => $response->message
+                    'error' => $response->error->message
                 ], 200);
         }
 
