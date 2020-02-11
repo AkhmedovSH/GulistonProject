@@ -29,18 +29,12 @@ class TransactionController extends Controller
             'id' =>  '123456qwerty',
         ];
 
-        $header = [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json'
-        ];
-
         $rest = new Client();
         $response = $rest->request(
             'POST',
             'https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew',
             [
                 'auth' => [env('UZCARD_LOGIN'), env('UZCARD_PASSWORD')],
-                'header' => $header,
                 'body' => json_encode($payload),
             ] 
         );
