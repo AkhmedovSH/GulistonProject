@@ -63,6 +63,8 @@ class TransactionController extends Controller
             ],
             'id' =>  '123456qwerty',
         ];
+        
+        $response = $this->curlRequest($payload);
 
         if($response->result != null){
             $transaction = Transaction::where('uniques', $request->uniques)->first();
