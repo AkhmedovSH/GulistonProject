@@ -34,7 +34,7 @@ class TransactionController extends Controller
             'POST',
             'https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew',
             [
-                'auth' => [env('UZCARD_LOGIN'), env('UZCARD_PASSWORD')],
+                'auth' => [$this->login,$this->password],
                 'body' => json_encode($payload),
             ] 
         );
@@ -60,8 +60,8 @@ class TransactionController extends Controller
     {
         $payload = [
             'params' => [
-                'key' => env('UZCARD_KEY', null),
-                'EposId' => env('UZCARD_EPOSID', null),
+                'key' => $this->login,
+                'EposId' => $this->password,
                 'phoneNumber' => $request->phoneNumber,
                 'cardLastNumber' => $request->cardLastNumber,
                 'expire' => $request->expire,
@@ -73,8 +73,15 @@ class TransactionController extends Controller
             'id' =>  '123456qwerty',
         ];
 
-        $rest = new GuzzleHelper();
-        $response = $rest->post($payload, 'https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew');
+        $rest = new Client();
+        $response = $rest->request(
+            'POST',
+            'https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew',
+            [
+                'auth' => [$this->login,$this->password],
+                'body' => json_encode($payload),
+            ] 
+        );
 
 
         if($response['result'] != null){
