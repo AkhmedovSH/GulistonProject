@@ -52,6 +52,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/orderCreate', 'OrderController@orderCreate');
     Route::post('/orderAccepted', 'OrderController@orderAccepted');
     Route::post('/orderRejected', 'OrderController@orderRejected');
+
+    Route::post('/createCheck', 'TransactionController@createСheck');
+    Route::post('/performPayment', 'TransactionController@performPayment');
 });
 
 
