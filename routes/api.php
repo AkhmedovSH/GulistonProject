@@ -10,8 +10,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::post('/fucker', 'TransactionController@checkPayment');
-    Route::post('/fucker2', 'TransactionController@performPayment');
+    Route::get('/fucker', 'TransactionController@checkPayment');
+    Route::get('/fucker2', 'TransactionController@performPayment');
 
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
