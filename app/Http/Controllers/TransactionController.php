@@ -29,16 +29,44 @@ class TransactionController extends Controller
             'id' =>  '123456qwerty',
         ];
 
-        $rest = new Client();
-        $response = $rest->request(
+        $header = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization: Basic '. base64_encode("998972461019:12345"),
+            'charset' => 'UTF-8 '
+        ];
+
+       /*  $client = new Client();
+        $response = $client->request(
             'POST',
             'https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew',
             [
-                'auth' => [$this->login,$this->password],
                 'body' => json_encode($payload),
-            ] 
+                'header' => $header,
+                'debug' => true
+            ]
         );
+        dd($response->getHeader('Content-Type')); */
 
+        $ch = curl_init("https://myuzcard.uz/api/PaymentBusiness/paymentsWithOutRegistrationNew");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, '998972461019' . ":" . '12345');
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+       
+        $response = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        dd($response, $info);
+        curl_close($ch);
+        
+
+        /* $response = $client->request(
+            'GET',
+            'https://dolphindelivery.uz/api/getCategories'
+        ); */
         dd($response->curl_info);
         if($response['result'] != null){
             $transaction = new Transaction();
