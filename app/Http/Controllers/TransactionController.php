@@ -15,14 +15,16 @@ class TransactionController extends Controller
     public function checkTransaction(Request $request)
     {
         
+        $userCard = UserCard::find($request->user_card_id);
+
         $payload = [
             'params' => [
                 'key' => $this->key,
                 'EposId' => $this->EposId,
-                'phoneNumber' => $request->phoneNumber,
-                'cardLastNumber' => $request->cardLastNumber,
-                'expire' => $request->expire,
-                'summa' => $request->summa,
+                'phoneNumber' => $userCard->phone,
+                'cardLastNumber' => $userCard->card,
+                'expire' => $userCard->expire,
+                'summa' => $request->amount,
                 'orderId' => "",
             ],
             'id' =>  '123456qwerty',
@@ -30,12 +32,9 @@ class TransactionController extends Controller
 
         $response = $this->curlRequest($payload);
         
-        
         if($response->result != null){
-            dd($response);
             $transaction = new Transaction();
-            
-            $transaction->add($request->all());
+            $transaction->add($request->all(), $response);
         }else{
             return response()->json(
                 [
@@ -51,14 +50,16 @@ class TransactionController extends Controller
 
     public function performTransaction(Request $request)
     {
+        $userCard = UserCard::find($request->user_card_id);
+
         $payload = [
             'params' => [
                 'key' => $this->login,
                 'EposId' => $this->password,
-                'phoneNumber' => $request->phoneNumber,
-                'cardLastNumber' => $request->cardLastNumber,
-                'expire' => $request->expire,
-                'summa' => $request->summa,
+                'phoneNumber' => $userCard->phone,
+                'cardLastNumber' => $userCard->card,
+                'expire' => $userCard->expire,
+                'summa' => $request->amount,
                 'orderId' => "",
                 'uniques' => $request->uniques,
                 'otp' => $request->otp,
@@ -70,7 +71,7 @@ class TransactionController extends Controller
 
         if($response->result != null){
             $transaction = Transaction::where('uniques', $request->uniques)->first();
-            $transaction->update($request->all());
+            $transaction->edit($request->all(), $response);
         }else{
             return response()->json(
                 [

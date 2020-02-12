@@ -43,6 +43,7 @@ class Product extends Model
     {
         $product = new static;
         $product->fill($fields);
+        $product->hasAttributes = isset($fields['attribute']) ? 1 : 0;
         $product->save();
 
         return $product;
