@@ -16,7 +16,8 @@ result: some data
 
 when project done add auth:api middleware to routes
 
-/*  $category->getCollection()->transform(function ($category) {
+/*  
+    $category->getCollection()->transform(function ($category) {
         $category->image = isset($category->image) ? asset('uploads/categories/' . $category->image) : null;
         return $category;
     }); 
@@ -29,4 +30,16 @@ when project done add auth:api middleware to routes
             "parent_id" => $category->parent_id,
             "created_at" => $category->created_at,
         ];
-    }); */
+    }); 
+*/
+
+ /* 
+    $allProducts = Product
+        ::leftJoin('orders', 'orders.product_id', '=', 'products.id')
+        ->get();
+
+     $allProducts = DB::table('products')
+        ->select('*') // Add a select so only one column shows up.
+        ->join('orders','products.id','=','orders.product_id')
+        ->get(); 
+*/
