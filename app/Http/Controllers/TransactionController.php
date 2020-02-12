@@ -14,7 +14,7 @@ class TransactionController extends Controller
 
     public function checkTransaction(Request $request)
     {
-        dd('Fucke I am Here');
+        
         $payload = [
             'params' => [
                 'key' => $this->key,
