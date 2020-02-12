@@ -55,8 +55,6 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::post('/checkTransaction', 'TransactionController@checkTransaction');
     Route::post('/performTransaction', 'TransactionController@performTransaction');
-    Route::post('/productCreateCheck', 'ProductController@checkTransaction');
-    Route::post('/productPerformTransaction', 'ProductController@performTransaction');
 });
 
 
