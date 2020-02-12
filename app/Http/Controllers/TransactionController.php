@@ -28,7 +28,7 @@ class TransactionController extends Controller
         ];
 
         $response = $this->curlRequest($payload);
-
+        
         if($response->result != null){
             $transaction = new Transaction();
             $transaction->add($request->all());
