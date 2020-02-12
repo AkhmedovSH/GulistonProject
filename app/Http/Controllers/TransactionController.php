@@ -30,8 +30,11 @@ class TransactionController extends Controller
 
         $response = $this->curlRequest($payload);
         
+        
         if($response->result != null){
+            dd($response);
             $transaction = new Transaction();
+            
             $transaction->add($request->all());
         }else{
             return response()->json(
