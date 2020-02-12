@@ -14,6 +14,7 @@ class TransactionController extends Controller
 
     public function checkTransaction(Request $request)
     {
+        dd('Fucke I am Here');
         $payload = [
             'params' => [
                 'key' => $this->key,
@@ -64,7 +65,6 @@ class TransactionController extends Controller
         
         $response = $this->curlRequest($payload);
 
-        dd($response);
         if($response->result != null){
             $transaction = Transaction::where('uniques', $request->uniques)->first();
             $transaction->update($request->all());
