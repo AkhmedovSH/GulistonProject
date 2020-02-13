@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\UserCard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserCardController extends Controller
 {
     public function index()
     {
-        $allCompany = UserCard::orderBy('id', 'DESC')->get();
+        $allCards = UserCard::where('user_id', auth()->user()->id)
+        ->orderBy('id', 'DESC')
+        ->get();
+
         return response()->json([
-            'result' => $allCompany
+            'result' => $allCards
         ], 200);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -26,9 +29,9 @@ class UserCardController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable'],
-            'image' => ['nullable'],
+            'phone' => ['required', 'string', 'max:12'],
+            'card' => ['required', 'string', 'max:16'],
+            'expire' => ['required', 'string', 'max:4'],
         ]);
 
         if ($validator->fails()) {
@@ -38,11 +41,17 @@ class UserCardController extends Controller
                 ], 400);
         }
 
-        $company = Company::add($request->all());
-        $company->uploadImage($request->file('image'));
-        
+        try {
+            $userCard = UserCard::add($request->all());
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    'error' => 'Бу карта раками кушилган!'
+                ], 400);
+        }
+
         return response()->json([
-            'result' => $company
+            'result' => $userCard
         ], 200);
     }
 
@@ -54,9 +63,9 @@ class UserCardController extends Controller
      */
     public function show($id)
     {
-        $company = Company::find($id);
+        $userCard = UserCard::find($id);
         return response()->json([
-            'result' => $company
+            'result' => $userCard
         ], 200);
     }
 
@@ -70,10 +79,9 @@ class UserCardController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => ['required'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable'],
-            'image' => ['nullable']
+            'phone' => ['required', 'string', 'max:12'],
+            'card' => ['required', 'string', 'max:16'],
+            'expire' => ['required', 'string', 'max:4'],
         ]);
 
         if ($validator->fails()) {
@@ -82,13 +90,20 @@ class UserCardController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-       
-        $company = Company::find($request->id);
-        $company->edit($request->all());
-        $company->uploadImage($request->file('image'));
+
+        $userCard = UserCard::find($request->id);
+
+        try {
+            $userCard->edit($request->all());
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    'error' => 'Бу карта раками кушилган!'
+                ], 400);
+        }
         
         return response()->json([
-            'result' => $company
+            'result' => $userCard
         ], 200);
     }
 
@@ -101,7 +116,7 @@ class UserCardController extends Controller
     public function destroy($id)
     {
         try {
-            Company::find($id)->remove();
+            UserCard::find($id)->delete();
         } catch (\Throwable $th) {
             return response()->json(
                 [

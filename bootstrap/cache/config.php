@@ -177,7 +177,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/var/www/site/storage/framework/cache/data',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -341,12 +341,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/site/storage/app',
+        'root' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/site/storage/app/public',
+        'root' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\app/public',
         'url' => 'https://dolphindelivery.uz/storage',
         'visibility' => 'public',
       ),
@@ -428,13 +428,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/var/www/site/storage/logs/laravel.log',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/var/www/site/storage/logs/laravel.log',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -503,7 +503,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/var/www/site/resources/views/vendor/mail',
+        0 => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\resources\\views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -582,7 +582,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/var/www/site/storage/framework/sessions',
+    'files' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -602,9 +602,9 @@
   array (
     'paths' => 
     array (
-      0 => '/var/www/site/resources/views',
+      0 => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\resources\\views',
     ),
-    'compiled' => '/var/www/site/storage/framework/views',
+    'compiled' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\framework\\views',
   ),
   'flare' => 
   array (

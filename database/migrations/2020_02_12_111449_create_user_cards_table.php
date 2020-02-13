@@ -16,7 +16,7 @@ class CreateUserCardsTable extends Migration
         Schema::create('user_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('card');
             $table->string('expire');
             $table->boolean('is_default')->default(0);

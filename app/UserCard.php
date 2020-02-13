@@ -14,6 +14,7 @@ class UserCard extends Model
     {
         $userCard = new static;
         $userCard->fill($fields);
+        $userCard->user_id = auth()->user()->id;
         $userCard->save();
 
         return $userCard;
@@ -22,7 +23,7 @@ class UserCard extends Model
     public function edit($fields)
     {
         $this->fill($fields);
-        $this->status = true;
+        $this->is_default = true;
         $this->save();
     }
 }

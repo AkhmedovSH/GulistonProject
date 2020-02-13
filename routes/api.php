@@ -22,6 +22,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/userRequestToAdmin', 'UserController@userRequestToAdmin');
     Route::delete('/userDestroy', 'UserController@destroy');
 
+    Route::apiResource('/userCard', 'UserCardController', ['except' => ['update', 'create']]);
+    Route::post('/userCardUpdate', 'UserCardController@update');
+
     Route::get('/getCategories', 'CategoryController@getCategories');
     
     Route::get('/getCategoryProducts/{category_id}', 'CategoryController@getCategoryProducts');
