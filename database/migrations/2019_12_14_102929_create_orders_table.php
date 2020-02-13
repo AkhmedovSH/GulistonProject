@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('order_number')->nullable()->unique();
+            $table->string('order_number')->nullable();
             $table->integer('quantity')->default(1);
             $table->integer('time_id')->nullable()->default(NULL);
             $table->integer('status')->default(0)->unsigned();
@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
             //$table->string('status_text')->nullable();
             $table->integer('product_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('address_id')->unsigned()->nullable();
+            $table->integer('address_id')->unsigned()->default(NULL);
             $table->timestamps();
         });
     }
