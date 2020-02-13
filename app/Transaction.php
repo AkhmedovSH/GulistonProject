@@ -16,6 +16,7 @@ class Transaction extends Model
         $transaction = new static;
         $transaction->fill($fields);
         $transaction->user_id = auth()->user()->id;
+        $transaction->uniques = $response->result->uniques;
         $transaction->save();
 
         return $transaction;
@@ -25,6 +26,13 @@ class Transaction extends Model
     {
         $this->fill($fields);
         $this->status = true;
+        $this->save();
+    }
+
+    public function addError($response)
+    {
+        $this->code = $response->error->code;
+        $this->message = $response->error->message;
         $this->save();
     }
 }

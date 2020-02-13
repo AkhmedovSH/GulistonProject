@@ -33,7 +33,7 @@ class TransactionController extends Controller
             }
             $payload = $this->createCardPayload($userCard, $request);
         }
-        
+
         $response = $this->curlRequest($payload);
         if($response->result != null){
             $transaction = new Transaction();
@@ -58,11 +58,12 @@ class TransactionController extends Controller
         $payload = $this->createPerformPayload($userCard, $request);
         
         $response = $this->curlRequest($payload);
+        $transaction = Transaction::where('uniques', $request->uniques)->first();
 
         if($response->result != null){
-            $transaction = Transaction::where('uniques', $request->uniques)->first();
             $transaction->edit($request->all(), $response);
         }else{
+            $transaction->addError($response);
             return response()->json(
                 [
                     'error' => $response->error->message
@@ -112,8 +113,8 @@ class TransactionController extends Controller
     public function createPerformPayload($userCard, $request){
         return [
             'params' => [
-                'key' => $this->login,
-                'EposId' => $this->password,
+                'key' => $this->key,
+                'EposId' => $this->EposId,
                 'phoneNumber' => $userCard->phone,
                 'cardLastNumber' => $userCard->card,
                 'expire' => $userCard->expire,
