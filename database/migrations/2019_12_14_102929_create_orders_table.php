@@ -17,18 +17,18 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->string('order_number')->nullable();
             $table->integer('quantity')->default(1);
-            $table->integer('time_id')->nullable()->default(NULL);
-            $table->integer('status')->default(0)->unsigned();
-            $table->boolean('is_read')->default(0)->unsigned();
-            $table->string('color')->nullable()->default(NULL);
-            $table->string('size')->nullable()->default(NULL);
-            $table->string('image')->nullable()->default(NULL);
+            $table->integer('time_id')->nullable();
+            $table->integer('status')->default(0);
+            $table->boolean('is_read')->default(0);
+            $table->string('color')->nullable();
+            $table->string('size')->nullable();
+            $table->string('image')->nullable();
             // Payed is for dedicate from  cash or card payed if card 1
-            $table->string('payment_type')->default(0)->unsigned();
+            $table->string('payment_type')->default(0);
             //$table->string('status_text')->nullable();
-            $table->integer('product_id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->integer('address_id')->unsigned()->default(NULL);
+            $table->integer('product_id');
+            $table->integer('user_id');
+            $table->integer('address_id')->nullable();
             $table->timestamps();
         });
     }
