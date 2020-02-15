@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index(){
         
-        $users = User::with(['userAddresses'])->get();
+        $users = User::with(['userAddresses','userCards'])->get();
         
         return response()->json([
             'result' => $users

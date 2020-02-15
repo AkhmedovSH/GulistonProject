@@ -24,7 +24,7 @@ class TransactionController extends Controller
         }else{
             try {
                 $userCard = new UserCard();
-                $userCard->add($request->all());
+                $userCard = $userCard->add($request->all());
             } catch (\Throwable $th) {
                 return response()->json(
                     [
@@ -37,7 +37,7 @@ class TransactionController extends Controller
         $response = $this->curlRequest($payload);
         if($response->result != null){
             $transaction = new Transaction();
-            $transaction->add($request->all(), $response);
+            $transaction->add($request->all(), $userCard, $response);
         }else{
             return response()->json(
                 [

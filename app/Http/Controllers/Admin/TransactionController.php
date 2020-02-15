@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\User;
+use App\Transaction;
 use Illuminate\Http\Request;
 use App\Helpers\GuzzleHelper;
+use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {
@@ -15,11 +17,23 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $allTransactions = Transaction::orderBy('id', 'DESC')->get();
+        $allTransactions = Transaction::with('user')->orderBy('id', 'DESC')->paginate(25);
 
         return response()->json([
             'result' => $allTransactions
         ], 200);
+    }
+    
+    public function transactionSearch(Request $request)
+    {
+        $user = User::where('phone', $request->phone)->first();
+        $transactions =  Transaction::where('user_id', $user->id)->orderBy('id', 'DESC')->paginate(25);
+
+
+        return response()->json(
+            [
+                'result' => $transactions
+            ], 200);
     }
 
     public function reversal($id)
