@@ -10,6 +10,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 
 
 Route::group(['middleware' => ['cors']], function () {
+    Route::get('/deliveryTable', 'MainController@deliveryTable');
+
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
     Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
