@@ -113,11 +113,11 @@ class OrderController extends Controller
 
     public function orderCreate(Request $request)
     {
-        
         $validator = Validator::make($request->all(), [
             'address_id' => ['required'],
             'order_ids' => ['required'],
-            'payment_type' => ['nullable'],
+            'delivery_date' => ['required'],
+            'delivery_time' => ['required']
         ]);
 
         if ($validator->fails()) {
