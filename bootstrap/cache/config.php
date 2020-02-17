@@ -7,8 +7,8 @@
     'url' => 'https://dolphindelivery.uz',
     'asset_url' => NULL,
     'timezone' => 'UTC',
-    'locale' => 'ru',
-    'fallback_locale' => 'ru',
+    'locale' => 'uz',
+    'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'key' => 'base64:9Ro4U1+jYjjv+hf8EU81lf/JVGubOepW5rqkd1budds=',
     'cipher' => 'AES-256-CBC',
@@ -177,7 +177,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework/cache/data',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -341,12 +341,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\app',
+        'root' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\app/public',
+        'root' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\app/public',
         'url' => 'https://dolphindelivery.uz/storage',
         'visibility' => 'public',
       ),
@@ -428,13 +428,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\logs/laravel.log',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\logs/laravel.log',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -503,7 +503,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\resources\\views/vendor/mail',
+        0 => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\resources\\views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -582,7 +582,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework/sessions',
+    'files' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -602,9 +602,9 @@
   array (
     'paths' => 
     array (
-      0 => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\resources\\views',
+      0 => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\resources\\views',
     ),
-    'compiled' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework\\views',
+    'compiled' => 'D:\\PHP\\OSPanel\\domains\\DolphinDelivery\\storage\\framework\\views',
   ),
   'flare' => 
   array (
