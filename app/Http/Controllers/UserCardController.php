@@ -116,7 +116,7 @@ class UserCardController extends Controller
     public function destroy($id)
     {
         try {
-            $userCard = UserCard::find($id);
+            $userCard = UserCard::find($id)->delete();
         } catch (\Throwable $th) {
             return response()->json(
                 [
