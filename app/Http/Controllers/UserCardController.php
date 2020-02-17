@@ -41,15 +41,20 @@ class UserCardController extends Controller
                 ], 400);
         }
 
-        try {
+
+        $userCard = UserCard::where('user_id', auth()->user()->id)
+                    ->where('card', $request->card)
+                    ->first();
+
+        if($userCard == null){
             $userCard = UserCard::add($request->all());
-        } catch (\Throwable $th) {
+        }else{
             return response()->json(
                 [
                     'error' => 'Бу карта раками кушилган!'
                 ], 400);
         }
-
+        
         return response()->json([
             'result' => $userCard
         ], 200);
