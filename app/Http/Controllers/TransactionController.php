@@ -42,7 +42,7 @@ class TransactionController extends Controller
             return response()->json(
                 [
                     'error' => $response->error->message
-                ], 200);
+                ], 400);
         }
 
         return response()->json(
