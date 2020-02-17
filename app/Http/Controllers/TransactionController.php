@@ -62,6 +62,10 @@ class TransactionController extends Controller
 
         if($response->result != null){
             $transaction->edit($request->all(), $response);
+            return response()->json(
+                [
+                    'result' => $response->result
+                ], 200);
         }else{
             $transaction->addError($response);
             return response()->json(
@@ -70,10 +74,7 @@ class TransactionController extends Controller
                 ], 200);
         }
 
-        return response()->json(
-            [
-                'result' => $response->result
-            ], 200);
+        
     }
 
     public function curlRequest($payload){
