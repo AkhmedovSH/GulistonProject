@@ -16,6 +16,7 @@ class CreateDeliveryTimesTable extends Migration
         Schema::create('delivery_times', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('time');
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }
