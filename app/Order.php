@@ -65,12 +65,14 @@ class Order extends Model
         }
     }
 
-    public static function statusPurchased($orders, $address_id)
+    public static function statusPurchased($orders, $request)
     {
         foreach ($orders as $order) {
            $order->status = $order::STATUS_ORDERED;
-           $order->address_id = $address_id;
+           $order->address_id = $request->address_id;
            $order->order_number = $order->id . $order->product_id;
+           $order->delivery_date = $request->delivery_date;
+           $order->delivery_time = $request->delivery_time;
            $order->save();
         }
     }

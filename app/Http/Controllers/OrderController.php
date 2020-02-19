@@ -134,7 +134,7 @@ class OrderController extends Controller
         ->get();
 
         try {
-            Order::statusPurchased($orders, $request->address_id);
+            Order::statusPurchased($orders, $request);
         } catch (\Throwable $th) {
             //throw $th;
         }
