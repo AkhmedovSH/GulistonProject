@@ -65,6 +65,7 @@ Route::group(['middleware' => ['cors']], function () {
 
 Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/mainProjectStatistics', 'MainController@ProjectStatistics');
+    Route::post('/getFromGeneralSetting', 'MainController@getFromGeneralSetting');
     Route::apiResource('/user', 'UserController');
 
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
@@ -100,4 +101,5 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     
     Route::apiResource('/deliveryTime', 'DeliveryTimeController');
     Route::post('/deliveryTimeUpdate', 'DeliveryTimeController@update');
+    Route::post('/setDeliveryMonthDays', 'DeliveryTimeController@setDeliveryMonthDays');
 });

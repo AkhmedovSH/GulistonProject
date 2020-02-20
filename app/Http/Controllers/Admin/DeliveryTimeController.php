@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\GeneralSetting;
 use Illuminate\Http\Request;
 use App\DeliveryClosedDateTime;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,16 @@ class DeliveryTimeController extends Controller
         
         return response()->json([
             'result' => $deliveryClosedTimes
+        ], 200);
+    }
+
+    public function setDeliveryMonthDays(Request $request)
+    {
+        $setting = GeneralSetting::where('key', 'maxDays')->first();
+        $setting->edit($request->day);
+
+        return response()->json([
+            'result' => $setting
         ], 200);
     }
 

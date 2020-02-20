@@ -64,7 +64,7 @@ class AuthController extends Controller
             $userWithPassword = User::where('password',  Hash::make($credentials['password']))->first();
             if($userWithLogin != null && $userWithPassword == null){
                 return response()->json([
-                    'error' => 'The password is incorrect.'
+                    'error' => 'Паролингиз хато.'
                     ], 400);
             }
             
@@ -103,7 +103,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['success' => 'Successfully logged out']);
+        return response()->json(['success' => true]);
     }
 
     /**

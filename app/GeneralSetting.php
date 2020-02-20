@@ -22,9 +22,9 @@ class GeneralSetting extends Model
         return $generalSetting;
     }
 
-    public function edit($fields)
+    public function edit($value)
     {
-        $this->fill($fields);
+        $this->value = $value;
         $this->save();
         return $this;
     }

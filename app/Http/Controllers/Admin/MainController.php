@@ -8,6 +8,7 @@ use App\Company;
 use App\Product;
 use App\Category;
 use Carbon\Carbon;
+use App\GeneralSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -37,6 +38,16 @@ class MainController extends Controller
                 'companies' => $companies,
                 'categories' => $categories,
             ]
+        ], 200);
+    }
+
+
+    public function getFromGeneralSetting(Request $request)
+    {
+        $setting = GeneralSetting::where('key', $request->key)->first();
+        
+        return response()->json([
+            'result' => $setting
         ], 200);
     }
 }
