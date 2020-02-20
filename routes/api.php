@@ -96,4 +96,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
 
     Route::get('/adminFeedback', 'AdminFeedbackController@index');
     Route::delete('/adminFeedbackDestroy/{id}', 'AdminFeedbackController@destroy');
+
+    
+    Route::apiResource('/deliveryTime', 'DeliveryTimeController');
+    Route::post('/deliveryTimeUpdate', 'DeliveryTimeController@update');
 });

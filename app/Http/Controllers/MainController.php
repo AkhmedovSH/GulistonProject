@@ -46,7 +46,7 @@ class MainController extends Controller
 
             $dateTimeTable[$i]['times'] = $times; 
         }
-
+        
         return response()->json(
             [
                 'result' => $dateTimeTable
