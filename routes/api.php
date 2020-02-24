@@ -21,6 +21,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/userAddress', 'UserController@userAddress');
     Route::post('/userAddressAdd', 'UserController@userAddressAdd');
     Route::post('/userAddressUpdate', 'UserController@userAddressUpdate');
+    Route::post('/userAddressDelete/{id}', 'UserController@userAddressDelete');
     Route::post('/userRequestToAdmin', 'UserController@userRequestToAdmin');
     Route::delete('/userDestroy', 'UserController@destroy');
 
