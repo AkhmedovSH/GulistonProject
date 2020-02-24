@@ -23,14 +23,18 @@ class MainController extends Controller
             $dateTimeTable[$i] = [];
             $times = $timesFromDB;
 
-            $dateTimeTable[$i]['date'] = Carbon::now()->addDays($i)->format('d-m-Y');
+            $dateTimeTable[$i]['date'] = Carbon::now()->addDays($i)->format('Y-m-d');
             $dateTimeTable[$i]['monthName'] = Carbon::now()->addDays($i)->format('F');
             $dateTimeTable[$i]['fullDate'] = Carbon::now()->addDays($i);
             $dateTimeTable[$i]['is_active'] = true;
 
             foreach ($deliveryClosedDays as $key => $val) {
                 if($deliveryClosedDays[$key]['date'] == $dateTimeTable[$i]['date']){
-                    $dateTimeTable[$i]['is_active'] = false;
+
+                    if($deliveryClosedDays[$key]['delivery_time_ids'] == null){
+                        $dateTimeTable[$i]['is_active'] = false;
+                    }
+                    
 
                     $delivery_time_ids = json_decode($deliveryClosedDays[$key]['delivery_time_ids']);
                     if($delivery_time_ids != null)
