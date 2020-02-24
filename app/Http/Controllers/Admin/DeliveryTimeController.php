@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DeliveryTime;
 use App\GeneralSetting;
 use Illuminate\Http\Request;
 use App\DeliveryClosedDateTime;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class DeliveryTimeController extends Controller
 {
@@ -20,6 +22,15 @@ class DeliveryTimeController extends Controller
         
         return response()->json([
             'result' => $deliveryClosedTimes
+        ], 200);
+    }
+
+    public function deliveryTimes()
+    {
+        $deliveryTimes = DeliveryTime::orderBy('id', 'DESC')->get();
+        
+        return response()->json([
+            'result' => $deliveryTimes
         ], 200);
     }
 
@@ -41,8 +52,18 @@ class DeliveryTimeController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'date' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
         $deliveryClosedTime = DeliveryClosedDateTime::add($request->all());
-        $deliveryClosedTime->add($request->all());
         
         return response()->json([
             'result' => $deliveryClosedTime

@@ -100,7 +100,9 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::delete('/adminFeedbackDestroy/{id}', 'AdminFeedbackController@destroy');
 
     
-    Route::apiResource('/deliveryTime', 'DeliveryTimeController');
-    Route::post('/deliveryTimeUpdate', 'DeliveryTimeController@update');
+    Route::apiResource('/deliveryClosedTime', 'DeliveryTimeController');
+    Route::post('/deliveryClosedTimeUpdate', 'DeliveryTimeController@update');
+
+    Route::get('/deliveryTimes', 'DeliveryTimeController@deliveryTimes');
     Route::post('/setDeliveryMonthDays', 'DeliveryTimeController@setDeliveryMonthDays');
 });

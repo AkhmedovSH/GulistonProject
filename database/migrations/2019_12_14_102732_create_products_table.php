@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->double('price', 8, 2)->default(0.00);
             $table->integer('discount')->default(0);
+            $table->string('unit')->nullabe();
+            $table->double('increment', 8)->nullabe();
             $table->string('image')->nullable();
             $table->text('images')->nullable();
             $table->boolean('available')->default(1);

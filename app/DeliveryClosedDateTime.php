@@ -22,6 +22,13 @@ class DeliveryClosedDateTime extends Model
     {
         $deliveryClosedDateTime = new static;
         $deliveryClosedDateTime->fill($fields);
+
+        if (!empty($fields['delivery_time_ids'])) {
+            $deliveryClosedDateTime->delivery_time_ids = $fields['delivery_time_ids'];
+        }else{
+            $deliveryClosedDateTime->delivery_time_ids = NULL;
+        }
+        
         $deliveryClosedDateTime->save();
         return $deliveryClosedDateTime;
     }
