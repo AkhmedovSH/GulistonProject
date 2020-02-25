@@ -7,9 +7,19 @@ use App\DeliveryTime;
 use App\GeneralSetting;
 use Illuminate\Http\Request;
 use App\DeliveryClosedDateTime;
+use Illuminate\Support\Facades\Redis;
 
 class MainController extends Controller
 {
+    public function redis_test(Request $request){
+        try{
+            $redis=Redis::connect('127.0.0.1',3306);
+            return response('redis working');
+        }catch(\Predis\Connection\ConnectionException $e){
+            return response('error connection redis');
+        }
+    }
+    
     public function deliveryTable()
     {
         $setting = GeneralSetting::where('key', 'maxDays')->first();
