@@ -19,10 +19,11 @@ class TaxiOrderEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public $user;
-    public function __construct($user)
+    public $name;
+
+    public function __construct($name)
     {
-        $this->user = $user;
+        $this->name = $name;
 
         $this->dontBroadcastToCurrentUser();
     }
@@ -34,6 +35,6 @@ class TaxiOrderEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('taxi');
+        return new Channel('taxi');
     }
 }

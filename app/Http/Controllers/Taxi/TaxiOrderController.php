@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 
 class TaxiOrderController extends Controller
 {
-    public function index(Request $request){
-        TaxiOrderEvent::dispatch($request->user);
+    public function index($name){
+        $event = new TaxiOrderEvent($name);
+        event($event);
     }
+
 }

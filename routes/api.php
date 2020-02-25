@@ -9,7 +9,11 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
 });
 
 
+
 Route::group(['middleware' => ['cors']], function () {
+
+    Route::get('/testbroadcast/{name}', 'Taxi\TaxiOrderController@index');
+
     Route::get('/deliveryTable', 'MainController@deliveryTable');
     Route::post('/getDirections', 'MainController@getDirections');
 
