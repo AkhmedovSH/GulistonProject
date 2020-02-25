@@ -56,4 +56,28 @@ class MainController extends Controller
                 'result' => $dateTimeTable
             ], 200);
     }
+
+    public function getDirections(Request $request){
+        $response = $this->curlRequest($payload);
+
+        return response()->json(
+            [
+                'result' => $response
+            ], 200);
+    }
+
+    public function curlRequest($payload){
+        $ch = curl_init("https://maps.googleapis.com/maps/api/directions/json?origin=41.32322099374842,69.2597983404994&destination=41.32056781558941,69.26212817430496&mode=driving&key=AIzaSyCJt4zV6nykDFFUXcVFqXH6EuhcX3e5kWQ");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $body = curl_exec($ch);
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+
+        $body = substr($body, $headerSize);
+        $response = json_decode($body);
+        curl_close($ch);
+
+        return $response;
+    }
 }

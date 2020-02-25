@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderTaxi
+class TaxiOrderEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,9 +19,13 @@ class OrderTaxi
      *
      * @return void
      */
-    public function __construct()
+    public $name;
+
+    public function __construct($name)
     {
-        //
+        $this->name = $name;
+
+        $this->dontBroadcastToCurrentUser();
     }
 
     /**
@@ -31,6 +35,6 @@ class OrderTaxi
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('taxi');
     }
 }
