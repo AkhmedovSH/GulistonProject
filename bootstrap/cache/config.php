@@ -126,7 +126,7 @@
   ),
   'broadcasting' => 
   array (
-    'default' => 'redis',
+    'default' => 'log',
     'connections' => 
     array (
       'pusher' => 
@@ -158,7 +158,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'redis',
+    'default' => 'file',
     'stores' => 
     array (
       'apc' => 
@@ -178,7 +178,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/var/www/site/storage/framework/cache/data',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -342,12 +342,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/site/storage/app',
+        'root' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/var/www/site/storage/app/public',
+        'root' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\app/public',
         'url' => 'https://dolphindelivery.uz/storage',
         'visibility' => 'public',
       ),
@@ -429,13 +429,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/var/www/site/storage/logs/laravel.log',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/var/www/site/storage/logs/laravel.log',
+        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -504,7 +504,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/var/www/site/resources/views/vendor/mail',
+        0 => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\resources\\views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -579,11 +579,11 @@
   ),
   'session' => 
   array (
-    'driver' => 'redis',
+    'driver' => 'file',
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/var/www/site/storage/framework/sessions',
+    'files' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -603,9 +603,9 @@
   array (
     'paths' => 
     array (
-      0 => '/var/www/site/resources/views',
+      0 => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\resources\\views',
     ),
-    'compiled' => '/var/www/site/storage/framework/views',
+    'compiled' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework\\views',
   ),
   'flare' => 
   array (

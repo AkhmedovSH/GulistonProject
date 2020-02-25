@@ -14,6 +14,14 @@ error: some text
 success: some text
 result: some data
 
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+QUEUE_DRIVER=sync
+
+
 when project done add auth:api middleware to routes
 
 /*  
