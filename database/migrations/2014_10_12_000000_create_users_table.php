@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('surname')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable();
+            $table->double('amount', 8, 2)->default(0.00);
             $table->integer('type')->unsigned()->default(0);
             $table->string('last_login')->nullable();
             $table->rememberToken()->nullable();
