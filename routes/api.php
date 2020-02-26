@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
+Route::group(['middleware' => ['cors'], 'prefix' => 'auth'], function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/logout', 'AuthController@logout');
     Route::post('/refresh', 'AuthController@refresh');
@@ -8,20 +8,17 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth',], function () {
     //Route::post('/register', 'AuthController@register');
 });
 
-
-
 Route::group(['middleware' => ['cors']], function () {
-
-    Route::get('/testbroadcast/{name}', 'Taxi\TaxiOrderController@index');
     Route::get('/redis_test', 'MainController@redis_test');
     
-    Route::post('/createOrderTaxi', 'Taxi\TaxiOrderController@createOrderTaxi');
-    Route::post('/acceptOrderTaxi', 'Taxi\TaxiOrderController@acceptOrderTaxi');
-    
+    Route::get('/getOrdersTaxi', 'Taxi\OrderTaxiController@getOrdersTaxi');
+    Route::get('/getTaxiDriverOrders', 'Taxi\OrderTaxiController@getTaxiDriverOrders');
+    Route::post('/createOrderTaxi', 'Taxi\OrderTaxiController@createOrderTaxi');
+    Route::post('/acceptOrderTaxi', 'Taxi\OrderTaxiController@acceptOrderTaxi');
+    Route::post('/getDirection', 'Taxi\OrderTaxiController@getDirection');
 
     Route::get('/deliveryTable', 'MainController@deliveryTable');
-    Route::post('/getDirections', 'MainController@getDirections');
-
+    
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
     Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
@@ -39,7 +36,6 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/userCardUpdate', 'UserCardController@update');
 
     Route::get('/getCategories', 'CategoryController@getCategories');
-    
     Route::get('/getCategoryProducts/{category_id}', 'CategoryController@getCategoryProducts');
     Route::get('/getCompanyCategoryProducts/{company_category_id}', 'CategoryController@getCompanyCategoryProducts');
 

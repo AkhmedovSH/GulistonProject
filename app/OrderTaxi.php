@@ -15,6 +15,16 @@ class OrderTaxi extends Model
         'price', 'order_accept_time', 'latitude', 'longitude'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function taxi_driver()
+    {
+        return $this->belongsTo(User::class, 'taxi_user_id', 'id');
+    }
+
     
     public static function add($fields)
     {

@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TaxiOrderEvent implements ShouldBroadcast
+class OrderTaxiAcceptEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,13 +19,12 @@ class TaxiOrderEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public $name;
 
-    public function __construct($name)
+    public $result;
+
+    public function __construct($orderTaxiAccepted)
     {
-        $this->name = $name;
-
-        $this->dontBroadcastToCurrentUser();
+        $this->result = $orderTaxiAccepted;
     }
 
     /**

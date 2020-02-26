@@ -51,3 +51,7 @@ when project done add auth:api middleware to routes
         ->join('orders','products.id','=','orders.product_id')
         ->get(); 
 */
+
+
+"authHost": "http://dolphindelivery.uz/",
+"authHost": "http://localhost/",
