@@ -67,8 +67,8 @@ class MainController extends Controller
             ], 200);
     }
 
-    public function getDirections(Request $request){
-        $response = $this->curlRequest($payload);
+    public function getDirections($data){
+        $response = $this->curlRequest($data);
 
         return response()->json(
             [

@@ -19,9 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
+            $table->text('additional_info')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable();
-            $table->double('amount', 8, 2)->default(0.00);
+            $table->double('balance', 8, 2)->default(0.00);
             $table->integer('type')->unsigned()->default(0);
             $table->string('last_login')->nullable();
             $table->rememberToken()->nullable();

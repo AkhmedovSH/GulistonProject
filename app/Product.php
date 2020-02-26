@@ -67,6 +67,9 @@ class Product extends Model
     {
         if ($attributes == null) { return; }
         
+        $this->hasAttributes = 1;
+        $this->save();
+
         $decodedAttributes = json_decode($attributes, true);
 
         foreach($decodedAttributes as $key => $value){            

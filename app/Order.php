@@ -70,7 +70,7 @@ class Order extends Model
         foreach ($orders as $order) {
            $order->status = $order::STATUS_ORDERED;
            $order->address_id = $request->address_id;
-           $order->order_number = $order->id . $order->product_id;
+           $order->order_number = 'OID' . $order->id . '_PID' . $order->product_id;
            $order->delivery_date = $request->delivery_date;
            $order->delivery_time = $request->delivery_time;
            $order->save();

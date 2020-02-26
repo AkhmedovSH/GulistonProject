@@ -13,12 +13,13 @@ class User extends Authenticatable implements JWTSubject
 {
     /* User types column type
             0 - simple user
-            1 - admin
+            1 - taxi
+            2 - admin
     */
     use Notifiable;
 
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'type'
+        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'type', 'balance', 'additional_info'
     ];
 
     protected $hidden = [
@@ -27,11 +28,17 @@ class User extends Authenticatable implements JWTSubject
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'additional_info' => 'array'
     ];
 
     public function orders()
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
+    }
+
+    public function ordersTaxi()
+    {
+        return $this->hasMany(OrderTaxi::class, 'user_id', 'id');
     }
 
     public function userFavorites()
@@ -54,15 +61,31 @@ class User extends Authenticatable implements JWTSubject
         return isset($value) ? secure_asset('uploads/users/' . $value) : null;
     }
 
+    public static function addTaxiDriver($fields)
+    {
+        $user = new static;
+        $user->fill($fields);
+        if(isset($fields['password'])){
+            $user->password = Hash::make($fields['password']);
+        }
+
+        $additionalInfo = [
+            'car_info' => $fields['car_info'],
+            'car_number' => $fields['car_number'],
+        ];
+
+        $user->additional_info = $additionalInfo;
+        $user->save();
+
+        return $user;
+    }
+
     public function edit($fields)
     {
         $this->fill($fields);
-
-        
         if(isset($fields['password'])){
             $this->password = Hash::make($fields['password']);
         }
-
         $this->save();
     }
 

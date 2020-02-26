@@ -14,6 +14,10 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('/testbroadcast/{name}', 'Taxi\TaxiOrderController@index');
     Route::get('/redis_test', 'MainController@redis_test');
+    
+    Route::post('/createOrderTaxi', 'Taxi\TaxiOrderController@createOrderTaxi');
+    Route::post('/acceptOrderTaxi', 'Taxi\TaxiOrderController@acceptOrderTaxi');
+    
 
     Route::get('/deliveryTable', 'MainController@deliveryTable');
     Route::post('/getDirections', 'MainController@getDirections');
