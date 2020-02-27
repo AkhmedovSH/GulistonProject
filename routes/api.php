@@ -19,6 +19,7 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('/deliveryTable', 'MainController@deliveryTable');
     
+    Route::post('/setFirebaseToken', 'UserController@setFirebaseToken');
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
     Route::post('/userFavoriteAdd', 'UserController@userFavoriteAdd');
@@ -74,6 +75,7 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::get('/mainProjectStatistics', 'MainController@ProjectStatistics');
     Route::post('/getFromGeneralSetting', 'MainController@getFromGeneralSetting');
     Route::apiResource('/user', 'UserController');
+    Route::post('/userSendNotificationToOne', 'UserController@userSendNotificationToOne');
 
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
     Route::get('/categoryPluck', 'CategoryController@categoryPluck');

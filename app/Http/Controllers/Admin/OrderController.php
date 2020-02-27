@@ -49,37 +49,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required'],
-            'price' => ['required'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'error' => $validator->errors()->first()
-                ], 400);
-        }
-       
-        $order = Order::add($request->all());
-        $order->uploadImage($request->file('image'));
-        $order->uploadMultipleImages($request->file('images'));
-        
-        return response()->json([
-            'result' => $order
-        ], 200);
-    }
-
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -91,37 +60,6 @@ class OrderController extends Controller
         return response()->json([
             'result' => $order
         ], 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:255'],
-            'price' => ['required'],
-            'image' => ['nullable'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'error' => $validator->errors()->first()
-                ], 400);
-        }
-       
-        $order = Order::find($id);
-        $order->edit($request->all());
-        $order->uploadImage($request->file('image'));
-        
-        return response()->json([
-            'result' => $order
-            ], 200);
     }
 
     /**

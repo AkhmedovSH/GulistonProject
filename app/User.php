@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'type', 'balance', 'additional_info'
+        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'type', 'balance', 'additional_info', 'firebase_token'
     ];
 
     protected $hidden = [
@@ -87,6 +87,14 @@ class User extends Authenticatable implements JWTSubject
             $this->password = Hash::make($fields['password']);
         }
         $this->save();
+        return $this;
+    }
+
+    public function setFirebaseToken($token)
+    {
+        $this->firebase_token = $token;
+        $this->save();
+        return $this;
     }
 
     public function getJWTIdentifier()
