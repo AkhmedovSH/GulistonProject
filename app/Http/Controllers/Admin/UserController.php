@@ -62,7 +62,11 @@ class UserController extends Controller
     }
 
     public function createCardPayload($user, $request){
-        return [
+        return array(
+            'to' => $user['firebase_token'],
+            'notification' => array('title' => $request->title,'body' => $request->body),
+        );
+        /* return [
             'message' => [
                 'token' => $user['firebase_token'],
                 'notification' =>[
@@ -70,13 +74,13 @@ class UserController extends Controller
                     'title' => $request->title,
                 ],
             ],
-        ];
+        ]; */
     }
 
     public function curlRequest($payload){
-        $apiKey = 'AAAAaj29AhE:APA91bHYxtCHLO3AkxvPouGemyBD5y-QRHQ2tm5JhQWHNhBeLW9DYzBaUz0Bg2UyIGv1SrBoEet86voA6yfX62bhbVTWMqksJZPQLjpbgMy1F-pvScmuB2WgBe_y6qEVZ4AXAFImzvby';
-        $headers = ['Authorization: key='. $apiKey, 'Content-Type: application/json'];
-        $ch = curl_init("https://fcm.googleapis.com/v1/projects/myproject-b5ae1/messages:send");
+        $apiKey = 'AIzaSyBYd6E0GXuIZ1m5t-SCj4gjd54iWhqU8M0';
+        $headers = array('Authorization: key='.$apiKey, 'Content-Type: application/json');
+        $ch = curl_init("https://fcm.googleapis.com/fcm/send");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
         curl_setopt($ch, CURLOPT_HEADER, 1);
