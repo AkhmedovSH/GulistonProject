@@ -48,16 +48,23 @@ class UserController extends Controller
         $user = User::where('phone', $request->phone)->first();
         $payload = $this->createCardPayload($user, $request);
         $response = $this->curlRequest($payload);
-
-        return response()->json([
+        
+        if(isset($response->error)){
+          return response()->json([
+            'error' => $response->error->message
+            ], 400);
+        }else{
+          return response()->json([
             'result' => $response
             ], 200);
+        }
+        
     }
 
     public function createCardPayload($user, $request){
         return [
             'message' => [
-                'token' => $user->firebase_token,
+                'token' => $user['firebase_token'],
                 'notification' =>[
                     'body' => $request->body,
                     'title' => $request->title,
