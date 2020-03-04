@@ -16,8 +16,10 @@ class CreateOrderTaxisTable extends Migration
         Schema::create('order_taxis', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('order_number')->nullable();
-            $table->string('longitude');
-            $table->string('latitude');
+            $table->string('fromLongitude')->nullable();
+            $table->string('fromLatitude')->nullable();
+            $table->string('toLongitude')->nullable();
+            $table->string('toLatitude')->nullable();
             $table->integer('taxi_user_id')->nullable();
             $table->integer('user_id');
             $table->integer('status')->default(0);
