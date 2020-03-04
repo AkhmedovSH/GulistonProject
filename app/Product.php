@@ -82,18 +82,18 @@ class Product extends Model
         
     }
 
-    public function uploadMultipleImages($images){
+    public function uploadMultipleAttributeImages($images){
         
         if ($images == null) { return; }
 
-        $this->removeMultipleImages();
+        $this->removeMultipleAttributeImages();
 
         $arrayItemsCount = count($images);
         $i = 0;
         $imgConcatenate = ";";
         foreach($images as $key => $image)
         {
-            $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
+            $filename = "productID_" . $this->id . "_randomAttribute_" . rand(1, 1000000). '.' . $image->extension();
             $image->move('uploads/products/', $filename);
             if(++$i === $arrayItemsCount) {
                 $imgConcatenate = $imgConcatenate . $filename;
@@ -106,9 +106,34 @@ class Product extends Model
         $this->save();
     }
 
+    public function uploadMultipleImages($images){
+        if ($images == null) { return; }
+        
+        $this->removeMultipleImages();
+        $arrayItemsCount = count($images);
+        $i = 0;
+        $imgConcatenate = ";";
+       
+        foreach($images as $key => $image)
+        {
+            
+            $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
+            $image->move('uploads/products/', $filename);
+            if(++$i === $arrayItemsCount) {
+                $imgConcatenate = $imgConcatenate . $filename;
+            }else{
+                $imgConcatenate = $imgConcatenate . $filename . ";";
+            }
+        }
+        
+        $this->diff_images = $imgConcatenate;
+        $this->save();
+    }
+
     public function remove()
     {
         $this->removeImage();
+        $this->removeMultipleAttributeImages();
         $this->removeMultipleImages();
         $this->removeFromUserFavorites();
         $this->delete();
@@ -150,9 +175,20 @@ class Product extends Model
         $this->save();
     }
 
-    public function removeMultipleImages(){
+    public function removeMultipleAttributeImages(){
         if ($this->images != null){
             $imagesArray = explode(";",$this->images);
+            
+            for($i = 1; $i < count($imagesArray); $i++){
+                unlink('uploads/products/'. $imagesArray[$i]);
+            }
+        }
+    }
+    
+    public function removeMultipleImages(){
+        
+        if ($this->diff_images != null){
+            $imagesArray = explode(";",$this->diff_images);
             
             for($i = 1; $i < count($imagesArray); $i++){
                 unlink('uploads/products/'. $imagesArray[$i]);

@@ -23,7 +23,7 @@ class CreateOrderTaxisTable extends Migration
             $table->integer('taxi_user_id')->nullable();
             $table->integer('user_id');
             $table->integer('status')->default(0);
-            $table->double('price', 8, 2)->default(0.00);
+            $table->double('price', 8,0)->default(0);
             $table->string('order_accept_time')->nullable();
             $table->timestamps();
         });

@@ -43,4 +43,58 @@ class UserController extends Controller
             'result' => $user
             ], 200);
     }
+
+    public function userSendNotificationToOne(Request $request){
+        $user = User::where('phone', $request->phone)->first();
+        $payload = $this->createCardPayload($user, $request);
+        $response = $this->curlRequest($payload);
+        
+        if(isset($response->error)){
+          return response()->json([
+            'error' => $response->error->message
+            ], 400);
+        }else{
+          return response()->json([
+            'result' => $response
+            ], 200);
+        }
+        
+    }
+
+    public function createCardPayload($user, $request){
+        return array(
+            'to' => $user['firebase_token'],
+            'notification' => array('title' => $request->title,'body' => $request->body),
+        );
+        /* return [
+            'message' => [
+                'token' => $user['firebase_token'],
+                'notification' =>[
+                    'body' => $request->body,
+                    'title' => $request->title,
+                ],
+            ],
+        ]; */
+    }
+
+    public function curlRequest($payload){
+        $apiKey = 'AIzaSyBYd6E0GXuIZ1m5t-SCj4gjd54iWhqU8M0';
+        $headers = array('Authorization: key='.$apiKey, 'Content-Type: application/json');
+        $ch = curl_init("https://fcm.googleapis.com/fcm/send");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $body = curl_exec($ch);
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+
+        $body = substr($body, $headerSize);
+        $response = json_decode($body);
+        curl_close($ch);
+
+        return $response;
+    }
 }

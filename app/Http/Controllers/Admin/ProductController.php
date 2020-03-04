@@ -47,12 +47,13 @@ class ProductController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-
+       
         $product = Product::add($request->all());
         $product->addAttributes($request->attribute);
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
-        $product->uploadMultipleImages($request->file('attributeImages'));
+        $product->uploadMultipleImages($request->file('diff_images'));
+        $product->uploadMultipleAttributeImages($request->file('attributeImages'));
         
         return response()->json([
             'result' => $product
@@ -103,7 +104,7 @@ class ProductController extends Controller
         $product->edit($request->all());
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
-        $product->uploadMultipleImages($request->file('attributeImages'));
+        $product->uploadMultipleAttributeImages($request->file('attributeImages'));
 
         return response()->json([
             'result' => $product

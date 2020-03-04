@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function setFirebaseToken(Request $request){
+        
+        $user = User::findOrFail(auth()->user()->id);
+        $user = $user->setFirebaseToken($request->token);
+
+        return response()->json([
+            'result' => $user
+            ], 200);
+    }
+
     public function userShow(){
         
         $user = User::findOrFail(auth()->user()->id);
