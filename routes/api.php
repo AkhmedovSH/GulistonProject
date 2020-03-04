@@ -5,6 +5,8 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth'], function () {
     Route::post('/logout', 'AuthController@logout');
     Route::post('/refresh', 'AuthController@refresh');
     Route::post('/me', 'AuthController@me');
+
+    Route::post('/checkAdmin', 'AuthController@checkAdmin');
     //Route::post('/register', 'AuthController@register');
 });
 
