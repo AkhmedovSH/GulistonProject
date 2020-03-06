@@ -11,9 +11,11 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth'], function () {
     //Route::post('/register', 'AuthController@register');
 });
 
+
+
 Route::group(['middleware' => ['cors']], function () {
     Route::get('/redis_test', 'MainController@redis_test');
-    
+   
     Route::get('/getOrdersTaxi', 'Taxi\OrderTaxiController@getOrdersTaxi');
     Route::get('/getTaxiDriverOrders', 'Taxi\OrderTaxiController@getTaxiDriverOrders');
     Route::post('/createOrderTaxi', 'Taxi\OrderTaxiController@createOrderTaxi');

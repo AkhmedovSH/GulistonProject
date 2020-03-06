@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'loginTaxi', 'checkAdmin']]);
     }
 
     /**
@@ -82,7 +82,7 @@ class AuthController extends Controller
     }
 
     public function loginTaxi(Request $request){
-        
+       
         $validator = Validator::make($request->all(), [
             'phone' => ['required', 'min:12', 'max:12'],
             'password' => ['required', 'min:3'],
@@ -96,9 +96,8 @@ class AuthController extends Controller
         }
 
         $credentials = request(['phone', 'password']);
-
         if (! $token = auth()->attempt($credentials)) {
-
+           
             //If login not found register user
             $userWithLogin = User::where('phone', $credentials['phone'])->first();
             if($userWithLogin == null){
@@ -117,15 +116,22 @@ class AuthController extends Controller
             $user = User::where('phone', $credentials['phone'])
             ->where('type', 1)
             ->where('password',  Hash::make($credentials['password']))->first();
+            
             if($user){
                 $token = auth()->attempt($credentials);
             }         
         }
-
-        $user = auth()->user();
-        $user->last_login = Carbon::now();
-        $user->save();
-        return $this->respondWithToken($token);
+        if(auth()->user()->type == 1){
+            $user = auth()->user();
+            $user->last_login = Carbon::now();
+            $user->save();
+            return $this->respondWithToken($token);
+        }else{
+            return response()->json([
+                'error' => 'Бу фойдаланувчи таксист эмас'
+                ], 400);
+        }
+        
     }
 
     /**
@@ -187,12 +193,17 @@ class AuthController extends Controller
     {
 
         $user = User::where('phone', $request->phone)
-            ->where('password',  Hash::make($request->password))
             ->where('type', 2)->first();
-            
-        return response()->json(
-            [
-                'result' => $user
-            ], 200);
+        if($user != null){
+            return response()->json(
+                [
+                    'result' => $user
+                ], 200);
+        }else{
+            return response()->json(
+                [
+                    'error' => 'Телефон раками хато, йоки сиз админ эмассиз!'
+                ], 400);
+        }
     }
 }
