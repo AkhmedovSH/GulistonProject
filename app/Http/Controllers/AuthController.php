@@ -81,6 +81,53 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function loginTaxi(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required', 'min:12', 'max:12'],
+            'password' => ['required', 'min:3'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'error' => $validator->errors()->first()
+                ], 400);
+        }
+
+        $credentials = request(['phone', 'password']);
+
+        if (! $token = auth()->attempt($credentials)) {
+
+            //If login not found register user
+            $userWithLogin = User::where('phone', $credentials['phone'])->first();
+            if($userWithLogin == null){
+                return response()->json([
+                    'error' => 'Фойдаланувчи топилмади'
+                    ], 400);
+            }
+
+            $userWithPassword = User::where('password',  Hash::make($credentials['password']))->first();
+            if($userWithLogin != null && $userWithPassword == null){
+                return response()->json([
+                    'error' => 'Паролингиз хато.'
+                    ], 400);
+            }
+            
+            $user = User::where('phone', $credentials['phone'])
+            ->where('type', 1)
+            ->where('password',  Hash::make($credentials['password']))->first();
+            if($user){
+                $token = auth()->attempt($credentials);
+            }         
+        }
+
+        $user = auth()->user();
+        $user->last_login = Carbon::now();
+        $user->save();
+        return $this->respondWithToken($token);
+    }
+
     /**
      * Get the authenticated User.
      *

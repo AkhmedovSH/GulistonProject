@@ -178,7 +178,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework/cache/data',
+        'path' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -342,12 +342,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\app',
+        'root' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\app/public',
+        'root' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\app/public',
         'url' => 'https://dolphindelivery.uz/storage',
         'visibility' => 'public',
       ),
@@ -429,13 +429,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\logs/laravel.log',
+        'path' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\logs/laravel.log',
+        'path' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -504,7 +504,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\resources\\views/vendor/mail',
+        0 => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\resources\\views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -583,7 +583,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework/sessions',
+    'files' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -603,9 +603,9 @@
   array (
     'paths' => 
     array (
-      0 => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\resources\\views',
+      0 => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\resources\\views',
     ),
-    'compiled' => 'D:\\PHP\\OSPanel\\domains\\dolphindelivery1.uz\\storage\\framework\\views',
+    'compiled' => 'C:\\D\\PHP\\OSPanel\\domains\\GulistonProject\\storage\\framework\\views',
   ),
   'flare' => 
   array (
