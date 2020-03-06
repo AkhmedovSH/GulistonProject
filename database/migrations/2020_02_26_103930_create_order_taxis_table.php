@@ -20,6 +20,8 @@ class CreateOrderTaxisTable extends Migration
             $table->string('fromLatitude')->nullable();
             $table->string('toLongitude')->nullable();
             $table->string('toLatitude')->nullable();
+	    $table->string('startAddress')->nullable();
+            $table->string('destinationAddress')->nullable();
             $table->integer('taxi_user_id')->nullable();
             $table->integer('user_id');
             $table->integer('status')->default(0);

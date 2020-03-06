@@ -13,7 +13,7 @@ class OrderTaxi extends Model
     protected $fillable = [
         'order_number', 'taxi_user_id', 'user_id', 'status',
         'price', 'order_accept_time', 'fromLongitude', 'fromLatitude',
-        'toLongitude', 'toLatitude'
+        'toLongitude', 'toLatitude', 'startAddress', 'destinationAddress',
     ];
 
     public function user()
