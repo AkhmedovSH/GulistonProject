@@ -134,4 +134,18 @@ class AuthController extends Controller
                 ]
             ], 200);
     }
+
+
+    public function checkAdmin(Request $request)
+    {
+
+        $user = User::where('phone', $request->phone)
+            ->where('password',  Hash::make($request->password))
+            ->where('type', 2)->first();
+            
+        return response()->json(
+            [
+                'result' => $user
+            ], 200);
+    }
 }
