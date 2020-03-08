@@ -45,7 +45,7 @@ class Category extends Model
     public function edit($fields)
     {
         $this->fill($fields);
-        if($fields['position'] != 'null'){
+        if($fields['position'] != 0){
             $category->position = $fields['position'];
         }
         $this->save();
