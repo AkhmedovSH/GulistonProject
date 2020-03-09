@@ -43,7 +43,6 @@ class Product extends Model
     {
         $product = new static;
         $product->fill($fields);
-        $product->hasAttributes = isset($fields['attribute']) ? 1 : 0;
         $product->save();
 
         return $product;
@@ -65,8 +64,8 @@ class Product extends Model
 
     public function addAttributes($attributes)
     {
-        if ($attributes == null) { return; }
         
+        if ($attributes == null || empty($attributes) || $attributes == "[]") { return; }
         $this->hasAttributes = 1;
         $this->save();
 
