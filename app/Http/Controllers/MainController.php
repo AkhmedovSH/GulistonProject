@@ -19,10 +19,20 @@ class MainController extends Controller
             return response('error connection redis');
         }
     }
+
+    public function getGeneralSetting()
+    {
+        $settings = GeneralSetting::all();
+        
+        return response()->json([
+            'result' => $settings
+        ], 200);
+    }
+
     
     public function deliveryTable()
     {
-        $setting = GeneralSetting::where('key', 'maxDays')->first();
+        $setting = GeneralSetting::where('key', 'max_days')->first();
 
         $adminDays = (int)$setting->value;
 

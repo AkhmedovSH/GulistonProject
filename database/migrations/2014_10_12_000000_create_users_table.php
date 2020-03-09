@@ -19,7 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
-            $table->text('additional_info')->nullable();
+            $table->string('car_info')->nullable();
+            $table->string('car_number')->nullable();
+            $table->string('additional_phone')->nullable();
             $table->string('email')->nullable();
             $table->string('image')->nullable();
             $table->text('firebase_token')->nullable();

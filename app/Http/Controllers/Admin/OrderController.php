@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,19 +29,28 @@ class OrderController extends Controller
 
     public function orderSearch(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'order_number' => ['required'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                [
-                    'error' => $validator->errors()->first()
-                ], 400);
+        $orders = Order::query();
+        
+        if ($request->order_number) {
+            $orders = $orders->where('order_number', 'LIKE', "%$request->order_number%");
         }
 
-        $orders =  Order::where('order_number', 'LIKE', "%$request->order_number%")
-        ->with(['user','product'])->paginate(25);
+        if ($request->phone) {
+            $user = User::where('phone', $request->phone)->first();
+            if($user != null){
+                $orders = $orders->where('user_id', $user->id);
+            }
+        }
+
+        if ($request->beginDate && $request->endDate) {
+            $orders = $orders->whereBetween('created_at', [$request->beginDate, $request->endDate]);
+        }
+
+        if ($request->beginDate) {
+            $orders = $orders->whereDate('created_at', $request->beginDate);
+        }
+
+        $orders = $orders->with(['user','product'])->paginate(25);
 
         return response()->json(
             [

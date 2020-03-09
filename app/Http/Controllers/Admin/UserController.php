@@ -20,6 +20,26 @@ class UserController extends Controller
             ], 200);
     }
 
+    public function show($id){
+        
+        $user = User::where('id',$id)
+        ->first();
+        
+        return response()->json([
+            'result' => $user
+            ], 200);
+    }
+
+    public function userUpdate(Request $request){
+        
+        $user = User::where('id', $request->id)->first();
+        $user = $user->edit($request->all());
+
+        return response()->json([
+            'result' => $user
+            ], 200);
+    }
+
 
     public function store(Request $request){
         
@@ -66,15 +86,6 @@ class UserController extends Controller
             'to' => $user['firebase_token'],
             'notification' => array('title' => $request->title,'body' => $request->body),
         );
-        /* return [
-            'message' => [
-                'token' => $user['firebase_token'],
-                'notification' =>[
-                    'body' => $request->body,
-                    'title' => $request->title,
-                ],
-            ],
-        ]; */
     }
 
     public function curlRequest($payload){

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class GeneralSetting extends Model
 {
     protected $fillable = [
-        'key', 'value', 
+        'title', 'key', 'value', 
     ];
 
     protected $hidden = [
@@ -22,9 +22,9 @@ class GeneralSetting extends Model
         return $generalSetting;
     }
 
-    public function edit($value)
+    public function edit($fields)
     {
-        $this->value = $value;
+        $this->fill($fields);
         $this->save();
         return $this;
     }

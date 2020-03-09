@@ -114,14 +114,15 @@ class AuthController extends Controller
             }
             
             $user = User::where('phone', $credentials['phone'])
-            ->where('type', 1)
-            ->where('password',  Hash::make($credentials['password']))->first();
+            ->whereIn('type', [1,2])
+            ->where('password',  Hash::make($credentials['password']))
+            ->first();
             
             if($user){
                 $token = auth()->attempt($credentials);
             }         
         }
-        if(auth()->user()->type == 1){
+        if(auth()->user()->type == 1 || auth()->user()->type == 2){
             $user = auth()->user();
             $user->last_login = Carbon::now();
             $user->save();

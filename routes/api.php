@@ -78,8 +78,9 @@ Route::group(['middleware' => ['cors']], function () {
 
 Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/mainProjectStatistics', 'MainController@ProjectStatistics');
-    Route::post('/getFromGeneralSetting', 'MainController@getFromGeneralSetting');
+    Route::post('/getGeneralSetting', 'MainController@getGeneralSetting');
     Route::apiResource('/user', 'UserController');
+    Route::post('/userUpdate', 'UserController@userUpdate');
     Route::post('/userSendNotificationToOne', 'UserController@userSendNotificationToOne');
 
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
@@ -117,5 +118,5 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::post('/deliveryClosedTimeUpdate', 'DeliveryTimeController@update');
 
     Route::get('/deliveryTimes', 'DeliveryTimeController@deliveryTimes');
-    Route::post('/setDeliveryMonthDays', 'DeliveryTimeController@setDeliveryMonthDays');
+    Route::post('/generalSettingUpdate', 'MainController@generalSettingUpdate');
 });

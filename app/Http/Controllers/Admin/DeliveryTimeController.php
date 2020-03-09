@@ -36,7 +36,7 @@ class DeliveryTimeController extends Controller
 
     public function setDeliveryMonthDays(Request $request)
     {
-        $setting = GeneralSetting::where('key', 'maxDays')->first();
+        $setting = GeneralSetting::where('key', 'max_days')->first();
         $setting->edit($request->day);
 
         return response()->json([

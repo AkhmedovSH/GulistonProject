@@ -19,7 +19,8 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'type', 'balance', 'additional_info', 'firebase_token'
+        'phone', 'name', 'email', 'password', 'surname', 'last_login',
+        'type', 'balance', 'car_info', 'car_number', 'additional_phone', 'firebase_token'
     ];
 
     protected $hidden = [
@@ -68,13 +69,6 @@ class User extends Authenticatable implements JWTSubject
         if(isset($fields['password'])){
             $user->password = Hash::make($fields['password']);
         }
-
-        $additionalInfo = [
-            'car_info' => $fields['car_info'],
-            'car_number' => $fields['car_number'],
-        ];
-
-        $user->additional_info = $additionalInfo;
         $user->save();
 
         return $user;
