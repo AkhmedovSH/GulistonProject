@@ -65,7 +65,7 @@ class Product extends Model
 
     public function addAttributes($attributes)
     {
-        if ($attributes == null) { return; }
+        if ($attributes == null || empty($attributes)) { return; }
         
         $this->hasAttributes = 1;
         $this->save();
