@@ -22,8 +22,7 @@ class UserController extends Controller
 
     public function show($id){
         
-        $user = User::where('id',$id)
-        ->first();
+        $user = User::find($id);
         
         return response()->json([
             'result' => $user
