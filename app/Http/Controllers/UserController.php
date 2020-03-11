@@ -23,10 +23,9 @@ class UserController extends Controller
             ], 200);
     }
 
-    public function userShow(){
-        
-        $user = User::findOrFail(auth()->user()->id);
-        
+    public function show($id)
+    
+        $user = User::find($id);
         return response()->json([
             'result' => $user
             ], 200);
