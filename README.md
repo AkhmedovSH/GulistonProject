@@ -58,4 +58,4 @@ when project done add auth:api middleware to routes
 
 
 
-55 23 * * * php /var/www/html/current/artisan schedule:run >> /dev/null 2>&1
+*/15 * * * * php /var/www/site/artisan schedule:run >> /dev/null 2>&1
