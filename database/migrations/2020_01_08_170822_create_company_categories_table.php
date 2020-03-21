@@ -18,7 +18,8 @@ class CreateCompanyCategoriesTable extends Migration
             $table->string('title');
             $table->integer('company_id')->unsigned()->default(0);
             $table->string('image')->nullable();
-            $table->integer('position')->unsigned()->nullable();
+            $table->integer('position')->unsigned()->default(0);
+            $table->integer('parent_id')->unsigned()->default(0);
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\OrderTaxi;
 use Carbon\Carbon;
 use App\DeliveryTime;
 use App\GeneralSetting;
@@ -12,12 +13,22 @@ use Illuminate\Support\Facades\Redis;
 class MainController extends Controller
 {
     public function redis_test(Request $request){
-        try{
+
+        $taxiOrders = OrderTaxi::where('status', 0)->get();
+        foreach($taxiOrders as $order){
+            $totalDuration = $order->created_at->diffInMinutes(Carbon::now());
+            dd($totalDuration, $order->created_at, Carbon::now());
+            if($totalDuration > 15){
+                $order->delete();
+            }
+        }
+
+        /* try{
             $redis=Redis::connect('127.0.0.1',3306);
             return response('redis working');
         }catch(\Predis\Connection\ConnectionException $e){
             return response('error connection redis');
-        }
+        } */
     }
 
     public function getGeneralSetting()

@@ -55,3 +55,7 @@ when project done add auth:api middleware to routes
 
 "authHost": "http://dolphindelivery.uz/",
 "authHost": "http://localhost/",
+
+
+
+55 23 * * * php /var/www/html/current/artisan schedule:run >> /dev/null 2>&1

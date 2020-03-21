@@ -8,7 +8,7 @@ use Intervention\Image\Facades\Image;
 class Company extends Model
 {
     protected $fillable = [
-        'title', 'description'
+        'title', 'description', 'address', 'phone'
     ];
 
     public function products()

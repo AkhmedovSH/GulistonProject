@@ -30,9 +30,6 @@ class CompanyCategory extends Model
     {
         $category = new static;
         $category->fill($fields);
-        if(isset($fields['position']) && $fields['position'] != 'null'){
-            $category->position = $fields['position'];
-        }
         $category->save();
 
         return $category;
@@ -41,9 +38,6 @@ class CompanyCategory extends Model
     public function edit($fields)
     {
         $this->fill($fields);
-        if(isset($fields['position']) && $fields['position'] != 'null'){
-            $this->position = $fields['position'];
-        }
         $this->save();
     }
 

@@ -28,6 +28,7 @@ class CreateProductsTable extends Migration
             $table->boolean('hasAttributes')->default(0);
             $table->text('parameters')->nullable()->comment('JSON array of parameters');
             $table->string('keywords')->nullable();
+            $table->string('bar_code')->nullable();
             $table->string('quantity_type')->default('piece');
             $table->integer('company_id')->nullable()->unsigned();
             $table->integer('company_category_id')->nullable()->unsigned();

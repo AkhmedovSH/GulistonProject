@@ -27,7 +27,7 @@ class DeliveryTimeController extends Controller
 
     public function deliveryTimes()
     {
-        $deliveryTimes = DeliveryTime::orderBy('id', 'DESC')->get();
+        $deliveryTimes = DeliveryTime::orderBy('id', 'ASC')->get();
         
         return response()->json([
             'result' => $deliveryTimes

@@ -51,7 +51,6 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/productAll', 'ProductController@productAll');
     Route::get('/product/{id}', 'ProductController@show');
     Route::get('/productTopHome', 'ProductController@productTopHome');
-    Route::post('/productSearch', 'ProductController@productSearch');
     Route::get('/productFamous', 'ProductController@productFamous');
     Route::get('/productDiscount', 'ProductController@productDiscount');
     Route::get('/productRandom', 'ProductController@productRandom');
@@ -79,10 +78,14 @@ Route::group(['middleware' => ['cors']], function () {
 
 Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/mainProjectStatistics', 'MainController@ProjectStatistics');
-    Route::post('/getGeneralSetting', 'MainController@getGeneralSetting');
     Route::apiResource('/user', 'UserController');
     Route::post('/userUpdate', 'UserController@userUpdate');
     Route::post('/userSendNotificationToOne', 'UserController@userSendNotificationToOne');
+
+    Route::get('/generalSetting', 'GeneralSettingController@index');
+    Route::get('/generalSetting/{id}', 'GeneralSettingController@show');
+    Route::post('/generalSettingUpdate', 'GeneralSettingController@update');
+
 
     Route::apiResource('/category', 'CategoryController', ['except' => ['update', 'create']]);
     Route::get('/categoryPluck', 'CategoryController@categoryPluck');
@@ -119,5 +122,4 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::post('/deliveryClosedTimeUpdate', 'DeliveryTimeController@update');
 
     Route::get('/deliveryTimes', 'DeliveryTimeController@deliveryTimes');
-    Route::post('/generalSettingUpdate', 'MainController@generalSettingUpdate');
 });

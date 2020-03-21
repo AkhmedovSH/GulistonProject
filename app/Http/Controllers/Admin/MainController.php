@@ -42,22 +42,4 @@ class MainController extends Controller
     }
 
 
-    public function getGeneralSetting(Request $request)
-    {
-        $setting = GeneralSetting::where('key', $request->key)->first();
-        
-        return response()->json([
-            'result' => $setting
-        ], 200);
-    }
-
-    public function generalSettingUpdate(Request $request)
-    {
-        $setting = GeneralSetting::where('key', $request->key)->first();
-        $setting->edit($request->all());
-        
-        return response()->json([
-            'result' => $setting
-        ], 200);
-    }
 }

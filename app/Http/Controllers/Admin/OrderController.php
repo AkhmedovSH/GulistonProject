@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\User;
 use App\Order;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,8 @@ class OrderController extends Controller
         $allOrder = Order::orderBy('id', 'DESC')
         ->where('status', 1)
         ->with(['user','product'])
-        ->paginate(25);
+        ->whereDate('created_at', Carbon::today())
+        ->get();
 
         return response()->json([
             'result' => $allOrder
@@ -50,7 +52,7 @@ class OrderController extends Controller
             $orders = $orders->whereDate('created_at', $request->beginDate);
         }
 
-        $orders = $orders->with(['user','product'])->paginate(25);
+        $orders = $orders->with(['user','product'])->get();
 
         return response()->json(
             [

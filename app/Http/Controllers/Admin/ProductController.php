@@ -11,18 +11,31 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $allProduct = Product::orderBy('id', 'DESC')->with(['category'])->paginate(25);
+        $query = Product::query();
+        if(json_decode($request->get('title')) != null){
+            $query->where('title', 'LIKE', "%$request->title%");
+        }
 
-        return response()->json([
-            'result' => $allProduct
-        ], 200);
+        if(json_decode($request->get('bar_code')) != null){
+            $query->where('bar_code', $request->bar_code);
+        }
+
+        if(json_decode($request->get('category_id')) != null){
+            $query->where('category_id', $request->category_id);
+        }
+
+        if(json_decode($request->get('price')) != null){
+            $query->where('price', $request->price);
+        }
+
+        $products = $query->orderBy('id', 'DESC')->with(['category'])->paginate(25);
+
+        return response()->json(
+            [
+                'result' => $products
+            ], 200);
     }
 
     /**
@@ -47,7 +60,6 @@ class ProductController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-       
         $product = Product::add($request->all());
         $product->addAttributes($request->attribute);
         $product->addParameters($request->parameters);
@@ -99,7 +111,6 @@ class ProductController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-       
         $product = Product::find($request->id);
         $product->edit($request->all());
         $product->addParameters($request->parameters);
@@ -141,25 +152,5 @@ class ProductController extends Controller
                 'error' => $th->getMessage()
                 ], 400);
         }
-    }
-
-    public function productSearch(Request $request)
-    {
-        $query = Product::query();
-
-        if($request->has('title')){
-            $query->where('title', 'LIKE', "%$request->title%");
-        }
-
-        if($request->has('price')){
-            $query->where('price', $request->price);
-        }
-
-        $products = $query->orderBy('id', 'DESC')->paginate(25);
-
-        return response()->json(
-            [
-                'result' => $products
-            ], 200);
     }
 }

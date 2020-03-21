@@ -10,7 +10,7 @@ class Product extends Model
 {
     protected $fillable = [
         'title', 'price', 'available', 'quantity_type', 'hasAttributes', 'unit', 'increment',
-        'keywords', 'company_id', 'company_category_id', 'category_id', 'famous', 'discount'
+        'keywords', 'company_id', 'bar_code', 'company_category_id', 'category_id', 'famous', 'discount'
     ];
     
     protected $casts = [
@@ -51,7 +51,6 @@ class Product extends Model
     public function edit($fields)
     {
         $this->fill($fields);
-        //$this->company_id = NULL;
         $this->save();
     }
 
