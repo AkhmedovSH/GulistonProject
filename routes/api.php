@@ -81,6 +81,7 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::apiResource('/user', 'UserController');
     Route::post('/userUpdate', 'UserController@userUpdate');
     Route::post('/userSendNotificationToOne', 'UserController@userSendNotificationToOne');
+    Route::post('/userSendNotificationToAll', 'UserController@userSendNotificationToAll');
 
     Route::get('/generalSetting', 'GeneralSettingController@index');
     Route::get('/generalSetting/{id}', 'GeneralSettingController@show');

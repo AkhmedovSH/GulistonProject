@@ -22,9 +22,12 @@ class UserAddress extends Model
 
     public static function add($fields)
     {
+        $defaultAddress = self::where('user_id', auth()->user()->id)->first();
+
         $userAddress = new static;
         $userAddress->fill($fields);
         $userAddress->user_id = auth()->user()->id;
+        $userAddress->is_default = $defaultAddress == null ? 1 : 0;
         $userAddress->save();
 
         return $userAddress;

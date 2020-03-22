@@ -13,22 +13,12 @@ use Illuminate\Support\Facades\Redis;
 class MainController extends Controller
 {
     public function redis_test(Request $request){
-
-        $taxiOrders = OrderTaxi::where('status', 0)->get();
-        foreach($taxiOrders as $order){
-            $totalDuration = $order->created_at->diffInMinutes(Carbon::now());
-            dd($totalDuration, $order->created_at, Carbon::now());
-            if($totalDuration > 15){
-                $order->delete();
-            }
-        }
-
-        /* try{
+        try{
             $redis=Redis::connect('127.0.0.1',3306);
             return response('redis working');
         }catch(\Predis\Connection\ConnectionException $e){
             return response('error connection redis');
-        } */
+        }
     }
 
     public function getGeneralSetting()
