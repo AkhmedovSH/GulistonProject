@@ -76,8 +76,19 @@ class UserController extends Controller
           return response()->json([
             'result' => $response
             ], 200);
-        }
+        }  
+    }
+
+    public function userSendNotificationToAll(Request $request){
+        $users = User::where('firebase_token', '!=', null)->get();
         
+        foreach ($users as $user) {
+            $payload = $this->createCardPayload($user, $request);
+            $response = $this->curlRequest($payload);
+        }
+        return response()->json([
+            'result' => $response
+            ], 200);
     }
 
     public function createCardPayload($user, $request){
@@ -105,7 +116,6 @@ class UserController extends Controller
         $response = json_decode($body);
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
         return $response;
     }
 }
