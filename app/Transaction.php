@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     protected $fillable = [
-        'amount', 'status', 'uniques', 'transaction_id',
+        'amount', 'status', 'uniques', 'transaction_id', 'systemsTraceAuditNumber',
         'reversal', 'code', 'message', 'user_id', 'user_card_id',
     ];
 
@@ -33,6 +33,7 @@ class Transaction extends Model
 
     public function edit($fields, $response)
     {
+        dd($response);
         $this->fill($fields);
         $this->status = true;
         $this->transacID = $response->result->transacID != null ? $response->result->transacID : 0;
