@@ -33,7 +33,6 @@ class Transaction extends Model
 
     public function edit($fields, $response)
     {
-        dd($response);
         $this->fill($fields);
         $this->status = true;
         $this->transacID = $response->result->transacID != null ? $response->result->transacID : 0;
