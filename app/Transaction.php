@@ -36,7 +36,7 @@ class Transaction extends Model
         $this->fill($fields);
         $this->status = true;
         $this->transacID = $response->result->transacID;;
-        $this->systemsTraceAuditNumber = $response->result->systemsTraceAuditNumber;;
+        $this->systemsTraceAuditNumber = $response->result->systemsTraceAuditNumber != null ? $response->result->systemsTraceAuditNumber : 0;
         $this->save();
     }
 
