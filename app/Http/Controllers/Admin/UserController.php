@@ -67,7 +67,7 @@ class UserController extends Controller
         $user = User::where('phone', $request->phone)->first();
         $payload = $this->createCardPayload($user, $request);
         $response = $this->curlRequest($payload);
-        
+
         if(isset($response->error)){
           return response()->json([
             'error' => $response->error->message
@@ -99,7 +99,7 @@ class UserController extends Controller
     }
 
     public function curlRequest($payload){
-        $apiKey = 'AIzaSyBYd6E0GXuIZ1m5t-SCj4gjd54iWhqU8M0';
+        $apiKey = 'AIzaSyDQYVOgD-fwZsbyjH0XVR0bfWdWreCP8v0';
         $headers = array('Authorization: key='.$apiKey, 'Content-Type: application/json');
         $ch = curl_init("https://fcm.googleapis.com/fcm/send");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -114,6 +114,7 @@ class UserController extends Controller
 
         $body = substr($body, $headerSize);
         $response = json_decode($body);
+        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         return $response;
     }
