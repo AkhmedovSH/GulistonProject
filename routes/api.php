@@ -54,6 +54,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/productFamous', 'ProductController@productFamous');
     Route::get('/productDiscount', 'ProductController@productDiscount');
     Route::get('/productRandom', 'ProductController@productRandom');
+    Route::post('/productSearch', 'ProductController@productSearch');
 
     Route::get('/getCompanies', 'CompanyController@getCompanies');
     Route::get('/companyCategories', 'CompanyController@companyCategories');
