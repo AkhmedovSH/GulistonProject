@@ -12,6 +12,8 @@ class Order extends Model
     const STATUS_ACCEPTED = 2;// PURCHASED ITEM ACCEPTED
     const STATUS_REJECT  = -1;// PURCHASED ITEM REJECTED
 
+    // Payment type 0 cash 1 card
+
     protected $fillable = [
         'longitude', 'latitude', 'status', 'quantity', 'status_text',
          'product_id', 'user_id', 'color', 'size', 'image', 'delivery_date', 'delivery_time'

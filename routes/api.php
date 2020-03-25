@@ -36,8 +36,15 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/userAddressAdd', 'UserController@userAddressAdd');
     Route::post('/userAddressUpdate', 'UserController@userAddressUpdate');
     Route::post('/userAddressDelete/{id}', 'UserController@userAddressDelete');
-    Route::post('/userRequestToAdmin', 'UserController@userRequestToAdmin');
+    Route::post('/userRequestToAdmin', 'UserController@userRequestToAdmin'); //need delete when new api will be used for chat with admin
     Route::delete('/userDestroy', 'UserController@destroy');
+
+    /* ADMIN USER CHAT */
+    Route::post('/createChatSubject', 'FeedbackController@storeFeedback');
+    Route::get('/getChatSubjects', 'FeedbackController@index');
+    Route::get('/getChatMessages/{id}', 'FeedbackController@show');
+    Route::post('/sendMessageToAdmin', 'FeedbackController@storeFeedbackMessage');
+    Route::post('/subjectIsRead', 'FeedbackController@isRead');
 
     Route::apiResource('/userCard', 'UserCardController', ['except' => ['update', 'create']]);
     Route::post('/userCardUpdate', 'UserCardController@update');
@@ -116,7 +123,12 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::apiResource('/order', 'OrderController', ['except' => ['edit', 'create']]);
     Route::get('/orderSearch', 'OrderController@orderSearch');
 
+    Route::get('/orderTaxi', 'OrderTaxiController@index');
+    Route::get('/orderTaxiSearch', 'OrderTaxiController@orderTaxiSearch');
+
     Route::get('/adminFeedback', 'AdminFeedbackController@index');
+    Route::post('/adminFeedback', 'AdminFeedbackController@store');
+    Route::get('/adminFeedbackShow/{id}', 'AdminFeedbackController@show');
     Route::delete('/adminFeedbackDestroy/{id}', 'AdminFeedbackController@destroy');
 
     

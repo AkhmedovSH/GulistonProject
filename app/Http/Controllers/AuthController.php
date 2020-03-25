@@ -42,7 +42,7 @@ class AuthController extends Controller
         }
         
         $credentials = request(['phone', 'password']);
-       
+    
         if (! $token = auth()->attempt($credentials)) {
 
             //If login not found register user
@@ -192,18 +192,23 @@ class AuthController extends Controller
 
     public function checkAdmin(Request $request)
     {
+        $credentials = request(['phone', 'password']);
+        if (auth()->attempt($credentials)) {
+            $token = auth()->attempt($credentials);
+        }
 
-        $user = User::where('phone', $request->phone)
-            ->where('type', 2)->first();
-        if($user != null){
-            return response()->json(
-                [
-                    'result' => $user
+        $user = auth()->user();
+
+        if($user['type'] == 2){
+            return response()->json([
+                    'result' => [
+                        'access_token' => $token
+                    ]
                 ], 200);
+
         }else{
-            return response()->json(
-                [
-                    'error' => 'Телефон раками хато, йоки сиз админ эмассиз!'
+            return response()->json([
+                'error' => 'Телефон раками хато, йоки сиз админ эмассиз!'
                 ], 400);
         }
     }

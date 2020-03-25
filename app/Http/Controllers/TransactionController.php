@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\UserCard;
 use App\Transaction;
 use Illuminate\Http\Request;
@@ -38,6 +39,12 @@ class TransactionController extends Controller
         if($response->result != null){
             $transaction = new Transaction();
             $transaction->add($request->all(), $userCard, $response);
+            
+            $orders = Order::whereIn('id', $request->order_ids)->get(); //set payment type as card
+            foreach ($orders as $order) {
+                $order->payment_type = 1;
+                $order->save();
+            }
         }else{
             return response()->json(
                 [
