@@ -18,7 +18,30 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'loginTaxi', 'checkAdmin']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'loginTaxi', 'checkAdmin', 'hasAccount']]);
+    }
+
+    
+    public function hasAccount(Request $request)
+    {
+        $hasUser = User::where('phone', $request->phone)->first();
+
+        if($hasUser != null){
+            return response()->json(
+                [
+                    'result' => [
+                        'success' => true
+                    ]
+                ], 200);
+        }else{
+            return response()->json(
+                [
+                    'result' => [
+                        'success' => false
+                    ]
+                ], 200);
+        }
+        
     }
 
     /**

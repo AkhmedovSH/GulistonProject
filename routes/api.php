@@ -6,12 +6,11 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth'], function () {
     Route::post('/logout', 'AuthController@logout');
     Route::post('/refresh', 'AuthController@refresh');
     Route::post('/me', 'AuthController@me');
+    Route::post('/hasAccount', 'AuthController@hasAccount');
 
     Route::post('/checkAdmin', 'AuthController@checkAdmin');
     //Route::post('/register', 'AuthController@register');
 });
-
-
 
 Route::group(['middleware' => ['cors']], function () {
     Route::get('/redis_test', 'MainController@redis_test');
@@ -57,11 +56,12 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('/productAll', 'ProductController@productAll');
     Route::get('/product/{id}', 'ProductController@show');
-    Route::get('/productTopHome', 'ProductController@productTopHome');
-    Route::get('/productFamous', 'ProductController@productFamous');
-    Route::get('/productDiscount', 'ProductController@productDiscount');
-    Route::get('/productRandom', 'ProductController@productRandom');
+    Route::get('/productTopHome', 'ProductController@productTopHome'); //3 main categories famous discount random
+    Route::get('/productFamous', 'ProductController@productFamous'); // get all data with pagination only famous
+    Route::get('/productDiscount', 'ProductController@productDiscount'); // get all data with pagination only discount
+    Route::get('/productRandom', 'ProductController@productRandom'); // get all data with pagination only random
     Route::post('/productSearch', 'ProductController@productSearch');
+    Route::get('/categoryTopHome', 'ProductController@categoryTopHome'); // In main page of android top categories
 
     Route::get('/getCompanies', 'CompanyController@getCompanies');
     Route::get('/companyCategories', 'CompanyController@companyCategories');
