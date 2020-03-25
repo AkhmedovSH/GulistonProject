@@ -18,6 +18,10 @@ class ProductController extends Controller
             $query->where('title', 'LIKE', "%$request->title%");
         }
 
+        if(json_decode($request->get('id')) != null){
+            $query->where('id', $request->id);
+        }
+
         if(json_decode($request->get('bar_code')) != null){
             $query->where('bar_code', $request->bar_code);
         }
