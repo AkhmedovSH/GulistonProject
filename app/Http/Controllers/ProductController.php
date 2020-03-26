@@ -39,10 +39,13 @@ class ProductController extends Controller
 
     public function categoryTopHome()
     {
-        //$mainCategories = Category::where('main_page', 1)->with('products')->get();
-        $mainCategories = Category::where('in_main_page', 1)->with(['data' => function($query){
-            $query->orderBy('id', 'DESC')->limit(20)->get();
-        }])->orderBy('in_main_page_position', 'ASC')->get();
+        $mainCategories = Category::where('in_main_page', 1)->orderBy('in_main_page_position', 'ASC')->get();
+       
+        foreach ($mainCategories as $key => $value) {
+
+            $mainCategories[$key]['data'] = 
+            Product::where('category_id', $mainCategories[$key]['id'])->orderBy('id','DESC')->limit(20)->get();
+        }
        
         return response()->json(
             [
