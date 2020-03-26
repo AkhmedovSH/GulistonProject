@@ -92,7 +92,10 @@ class Product extends Model
         foreach($images as $key => $image)
         {
             $filename = "productID_" . $this->id . "_randomAttribute_" . rand(1, 1000000). '.' . $image->extension();
-            $image->move('uploads/products/', $filename);
+
+            $img = Image::make($image);
+            $img->save('uploads/products/' . $filename, 60);
+            //$image->move('uploads/products/', $filename);
             if(++$i === $arrayItemsCount) {
                 $imgConcatenate = $imgConcatenate . $filename;
             }else{
@@ -116,7 +119,11 @@ class Product extends Model
         {
             
             $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
-            $image->move('uploads/products/', $filename);
+
+            $img = Image::make($image);
+            $img->save('uploads/products/' . $filename, 60);
+
+            //$image->move('uploads/products/', $filename);
             if(++$i === $arrayItemsCount) {
                 $imgConcatenate = $imgConcatenate . $filename;
             }else{
