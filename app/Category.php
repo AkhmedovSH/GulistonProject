@@ -16,6 +16,11 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function data() //Android use 1 component and for it as pagination returns data
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
