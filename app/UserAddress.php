@@ -8,7 +8,7 @@ class UserAddress extends Model
 {
     protected $fillable = [
         'user_id', 'is_default', 'name', 'phone', 'street', 'state',
-        'city', 'postal_code', 'longitude', 'latitude'
+        'city', 'postal_code', 'longitude', 'latitude', 'room_number', 'ref_point'
     ];
 
     protected $casts = [

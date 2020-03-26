@@ -23,6 +23,8 @@ class CreateUserAddressesTable extends Migration
             $table->string('phone')->nullable();
             $table->string('street')->nullable();
             $table->string('state')->nullable();
+            $table->string('room_number')->nullable();
+            $table->string('ref_point')->nullable();
             $table->string('city')->nullable();
             $table->string('postal_code')->nullable();
             $table->timestamps();
