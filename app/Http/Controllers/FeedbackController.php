@@ -21,10 +21,16 @@ class FeedbackController extends Controller
 
     public function storeFeedback(Request $request)
     {
-        $feedbacks = AdminFeedback::add($request->all());
+        $feedback = AdminFeedback::add($request->all());
+        AdminFeedbackMessage::create([
+            'admin_feedback_id' =>  $feedback->id,
+            'message' => $feedback->description,
+            'user_id' => auth()->user()->id
+        ]);
+
         return response()->json(
             [
-                'result' => $feedbacks
+                'result' => $feedback
             ], 200);
     }
 
