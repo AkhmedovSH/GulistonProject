@@ -20,7 +20,7 @@ class OrderController extends Controller
     {
         $allOrder = Order::orderBy('id', 'DESC')
         ->where('status', 1)
-        ->with(['user','product'])
+        ->with(['user','product', 'userAddress'])
         ->whereDate('created_at', Carbon::today())
         ->get();
 
