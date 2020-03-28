@@ -17,6 +17,7 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
             $table->integer('user_card_id')->unsigned();
+            $table->string('payed_for')->nullable();
             $table->integer('amount')->unsigned();
             $table->boolean('status')->default(0);
             $table->string('uniques')->nullable();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\OrderTaxi;
 use Carbon\Carbon;
+use App\BonusSystem;
 use App\DeliveryTime;
 use App\GeneralSetting;
 use Illuminate\Http\Request;
@@ -27,6 +28,15 @@ class MainController extends Controller
         
         return response()->json([
             'result' => $settings
+        ], 200);
+    }
+
+    public function bonusTable()
+    {
+        $bonuses = BonusSystem::all();
+        
+        return response()->json([
+            'result' => $bonuses
         ], 200);
     }
 

@@ -8,7 +8,7 @@ class Transaction extends Model
 {
     protected $fillable = [
         'amount', 'status', 'uniques', 'transaction_id',
-        'reversal', 'code', 'message', 'user_id', 'user_card_id',
+        'reversal', 'code', 'message', 'user_id', 'user_card_id', 'payed_for'
     ];
 
     public function user()
@@ -16,13 +16,18 @@ class Transaction extends Model
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
-    public static function add($fields, $userCard = null,  $response)
+    public static function add($fields, $userCard = null,  $response, $payed_for)
     {
         $transaction = new static;
         $transaction->fill($fields);
+        if(isset($payed_for)){
+            $transaction->payed_for = $payed_for;
+        }
         $transaction->user_id = auth()->user()->id;
         $transaction->uniques = $response->result->uniques;
-        $transaction->order_ids = json_encode($fields['order_ids']);
+        if(isset($fields['order_ids'])){
+            $transaction->order_ids = json_encode($fields['order_ids']);
+        }
         if($userCard != null){
             $transaction->user_card_id = $userCard->id;
         }

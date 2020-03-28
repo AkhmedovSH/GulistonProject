@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable();
             $table->string('image')->nullable();
             $table->text('firebase_token')->nullable();
+            $table->double('taxi_balance', 8,0)->default(0);
             $table->double('balance', 8,0)->default(0);
             $table->integer('type')->unsigned()->default(0);
             $table->string('last_login')->nullable();

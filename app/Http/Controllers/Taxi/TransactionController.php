@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Taxi;
 
-use App\Order;
-use App\UserCard;
+use App\User;
 use App\Transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TransactionController extends Controller
 {
@@ -16,35 +16,12 @@ class TransactionController extends Controller
 
     public function checkTransaction(Request $request)
     {
-        $userCard = UserCard::where('id', $request->user_card_id)
-        ->OrWhere('phone', $request->phone)
-        ->first();
-
-        if($userCard != null){
-            $payload = $this->createCardPayload($userCard, $request);
-        }else{
-            try {
-                $userCard = new UserCard();
-                $userCard = $userCard->add($request->all());
-            } catch (\Throwable $th) {
-                return response()->json(
-                    [
-                        'error' => 'Бу карта раками кушилган!'
-                    ], 400);
-            }
-            $payload = $this->createCardPayload($userCard, $request);
-        }
+        $payload = $this->createCardPayload($request);
 
         $response = $this->curlRequest($payload);
         if($response->result != null){
             $transaction = new Transaction();
-            $transaction->add($request->all(), $userCard, $response, 'user');
-            
-            $orders = Order::whereIn('id', $request->order_ids)->get(); //set payment type as card
-            foreach ($orders as $order) {
-                $order->payment_type = 1;
-                $order->save();
-            }
+            $transaction->add($request->all(), null, $response, 'taxi');
         }else{
             return response()->json(
                 [
@@ -60,27 +37,29 @@ class TransactionController extends Controller
 
     public function performTransaction(Request $request)
     {
-        $userCard = UserCard::where('phone', $request->phone)->first();
-
-        $payload = $this->createPerformPayload($userCard, $request);
+        $user = User::where('id', auth()->user()->id)->first();
+        if($user != null){
+            $payload = $this->createPerformPayload($request);
         
-        $response = $this->curlRequest($payload);
-        $transaction = Transaction::where('uniques', $request->uniques)->first();
+            $response = $this->curlRequest($payload);
+            $transaction = Transaction::where('uniques', $request->uniques)->first();
 
-        if($response->result != null){
-            $transaction->edit($request->all(), $response);
-            return response()->json(
-                [
-                    'result' => $response->result
-                ], 200);
-        }else{
-            $transaction->addError($response);
-            return response()->json(
-                [
-                    'error' => $response->error->message
-                ], 400);
+            if($response->result != null){
+                $user->taxi_balance = $user->taxi_balance + $transaction->amount;
+                $user->save();
+                $transaction->edit($request->all(), $response);
+                return response()->json(
+                    [
+                        'result' => $response->result
+                    ], 200);
+            }else{
+                $transaction->addError($response);
+                return response()->json(
+                    [
+                        'error' => $response->error->message
+                    ], 400);
+            }
         }
-
         
     }
 
@@ -104,14 +83,14 @@ class TransactionController extends Controller
         return $response;
     }
 
-    public function createCardPayload($userCard, $request){
+    public function createCardPayload($request){
         return [
             'params' => [
                 'key' => $this->key,
                 'EposId' => $this->EposId,
-                'phoneNumber' => $userCard->phone,
-                'cardLastNumber' => $userCard->card,
-                'expire' => $userCard->expire,
+                'phoneNumber' => $request->phone,
+                'cardLastNumber' => $request->card,
+                'expire' => $request->expire,
                 'summa' => $request->amount,
                 'orderId' => "",
             ],
@@ -119,14 +98,14 @@ class TransactionController extends Controller
         ];
     }
     
-    public function createPerformPayload($userCard, $request){
+    public function createPerformPayload($request){
         return [
             'params' => [
                 'key' => $this->key,
                 'EposId' => $this->EposId,
-                'phoneNumber' => $userCard->phone,
-                'cardLastNumber' => $userCard->card,
-                'expire' => $userCard->expire,
+                'phoneNumber' => $request->phone,
+                'cardLastNumber' => $request->card,
+                'expire' => $request->expire,
                 'summa' => $request->amount,
                 'orderId' => "",
                 'uniques' => $request->uniques,
@@ -136,4 +115,3 @@ class TransactionController extends Controller
         ];
     }
 }
-

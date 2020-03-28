@@ -13,17 +13,24 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::get('/redis_test', 'MainController@redis_test');
-    Route::get('/getGeneralSetting', 'MainController@getGeneralSetting');
-   
+    /***************************** TAXI *****************************/
     Route::get('/getOrdersTaxi', 'Taxi\OrderTaxiController@getOrdersTaxi');
     Route::get('/getTaxiDriverOrders', 'Taxi\OrderTaxiController@getTaxiDriverOrders');
     Route::post('/createOrderTaxi', 'Taxi\OrderTaxiController@createOrderTaxi');
     Route::post('/acceptOrderTaxi', 'Taxi\OrderTaxiController@acceptOrderTaxi');
     Route::post('/getDirection', 'Taxi\OrderTaxiController@getDirection');
+    Route::post('/taxiCheckTransaction', 'Taxi\TransactionController@checkTransaction');
+    Route::post('/taxiPerformTransaction', 'Taxi\TransactionController@performTransaction');
+    /***************************** TAXI *****************************/
 
+    /***************************** MAIN CONTROLLER *****************************/
+    Route::get('/redis_test', 'MainController@redis_test');
+    Route::get('/getGeneralSetting', 'MainController@getGeneralSetting');
+    Route::get('/getBonuses', 'MainController@bonusTable');
     Route::get('/deliveryTable', 'MainController@deliveryTable');
-    
+    /***************************** MAIN CONTROLLER *****************************/
+   
+    /***************************** USER CONTROLLER *****************************/
     Route::post('/setFirebaseToken', 'UserController@setFirebaseToken');
     Route::get('/userShow', 'UserController@userShow');
     Route::get('/userFavorite', 'UserController@userFavorite');
@@ -38,15 +45,17 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/userRequestToAdmin', 'UserController@userRequestToAdmin'); //need delete when new api will be used for chat with admin
     Route::delete('/userDestroy', 'UserController@destroy');
 
-    /* ADMIN USER CHAT */
+    Route::apiResource('/userCard', 'UserCardController', ['except' => ['update', 'create']]);
+    Route::post('/userCardUpdate', 'UserCardController@update');
+    /***************************** USER CONTROLLER *****************************/
+
+    /***************************** FEEDBACK CONTROLLER *****************************/
     Route::post('/createChatSubject', 'FeedbackController@storeFeedback');
     Route::get('/getChatSubjects', 'FeedbackController@index');
     Route::get('/getChatMessages/{id}', 'FeedbackController@show');
     Route::post('/sendMessageToAdmin', 'FeedbackController@storeFeedbackMessage');
     Route::post('/subjectIsRead', 'FeedbackController@isRead');
-
-    Route::apiResource('/userCard', 'UserCardController', ['except' => ['update', 'create']]);
-    Route::post('/userCardUpdate', 'UserCardController@update');
+    /***************************** FEEDBACK CONTROLLER *****************************/
 
     Route::get('/getCategories', 'CategoryController@getCategories');
     Route::get('/getCategoryProducts/{category_id}', 'CategoryController@getCategoryProducts');
@@ -54,6 +63,7 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::get('/getAdvertising', 'AdvertisingController@getAdvertising');
 
+    /***************************** PRODUCT CONTROLLER *****************************/
     Route::get('/productAll', 'ProductController@productAll');
     Route::get('/product/{id}', 'ProductController@show');
     Route::get('/productTopHome', 'ProductController@productTopHome'); //3 main categories famous discount random
@@ -62,6 +72,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/productRandom', 'ProductController@productRandom'); // get all data with pagination only random
     Route::post('/productSearch', 'ProductController@productSearch');
     Route::get('/categoryTopHome', 'ProductController@categoryTopHome'); // In main page of android top categories
+    /***************************** PRODUCT CONTROLLER *****************************/
 
     Route::get('/getCompanies', 'CompanyController@getCompanies');
     Route::get('/companyCategories', 'CompanyController@companyCategories');
@@ -125,6 +136,9 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
 
     Route::get('/orderTaxi', 'OrderTaxiController@index');
     Route::get('/orderTaxiSearch', 'OrderTaxiController@orderTaxiSearch');
+
+    Route::apiResource('/bonusSystem', 'BonusSystemController', ['except' => ['update', 'create']]);
+    Route::post('/bonusSystemUpdate', 'BonusSystemController@update');
 
     Route::get('/adminFeedback', 'AdminFeedbackController@index');
     Route::post('/adminFeedback', 'AdminFeedbackController@store');
