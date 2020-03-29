@@ -16,7 +16,7 @@ class CompanyCategoryController extends Controller
      */
     public function index()
     {
-        $allCategory = CompanyCategory::orderBy('position', 'ASC')->get();
+        $allCategory = CompanyCategory::orderBy('id', 'DESC')->get();
         //$allCategory = CompanyCategory::orderBy('id', 'DESC')->get();
 
         return response()->json(

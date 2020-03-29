@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\GeneralSetting;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderTaxi extends Model
@@ -53,6 +54,21 @@ class OrderTaxi extends Model
         $this->order_number = 'TID' . auth()->user()->id . '_UID' . $this->user_id;
         $this->save();
 
+        $this->decreaseTaxiBalance();
         return $this;
+    }
+    
+    public function decreaseTaxiBalance() //user id who call taxi
+    {
+        // auth()->user() taxist
+        $setting = GeneralSetting::where('key', 'taxi_service_payment')->first();
+        auth()->user()->taxi_balance = auth()->user()->taxi_balance - $setting->value;
+        auth()->user()->save();
+        $taxiTransactionHistory = new TaxiTransactionHistory();
+        $taxiTransactionHistory::create([
+            'taxi_id' => auth()->user()->id,
+            'user_id' => $this->user_id,
+            'amount' => $this->price
+        ]);
     }
 }

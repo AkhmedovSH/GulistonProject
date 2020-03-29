@@ -122,4 +122,12 @@ class ProductController extends Controller
             ], 200);
     }
 
+    public function recomemdedProducts($product_id)
+    {
+        $product = Product::where('id', $id)->with('attributes')->first();
+        return response()->json(
+            [
+                'result' => $product
+            ], 200);
+    }
 }

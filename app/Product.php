@@ -5,12 +5,13 @@ namespace App;
 use App\ProductAttribute;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Http\Request;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'price', 'available', 'quantity_type', 'hasAttributes', 'unit', 'increment',
-        'keywords', 'company_id', 'bar_code', 'company_category_id', 'category_id', 'famous', 'discount'
+        'title', 'price', 'available', 'quantity_type', 'hasAttributes', 
+        'unit', 'increment', 'is_recomemded','category_id',
+        'famous', 'discount', 'keywords', 'company_id', 'bar_code', 'company_category_id'
     ];
     
     protected $casts = [
@@ -41,8 +42,12 @@ class Product extends Model
 
     public static function add($fields)
     {
+        
         $product = new static;
         $product->fill($fields);
+        if(isset($fields['recommended_ids']) && json_decode(count($fields['recommended_ids']), true) > 0){ //recommended product for a product ids
+            $product->recommended_ids = $fields['recommended_ids'];
+        }
         $product->save();
 
         return $product;

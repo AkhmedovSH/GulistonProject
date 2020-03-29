@@ -79,7 +79,7 @@ class UserController extends Controller
     public function userAddressAdd(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['nullable', 'string', 'max:15'],
+            'name' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'min:12', 'max:12'],
             'default' => ['nullable'],
             'street' => ['nullable'],
@@ -107,7 +107,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => ['required'],
-            'name' => ['nullable', 'string', 'max:15'],
+            'name' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'max:15'],
             'street' => ['nullable'],
             'state' => ['nullable'],

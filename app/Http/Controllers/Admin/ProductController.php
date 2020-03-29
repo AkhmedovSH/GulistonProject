@@ -42,6 +42,20 @@ class ProductController extends Controller
             ], 200);
     }
 
+    public function productSearch(Request $request)
+    {
+        $q = $request->value;
+        $products = Product::where(function($query) use ($q) {
+            $query->where('id', 'LIKE', '%'.$q.'%')
+                ->orWhere('title', 'LIKE', '%'.$q.'%');
+        })->get();
+
+        return response()->json(
+            [
+                'result' => $products
+            ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -50,6 +64,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        return response()->json([
+            'result' => $request->all()
+        ], 200);
+
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'price' => ['required'],

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redis;
 class MainController extends Controller
 {
     public function redis_test(Request $request){
+        dd(auth()->user());
         try{
             $redis=Redis::connect('127.0.0.1',3306);
             return response('redis working');

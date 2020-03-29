@@ -25,8 +25,10 @@ class CreateProductsTable extends Migration
             $table->text('diff_images')->nullable();
             $table->boolean('available')->default(1);
             $table->boolean('famous')->default(1);
-            $table->boolean('hasAttributes')->default(0);
+            $table->boolean('hasAttributes')->default(0); //this is for android for increment product with color
             $table->text('parameters')->nullable()->comment('JSON array of parameters');
+            $table->boolean('is_recommended')->default(0);
+            $table->text('recommended_ids')->nullable()->comment('JSON array of parameters');
             $table->string('keywords')->nullable();
             $table->string('bar_code')->nullable();
             $table->string('quantity_type')->default('piece');
