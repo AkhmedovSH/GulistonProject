@@ -43,7 +43,7 @@ class Product extends Model
 
     public function getRecommendedIdsAttribute($value)
     {
-        return $value == null ? [] : $value;
+        return $value == null ? [] : json_decode($value);
     }
 
     public static function add($fields)
