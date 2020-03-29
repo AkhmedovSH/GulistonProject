@@ -41,20 +41,11 @@ class Product extends Model
         return isset($value) ? secure_asset('uploads/products/' . $value) : null;
     }
 
-    public function getRecommendedIdsAttribute($value)
-    {
-        return $value == null ? [] : json_decode($value);
-    }
-
     public static function add($fields)
     {
-        $recomemdedArray = explode(",", $fields['recommended_ids']);
-        
         $product = new static;
         $product->fill($fields);
-        if(isset($fields['recommended_ids']) && count($recomemdedArray) > 0){ //recommended product for a product ids
-            $product->recommended_ids = json_encode($recomemdedArray);
-        }
+        $product->checkRecommendedProducts($fields);
         $product->save();
         
         return $product;
@@ -63,20 +54,27 @@ class Product extends Model
     public function edit($fields)
     {
         $this->fill($fields);
-        
-        if($fields['is_recommended']  == 1 && json_decode($fields['recommended_ids']) != null){
-            $recomemdedArray = explode(",", $fields['recommended_ids']);
-            if(isset($fields['recommended_ids']) && count($recomemdedArray) > 0){ //recommended product for a product ids
-                $this->recommended_ids = json_encode($recomemdedArray);
+        $this->checkRecommendedProducts($fields);
+        $this->save();
+        return $this;
+    }
+
+
+    public function checkRecommendedProducts($fields)
+    {
+        if(isset($fields['is_recommended'])){
+            if($fields['is_recommended']  == 1 && $fields['recommended_ids'] != null && $fields['recommended_ids'] != "null"){
+                $recomemdedArray = explode(",", $fields['recommended_ids']);
+                if(isset($fields['recommended_ids']) && count($recomemdedArray) > 0){ //recommended product for a product ids
+                    $this->recommended_ids = json_encode($recomemdedArray);
+                }else{
+                    $this->recommended_ids = NULL;
+                }
             }else{
+                $this->is_recommended = 0;
                 $this->recommended_ids = NULL;
             }
-        }else{
-            $this->is_recommended = 0;
-            $this->recommended_ids = NULL;
         }
-
-        $this->save();
     }
 
     public function addParameters($parameters)

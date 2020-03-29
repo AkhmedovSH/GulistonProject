@@ -117,11 +117,13 @@ class ProductController extends Controller
     {
         $product = Product::where('id', $id)->with('attributes')->first();
        
-        if($product->is_recomemded == 1){
+        if($product->is_recomemded == 1 && $product->recommended_ids != null){
+
             $recomemdedProducts = Product::whereIn('id', json_decode($product->recommended_ids))->get();
             $product['recommended'] = $recomemdedProducts;
+            
         }
-
+       
         return response()->json(
             [
                 'result' => $product

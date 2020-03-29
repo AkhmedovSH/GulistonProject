@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::query();
-        if(json_decode($request->get('title')) != null){
+        if($request->get('title') != "null"){       
             $query->where('title', 'LIKE', "%$request->title%");
         }
 
@@ -101,7 +101,7 @@ class ProductController extends Controller
     {
         
         $product = Product::where('id', $id)->with('attributes')->first();
-        if($product->is_recommended == 1 && $product->recommended != null){
+        if($product->is_recommended == 1 && $product->recommended_ids != null){
             $recomemdedProducts = Product::whereIn('id', json_decode($product->recommended_ids))->get();
             $product['recommended'] = $recomemdedProducts;
         }
