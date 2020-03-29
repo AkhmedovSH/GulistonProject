@@ -41,6 +41,11 @@ class Product extends Model
         return isset($value) ? secure_asset('uploads/products/' . $value) : null;
     }
 
+    public function getRecommendedIdsAttribute($value)
+    {
+        return $value == null ? [] : $value;
+    }
+
     public static function add($fields)
     {
         $recomemdedArray = explode(",", $fields['recommended_ids']);
