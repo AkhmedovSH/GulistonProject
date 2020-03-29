@@ -64,10 +64,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return response()->json([
-            'result' => $request->all()
-        ], 200);
-
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'price' => ['required'],
@@ -103,7 +99,12 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        
         $product = Product::where('id', $id)->with('attributes')->first();
+        if($product->is_recommended == 1 && $product->recommended != null){
+            $recomemdedProducts = Product::whereIn('id', json_decode($product->recommended_ids))->get();
+            $product['recommended'] = $recomemdedProducts;
+        }
         return response()->json([
             'result' => $product
         ], 200);

@@ -10,12 +10,13 @@ class Product extends Model
 {
     protected $fillable = [
         'title', 'price', 'available', 'quantity_type', 'hasAttributes', 
-        'unit', 'increment', 'is_recomemded','category_id',
+        'unit', 'increment', 'is_recommended','category_id',
         'famous', 'discount', 'keywords', 'company_id', 'bar_code', 'company_category_id'
     ];
     
     protected $casts = [
         'parameters' => 'array',
+        'recommended_ids' => 'array',
         'hasAttributes' => 'boolean',
         'available' => 'boolean',
         'famous' => 'boolean',
@@ -42,20 +43,34 @@ class Product extends Model
 
     public static function add($fields)
     {
+        $recomemdedArray = explode(",", $fields['recommended_ids']);
         
         $product = new static;
         $product->fill($fields);
-        if(isset($fields['recommended_ids']) && json_decode(count($fields['recommended_ids']), true) > 0){ //recommended product for a product ids
-            $product->recommended_ids = $fields['recommended_ids'];
+        if(isset($fields['recommended_ids']) && count($recomemdedArray) > 0){ //recommended product for a product ids
+            $product->recommended_ids = json_encode($recomemdedArray);
         }
         $product->save();
-
+        
         return $product;
     }
 
     public function edit($fields)
     {
         $this->fill($fields);
+        
+        if($fields['is_recommended']  == 1 && json_decode($fields['recommended_ids']) != null){
+            $recomemdedArray = explode(",", $fields['recommended_ids']);
+            if(isset($fields['recommended_ids']) && count($recomemdedArray) > 0){ //recommended product for a product ids
+                $this->recommended_ids = json_encode($recomemdedArray);
+            }else{
+                $this->recommended_ids = NULL;
+            }
+        }else{
+            $this->is_recommended = 0;
+            $this->recommended_ids = NULL;
+        }
+
         $this->save();
     }
 

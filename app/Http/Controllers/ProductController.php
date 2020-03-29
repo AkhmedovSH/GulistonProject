@@ -116,15 +116,12 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::where('id', $id)->with('attributes')->first();
-        return response()->json(
-            [
-                'result' => $product
-            ], 200);
-    }
+       
+        if($product->is_recomemded == 1){
+            $recomemdedProducts = Product::whereIn('id', json_decode($product->recommended_ids))->get();
+            $product['recommended'] = $recomemdedProducts;
+        }
 
-    public function recomemdedProducts($product_id)
-    {
-        $product = Product::where('id', $id)->with('attributes')->first();
         return response()->json(
             [
                 'result' => $product
