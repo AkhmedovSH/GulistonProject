@@ -17,6 +17,7 @@ class Product extends Model
     protected $casts = [
         'parameters' => 'array',
         'recommended_ids' => 'array',
+        'is_recommended' => 'boolean',
         'hasAttributes' => 'boolean',
         'available' => 'boolean',
         'famous' => 'boolean',
