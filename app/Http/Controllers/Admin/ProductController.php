@@ -34,7 +34,7 @@ class ProductController extends Controller
             $query->where('price', $request->price);
         }
 
-        $products = $query->orderBy('id', 'DESC')->with(['category'])->paginate(25);
+        $products = $query->orderBy('id', 'DESC')->with(['category'])->paginate(100);
 
         return response()->json(
             [

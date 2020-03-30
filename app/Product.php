@@ -118,7 +118,7 @@ class Product extends Model
             $filename = "productID_" . $this->id . "_randomAttribute_" . rand(1, 1000000). '.' . $image->extension();
 
             $img = Image::make($image);
-            $img->save('uploads/products/' . $filename, 60);
+            $img->save('uploads/products/' . $filename, 40);
             //$image->move('uploads/products/', $filename);
             if(++$i === $arrayItemsCount) {
                 $imgConcatenate = $imgConcatenate . $filename;
@@ -145,7 +145,7 @@ class Product extends Model
             $filename = "productID_" . $this->id . "_random_" . rand(1, 1000000). '.' . $image->extension();
 
             $img = Image::make($image);
-            $img->save('uploads/products/' . $filename, 60);
+            $img->save('uploads/products/' . $filename, 40);
 
             //$image->move('uploads/products/', $filename);
             if(++$i === $arrayItemsCount) {
@@ -191,15 +191,13 @@ class Product extends Model
     function uploadImage($image)
     {
         if ($image == null) { return; }
-
-
         $this->removeImage();
         $filename = $this->id . "_random_" . rand(1, 1000000) . '.' . $image->extension();
         
-        $img = Image::make($image);
-        $img->save('uploads/products/' . $filename, 60);
+        //$img = Image::make($image);
+        //$img->save('uploads/products/' . $filename, 40);
 
-        //$image->move('uploads/products/', $filename);
+        $image->move('uploads/products/', $filename);
         $this->image = $filename;
         $this->save();
     }
