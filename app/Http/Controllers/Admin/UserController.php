@@ -70,7 +70,7 @@ class UserController extends Controller
 
         if(isset($response->error)){
           return response()->json([
-            'error' => $response->error->message
+            'error' => $response
             ], 400);
         }else{
           return response()->json([

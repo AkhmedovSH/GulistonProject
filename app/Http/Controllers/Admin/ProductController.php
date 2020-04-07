@@ -22,6 +22,10 @@ class ProductController extends Controller
             $query->where('id', $request->id);
         }
 
+        if(json_decode($request->get('available')) != null){
+            $query->where('available', $request->available);
+        }
+
         if(json_decode($request->get('bar_code')) != null){
             $query->where('bar_code', $request->bar_code);
         }
