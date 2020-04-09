@@ -198,11 +198,11 @@ class OrderController extends Controller
         /* https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
         где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
         $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
-        $chat_id = "-329561281";
+        $chat_id = "-1001364950858";
         foreach ($orders as $order) {
             $arr = [
                 'Фойдаланувчи: ' => $order->user['phone'],
-                'Заказ раками: ' => $order['id'],
+                'Заказ раками: ' => 'OID' . $order['id'] . '_PID' . $order->product['id'],
                 'Микдори:' => $order['quantity'],
                 'Номи: ' => $order->product['title'],
                 'Нархи: ' => $order->product['price'],
