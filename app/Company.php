@@ -71,10 +71,10 @@ class Company extends Model
         $this->removeImage();
         $filename = $this->id . "_random_" . rand(1, 1000000) . '.' . $image->extension();
 
-        $img = Image::make($image);
-        $img->save('uploads/companies/' . $filename, 60);
+        //$img = Image::make($image);
+        //$img->save('uploads/companies/' . $filename, 60);
 
-        //$image->move('uploads/companies/', $filename);
+        $image->move('uploads/companies/', $filename);
         $this->image = $filename;
         $this->save();
     }
