@@ -3,6 +3,7 @@
 namespace App;
 
 use App\ProductAttribute;
+use App\Scopes\ProductScope;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -22,6 +23,12 @@ class Product extends Model
         'available' => 'boolean',
         'famous' => 'boolean',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new ProductScope);
+    }
 
     public function category()
     {
