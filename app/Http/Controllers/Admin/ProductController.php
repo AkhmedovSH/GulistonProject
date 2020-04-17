@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Order;
 use App\Product;
 use App\UserFavorite;
+use App\Scopes\ProductScope;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +39,7 @@ class ProductController extends Controller
             $query->where('price', $request->price);
         }
 
-        $products = $query->orderBy('id', 'DESC')->with(['category'])->paginate(100);
+        $products = $query->withoutGlobalScope(ProductScope::class)->orderBy('id', 'DESC')->with(['category'])->paginate(100);
 
         return response()->json(
             [
@@ -49,7 +50,9 @@ class ProductController extends Controller
     public function productSearch(Request $request)
     {
         $q = $request->value;
-        $products = Product::where(function($query) use ($q) {
+        $products = Product::
+        withoutGlobalScope(ProductScope::class)
+        ->where(function($query) use ($q) {
             $query->where('id', 'LIKE', '%'.$q.'%')
                 ->orWhere('title', 'LIKE', '%'.$q.'%');
         })->get();
@@ -104,7 +107,7 @@ class ProductController extends Controller
     public function show($id)
     {
         
-        $product = Product::where('id', $id)->with('attributes')->first();
+        $product = Product::withoutGlobalScope(ProductScope::class)->where('id', $id)->with('attributes')->first();
         if($product->is_recommended == 1 && $product->recommended_ids != null){
             $recomemdedProducts = Product::whereIn('id', json_decode($product->recommended_ids))->get();
             $product['recommended'] = $recomemdedProducts;
@@ -138,7 +141,7 @@ class ProductController extends Controller
                     'error' => $validator->errors()->first()
                 ], 400);
         }
-        $product = Product::find($request->id);
+        $product = Product::withoutGlobalScope(ProductScope::class)->where('id', $request->id)->first();
         $product->edit($request->all());
         $product->addParameters($request->parameters);
         $product->uploadImage($request->file('image'));
@@ -158,7 +161,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            $product = Product::findOrFail($id);
+            $product = Product::withoutGlobalScope(ProductScope::class)->findOrFail($id);
 
             $userFavorites = UserFavorite::where('product_id', $product->id)->get();
             $orders = Order::where('product_id', $product->id)->get();
