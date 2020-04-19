@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
 
     protected $fillable = [
-        'phone', 'name', 'email', 'password', 'surname', 'last_login',
+        'phone', 'name', 'email', 'password', 'surname', 'last_login', 'taxi_balance',
         'type', 'balance', 'car_info', 'car_number', 'additional_phone', 'firebase_token'
     ];
 
