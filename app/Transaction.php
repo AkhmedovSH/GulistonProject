@@ -17,7 +17,7 @@ class Transaction extends Model
     }
 
     public static function add($fields, $userCard = null,  $response, $payed_for)
-    {
+    {   
         $transaction = new static;
         $transaction->fill($fields);
         if(isset($payed_for)){
@@ -28,18 +28,19 @@ class Transaction extends Model
         if(isset($fields['order_ids'])){
             $transaction->order_ids = json_encode($fields['order_ids']);
         }
+        
         if($userCard != null){
             $transaction->user_card_id = $userCard->id;
         }
-        $transaction->save();
-
+        $transaction = $transaction->save();
+       
         return $transaction;
     }
 
     public function edit($fields, $response)
     {
         $this->fill($fields);
-        $this->status = true;
+        $this->status = 1;
         $this->transacID = $response->result->transacID != null ? $response->result->transacID : 0;
         $this->save();
     }

@@ -40,11 +40,13 @@ class TransactionController extends Controller
         $user = User::where('id', auth()->user()->id)->first();
         if($user != null){
             $payload = $this->createPerformPayload($request);
-        
+            
             $response = $this->curlRequest($payload);
+            
             $transaction = Transaction::where('uniques', $request->uniques)->first();
 
             if($response->result != null){
+               
                 $user->taxi_balance = $user->taxi_balance + $transaction->amount;
                 $user->save();
                 $transaction->edit($request->all(), $response);
