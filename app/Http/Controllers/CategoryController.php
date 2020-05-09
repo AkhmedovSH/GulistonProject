@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function getCategories()
     {
-        $allCategory = Category::get();
+        $allCategory = Category::orderBy('position', 'ASC')->get();
 
         return response()->json(
             [
@@ -19,13 +19,6 @@ class CategoryController extends Controller
             ], 200);
     }
 
-    public function getChildrensIds($categories, $category_id){
-        $category_ids = [];
-        foreach ($categories as $key => $value) {
-            # code...
-        }
-        
-    }
 
     public function fetch_recursive($src_arr, $currentid, $parentfound = false, $cats = array())
     {
