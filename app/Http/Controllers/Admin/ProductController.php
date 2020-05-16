@@ -152,6 +152,18 @@ class ProductController extends Controller
             ], 200);
     }
 
+
+    public function availableBool($id)
+    {
+        $product = Product::find($id);
+        if($product->available == 1){
+            $product->available = 0;
+            $product->save();
+        }else{
+            $product->available = 1;
+            $product->save();
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
