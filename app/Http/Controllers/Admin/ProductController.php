@@ -155,7 +155,7 @@ class ProductController extends Controller
 
     public function availableBool(Request $request)
     {
-        $product = Product::find($request->id);
+        $product = Product::withoutGlobalScope(ProductScope::class)->where('id', $request->id)->first();
         if($product->available == 1){
             $product->available = 0;
             $product->save();
@@ -163,6 +163,10 @@ class ProductController extends Controller
             $product->available = 1;
             $product->save();
         }
+        
+        return response()->json([
+            'result' => $product
+            ], 200);
     }
     /**
      * Remove the specified resource from storage.
