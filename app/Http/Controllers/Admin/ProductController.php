@@ -153,9 +153,9 @@ class ProductController extends Controller
     }
 
 
-    public function availableBool($id)
+    public function availableBool(Request $request)
     {
-        $product = Product::find($id);
+        $product = Product::find($request->id);
         if($product->available == 1){
             $product->available = 0;
             $product->save();

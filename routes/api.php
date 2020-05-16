@@ -116,7 +116,7 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
 
     Route::apiResource('/product', 'ProductController', ['except' => ['update', 'create']]);
     Route::post('/productUpdate', 'ProductController@update');
-    Route::post('/productAvailableBool/{id}', 'ProductController@availableBool');
+    Route::post('/productAvailableBool', 'ProductController@availableBool');
     Route::get('/productSearch', 'ProductController@productSearch');
 
     Route::apiResource('/productColor', 'ProductColorController', ['except' => ['update', 'create']]);
