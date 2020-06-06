@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Order;
 use App\ProductAttribute;
 use App\Scopes\ProductScope;
+use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+
 class Product extends Model
 {
     protected $fillable = [
@@ -172,7 +174,16 @@ class Product extends Model
         $this->removeMultipleAttributeImages();
         $this->removeMultipleImages();
         $this->removeFromUserFavorites();
+        $this->removeFromCart();
         $this->delete();
+    }
+
+    public function removeFromCart()
+    {
+        $userOrders = Order::where('product_id', $this->id)->get();
+        foreach ($userOrders as $order) {
+            $order->delete();
+        }
     }
 
     public function removeFromUserFavorites()
