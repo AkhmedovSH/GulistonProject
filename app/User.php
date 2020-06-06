@@ -80,9 +80,11 @@ class User extends Authenticatable implements JWTSubject
         if(isset($fields['password'])){
             $this->password = Hash::make($fields['password']);
             $user_cards = UserCard::where('user_id', $this->id)->first();
-            foreach ($user_cards as $card) {
-                $card->delete();
-            }
+            if($user_cards != null){
+                foreach ($user_cards as $card) {
+                    $card->delete();
+                }
+            }            
         }
         $this->save();
         return $this;
