@@ -52,9 +52,10 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         
+        
         $validator = Validator::make($request->all(), [
             'phone' => ['required', 'min:12', 'max:12'],
-            'password' => ['required', 'min:3'],
+            //'password' => ['required', 'min:3'],
         ]);
 
         if ($validator->fails()) {
@@ -64,19 +65,21 @@ class AuthController extends Controller
                 ], 400);
         }
         
-        $credentials = request(['phone', 'password']);
-    
-        if (! $token = auth()->attempt($credentials)) {
+        //$credentials = request(['phone', 'password']);
+        $credentials = request(['phone']);
+        
+        //if (! $token = auth()->attempt($credentials)) {
 
             //If login not found register user
             $userWithLogin = User::where('phone', $credentials['phone'])->first();
             if($userWithLogin == null){
                 try {
-                    User::create([
+                    $createdUser = User::create([
                         'phone' => $credentials['phone'],
-                        'password' => Hash::make($credentials['password']),
+                        //'password' => Hash::make($credentials['password']),
                     ]);
-                    $token = auth()->attempt($credentials);
+                    //$token = auth()->attempt($credentials);
+                    $token = Auth::login($createdUser);
                 } catch (\Throwable $th) {
                     return response()->json([
                         'error' => $th->getMessage()
@@ -84,19 +87,22 @@ class AuthController extends Controller
                 }
             }
 
-            $userWithPassword = User::where('password',  Hash::make($credentials['password']))->first();
+            /* $userWithPassword = User::where('password',  Hash::make($credentials['password']))->first();
             if($userWithLogin != null && $userWithPassword == null){
                 return response()->json([
                     'error' => 'Паролингиз хато.'
                     ], 400);
-            }
+            } */
             
             $user = User::where('phone', $credentials['phone'])
-            ->where('password',  Hash::make($credentials['password']))->first();
-            if($user){
-                $token = auth()->attempt($credentials);
+            //->where('password',  Hash::make($credentials['password']))
+            ->first();
+            
+            if($user) {
+                //$token = auth()->attempt($credentials);
+                $token = Auth::login($user);
             }         
-        }
+        //}
        
         $user = auth()->user();
         $user->last_login = Carbon::now();
@@ -215,7 +221,7 @@ class AuthController extends Controller
 
     public function checkAdmin(Request $request)
     {
-        $credentials = request(['phone', 'password']);
+        $credentials = request(['phone']);
         if (auth()->attempt($credentials)) {
             $token = auth()->attempt($credentials);
         }

@@ -90,6 +90,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('/orderAccepted', 'OrderController@orderAccepted');
     Route::post('/orderRejected', 'OrderController@orderRejected');
 
+
+    Route::get('/countries', 'MainController@countries');
+    Route::get('/regions', 'MainController@regions');
+    Route::get('/cities', 'MainController@cities');
+
     Route::post('/checkTransaction', 'TransactionController@checkTransaction');
     Route::post('/performTransaction', 'TransactionController@performTransaction');
 });
@@ -146,6 +151,14 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
     Route::get('/adminFeedbackShow/{id}', 'AdminFeedbackController@show');
     Route::delete('/adminFeedbackDestroy/{id}', 'AdminFeedbackController@destroy');
 
+    Route::apiResource('/country', 'CountryController', ['except' => ['update', 'create']]);
+    Route::post('/countryUpdate', 'CountryController@update');
+
+    Route::apiResource('/region', 'RegionController', ['except' => ['update', 'create']]);
+    Route::post('/regionUpdate', 'RegionController@update');
+
+    Route::apiResource('/city', 'CityController', ['except' => ['update', 'create']]);
+    Route::post('/cityUpdate', 'CityController@update');
     
     Route::apiResource('/deliveryClosedTime', 'DeliveryTimeController');
     Route::post('/deliveryClosedTimeUpdate', 'DeliveryTimeController@update');

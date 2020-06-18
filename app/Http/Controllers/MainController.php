@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
+use App\Region;
+use App\Country;
 use App\OrderTaxi;
 use Carbon\Carbon;
 use App\BonusSystem;
@@ -21,6 +24,36 @@ class MainController extends Controller
         }catch(\Predis\Connection\ConnectionException $e){
             return response('error connection redis');
         }
+    }
+
+    public function countries()
+    {
+        $data = Country::orderBy('id', 'DESC')->get();
+
+        return response()->json(
+            [
+                'result' => $data
+            ], 200);
+    }
+
+    public function regions()
+    {
+        $data = Region::orderBy('id', 'DESC')->with('country')->get();
+
+        return response()->json(
+            [
+                'result' => $data
+            ], 200);
+    }
+
+    public function cities()
+    {
+        $data = City::orderBy('id', 'DESC')->with('region')->get();
+
+        return response()->json(
+            [
+                'result' => $data
+            ], 200);
     }
 
     public function getGeneralSetting()

@@ -16,7 +16,8 @@ class Order extends Model
 
     protected $fillable = [
         'longitude', 'latitude', 'status', 'quantity', 'status_text',
-         'product_id', 'user_id', 'color', 'size', 'image', 'delivery_date', 'delivery_time'
+        'product_id', 'user_id', 'color', 'size', 'image', 'delivery_date', 'delivery_time',
+        'country_id', 'region_id', 'city_id'
     ];
 
     public function getImageAttribute($value)

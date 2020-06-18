@@ -163,6 +163,13 @@ class ProductController extends Controller
             $product->available = 1;
             $product->save();
         }
+
+        $orders = Order::where('product_id', $product->id)->where('status', 0)->get();
+        if($orders != null){
+            foreach ($orders as $key => $order) {
+                $order->delete();
+            }
+        }
         
         return response()->json([
             'result' => $product
