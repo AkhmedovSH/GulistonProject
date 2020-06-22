@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Region;
+use App\Street;
 use App\Country;
 use App\OrderTaxi;
 use Carbon\Carbon;
@@ -49,6 +50,16 @@ class MainController extends Controller
     public function cities()
     {
         $data = City::orderBy('id', 'DESC')->with('region')->get();
+
+        return response()->json(
+            [
+                'result' => $data
+            ], 200);
+    }
+
+    public function streets()
+    {
+        $data = Street::orderBy('id', 'DESC')->get();
 
         return response()->json(
             [

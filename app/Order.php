@@ -17,7 +17,7 @@ class Order extends Model
     protected $fillable = [
         'longitude', 'latitude', 'status', 'quantity', 'status_text',
         'product_id', 'user_id', 'color', 'size', 'image', 'delivery_date', 'delivery_time',
-        'country_id', 'region_id', 'city_id'
+        'country_id', 'region_id', 'city_id', 'street_id'
     ];
 
     public function getImageAttribute($value)
@@ -38,6 +38,21 @@ class Order extends Model
     public function userAddress()
     {
         return $this->hasOne(UserAddress::class, 'id', 'address_id');
+    }
+
+    public function region()
+    {
+        return $this->hasOne(Region::class, 'id', 'region_id');
+    }
+
+    public function city()
+    {
+        return $this->hasOne(City::class, 'id', 'city_id');
+    }
+
+    public function street()
+    {
+        return $this->hasOne(Street::class, 'id', 'street_id');
     }
 
     public static function add($fields)

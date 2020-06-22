@@ -182,11 +182,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        $user = User::where('id', auth()->user()->id)->first();
+        if($user != null){
+            $user->clearData();
+        }
+        
         auth()->logout();
 
-        return response()->json(['success' => true]);
+        return response()->json(['result' => true]);
     }
 
     /**

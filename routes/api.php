@@ -94,6 +94,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('/countries', 'MainController@countries');
     Route::get('/regions', 'MainController@regions');
     Route::get('/cities', 'MainController@cities');
+    Route::get('/streets', 'MainController@streets');
 
     Route::post('/checkTransaction', 'TransactionController@checkTransaction');
     Route::post('/performTransaction', 'TransactionController@performTransaction');
@@ -159,6 +160,9 @@ Route::group(['middleware' => ['cors'], 'prefix' => 'admin', 'namespace' => 'Adm
 
     Route::apiResource('/city', 'CityController', ['except' => ['update', 'create']]);
     Route::post('/cityUpdate', 'CityController@update');
+
+    Route::apiResource('/street', 'StreetController', ['except' => ['update', 'create']]);
+    Route::post('/streetUpdate', 'StreetController@update');
     
     Route::apiResource('/deliveryClosedTime', 'DeliveryTimeController');
     Route::post('/deliveryClosedTimeUpdate', 'DeliveryTimeController@update');

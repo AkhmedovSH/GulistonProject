@@ -2,12 +2,16 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Order;
+use App\UserCard;
+use App\UserAddress;
+use App\UserFavorite;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -79,7 +83,7 @@ class User extends Authenticatable implements JWTSubject
         $this->fill($fields);
         if(isset($fields['password'])){
             $this->password = Hash::make($fields['password']);
-            $user_cards = UserCard::where('user_id', $this->id)->first();
+            $user_cards = UserCard::where('user_id', $this->id)->get();
             if($user_cards != null){
                 foreach ($user_cards as $card) {
                     $card->delete();
@@ -88,6 +92,38 @@ class User extends Authenticatable implements JWTSubject
         }
         $this->save();
         return $this;
+    }
+
+    public function clearData()
+    {
+        $user_cards = UserCard::where('user_id', $this->id)->get();
+        $user_favorites = UserFavorite::where('user_id', $this->id)->get();
+        $user_addresses = UserAddress::where('user_id', $this->id)->get();
+        $user_orders = Order::where('user_id', $this->id)->where('status', 0)->get();
+        if($user_cards != null){
+            foreach ($user_cards as $card) {
+                $card->delete();
+            }
+        }
+
+        if($user_favorites != null){
+            foreach ($user_favorites as $user_favorite) {
+                $user_favorite->delete();
+            }
+        }
+
+        if($user_addresses != null){
+            foreach ($user_addresses as $user_address) {
+                $user_address->delete();
+            }
+        }
+
+        if($user_orders != null){
+            foreach ($user_orders as $user_order) {
+                $user_order->delete();
+            }
+        }
+
     }
 
     public function setFirebaseToken($token)
