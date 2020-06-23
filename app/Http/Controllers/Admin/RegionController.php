@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\City;
 use App\Region;
+use App\Street;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -88,6 +90,21 @@ class RegionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $region = Region::where('id', $id)->first();
+        $cities = City::where('region_id', $region->id)->get();
+        if($cities != null) {
+            foreach ($cities as $city) {
+                $streets = Street::where('city_id', $city->id)->get();
+                foreach ($streets as $street) {
+                    $street->delete();
+                }
+                $city->delete();
+            }
+        }
+        $region->delete();
+
+        return response()->json([
+            'result' => true
+        ], 200);
     }
 }

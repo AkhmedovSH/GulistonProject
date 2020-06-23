@@ -88,6 +88,11 @@ class StreetController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Street::find($id);
+        $data->delete();
+        
+        return response()->json([
+            'result' => true
+        ], 200);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\City;
+use App\Street;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -79,6 +80,17 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $city = City::where('id', $id)->first();
+        $streets = Street::where('city_id', $region->id)->get();
+        if($streets != null) {
+            foreach ($streets as $street) {
+                $street->delete();
+            }
+        }
+        $city->delete();
+
+        return response()->json([
+            'result' => true
+        ], 200);
     }
 }
