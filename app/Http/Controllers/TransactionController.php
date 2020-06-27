@@ -22,6 +22,7 @@ class TransactionController extends Controller
 
         if($userCard != null){
             $payload = $this->createCardPayload($userCard, $request);
+            
         }else{
             try {
                 $userCard = new UserCard();
@@ -46,10 +47,18 @@ class TransactionController extends Controller
                 $order->save();
             }
         }else{
-            return response()->json(
-                [
-                    'error' => $response->error->message
-                ], 400);
+            if($response->error->code == -199){
+                return response()->json(
+                    [
+                        'error' => "Karta raqami yoki telefon raqam notogri kiritilgan, qayta tekshiring!"
+                    ], 400);
+            }else{
+                return response()->json(
+                    [
+                        'error' => $response->error->message
+                    ], 400);
+            }
+            
         }
 
         return response()->json(

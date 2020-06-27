@@ -81,7 +81,7 @@ class CityController extends Controller
     public function destroy($id)
     {
         $city = City::where('id', $id)->first();
-        $streets = Street::where('city_id', $region->id)->get();
+        $streets = Street::where('city_id', $city->id)->get();
         if($streets != null) {
             foreach ($streets as $street) {
                 $street->delete();
