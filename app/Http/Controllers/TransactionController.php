@@ -30,7 +30,7 @@ class TransactionController extends Controller
             } catch (\Throwable $th) {
                 return response()->json(
                     [
-                        'error' => 'Бу карта раками кушилган!'
+                        'error' => 'Bu karta raqami mavjud!'
                     ], 400);
             }
             $payload = $this->createCardPayload($userCard, $request);
@@ -50,7 +50,7 @@ class TransactionController extends Controller
             if($response->error->code == -199){
                 return response()->json(
                     [
-                        'error' => "Karta raqami yoki telefon raqam notogri kiritilgan, qayta tekshiring!"
+                        'error' => "Karta raqami yoki telefon raqam noto'gri kiritilgan, qayta tekshiring!"
                     ], 400);
             }else{
                 return response()->json(
