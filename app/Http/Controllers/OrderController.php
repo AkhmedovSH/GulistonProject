@@ -113,6 +113,7 @@ class OrderController extends Controller
 
     public function orderCreate(Request $request)
     {
+       
         $validator = Validator::make($request->all(), [
             'address_id' => ['required'],
             'order_ids' => ['required'],
@@ -130,9 +131,8 @@ class OrderController extends Controller
         $orders = Order::where('user_id', auth()->user()->id)
         ->where('status', 0)
         ->whereIn('id', $request->order_ids)
-        ->with('user', 'product')
+        ->with(['user', 'product', 'region', 'city', 'street'])
         ->get();
-
         try {
             Order::statusPurchased($orders, $request);
         } catch (\Throwable $th) {
@@ -206,14 +206,15 @@ class OrderController extends Controller
                 'Микдори:' => $order['quantity'],
                 'Номи: ' => $order->product['title'],
                 'Нархи: ' => $order->product['price'],
+                'Манзил: ' => $order->address->city . ', ' . $order->product->address->state . ', ' . $order->address->street,
+                'Манзил2: ' => $order->region->title . ', ' . $order->city->title . ', ' . $order->street->title,
+                'Вакти: ' => $order->delivery_date . '|' . $order->delivery_time,
             ];
             $txt = "";
             foreach ($arr as $key => $value) {
                 $txt .= "<b>" . $key . "</b> " . $value . "%0A";
             };
-
             fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
-
         };
     }
 
