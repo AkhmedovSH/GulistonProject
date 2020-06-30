@@ -102,7 +102,7 @@ class OrderController extends Controller
     public function getOrders()
     {
         $allOrder = Order::where('user_id', auth()->user()->id)->where('status', 1)
-        ->with(['user', 'userAddress', 'product'])
+        ->with(['product', 'user', 'userAddress'])
         ->orderBy('id', 'DESC')->paginate(20);
 
         return response()->json(
@@ -131,7 +131,7 @@ class OrderController extends Controller
         $orders = Order::where('user_id', auth()->user()->id)
         ->where('status', 0)
         ->whereIn('id', $request->order_ids)
-        ->with(['user', 'product', 'region', 'city', 'street'])
+        ->with(['product', 'userAddress', 'user', 'region', 'city', 'street'])
         ->get();
         try {
             Order::statusPurchased($orders, $request);
@@ -142,7 +142,7 @@ class OrderController extends Controller
         try {
             $this->orderSendTelegram($orders);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
         
        
@@ -199,21 +199,34 @@ class OrderController extends Controller
         где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
         $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
         $chat_id = "-1001364950858";
+       
+        
         foreach ($orders as $order) {
+            $address_city = '';
+            $address_state = '';
+            $address_street = '';
+            if($order->userAddress != null){
+                $address_city = $order->userAddress->city != null ? $order->userAddress->city : '';
+                $address_state = $order->userAddress->state != null ? $order->userAddress->state : '';
+                $address_street = $order->userAddress->street != null ? $order->userAddress->street : '';
+            }
+            $address2_region = $order->region != null ? $order->region->title : '';
+            $address2_city = $order->city != null ? $order->city->title : '';
+            $address2_street = $order->street != null ? $order->street->title : '';
+
             $arr = [
                 'Фойдаланувчи: ' => $order->user['phone'],
                 'Заказ раками: ' => 'OID' . $order['id'] . '_PID' . $order->product['id'],
-                'Микдори:' => $order['quantity'],
-                'Номи: ' => $order->product['title'],
-                'Нархи: ' => $order->product['price'],
-                'Манзил: ' => $order->address->city . ', ' . $order->product->address->state . ', ' . $order->address->street,
-                'Манзил2: ' => $order->region->title . ', ' . $order->city->title . ', ' . $order->street->title,
+                'Номи: ' => $order->product['title'] . '|' . $order['quantity'] . '|' .$order->product['price'],
+                'Манзил: ' => $address_city  . ', ' . $address_state . ', ' . $address_street,
+                'Манзил2: ' =>  $address2_region  . ', ' . $address2_city . ', ' . $address2_street,
                 'Вакти: ' => $order->delivery_date . '|' . $order->delivery_time,
             ];
             $txt = "";
             foreach ($arr as $key => $value) {
                 $txt .= "<b>" . $key . "</b> " . $value . "%0A";
             };
+            
             fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
         };
     }

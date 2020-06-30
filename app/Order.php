@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -32,7 +33,7 @@ class Order extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class);
     }
 
     public function userAddress()
