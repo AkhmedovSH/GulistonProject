@@ -226,20 +226,19 @@ class AuthController extends Controller
 
     public function checkAdmin(Request $request)
     {
-        $credentials = request(['phone']);
+        $credentials = request(['phone', 'password']);
+        $user = User::where('phone', $request->phone)->first();
+        //$password = Hash::make($request->password);
         if (auth()->attempt($credentials)) {
             $token = auth()->attempt($credentials);
         }
 
-        $user = auth()->user();
-
-        if($user['type'] == 2){
+        if($user->type == 2 && $token){
             return response()->json([
                     'result' => [
                         'access_token' => $token
                     ]
                 ], 200);
-
         }else{
             return response()->json([
                 'error' => 'Телефон раками хато, йоки сиз админ эмассиз!'
