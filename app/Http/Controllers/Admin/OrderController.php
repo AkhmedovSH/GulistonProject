@@ -20,7 +20,10 @@ class OrderController extends Controller
     {
         $allOrder = Order::orderBy('id', 'DESC')
         ->where('status', 1)
-        ->with(['product', 'user', 'userAddress', 'region', 'city', 'street'])
+        ->with(['product', 'user'])
+        ->with(['userAddress' => function($q){
+            $q->with(['streetR', 'cityR', 'regionR']);
+        }])
         ->whereDate('created_at', Carbon::today())
         ->get();
 
@@ -34,7 +37,7 @@ class OrderController extends Controller
         $orders = Order::query();
         
         if ($request->order_number) {
-            $orders = $orders->where('order_number', 'LIKE', "%$request->order_number%");
+            $orders = $orders->where('order_number', 'LIKE', "%$request->order_number%")->with(['product', 'user', 'userAddress', 'region', 'city', 'street']);
         }
 
         if ($request->phone) {

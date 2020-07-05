@@ -8,7 +8,8 @@ class UserAddress extends Model
 {
     protected $fillable = [
         'user_id', 'is_default', 'name', 'phone', 'street', 'state',
-        'city', 'postal_code', 'longitude', 'latitude', 'room_number', 'ref_point'
+        'city', 'postal_code', 'longitude', 'latitude', 'room_number', 'ref_point',
+        'country_id', 'region_id', 'city_id', 'street_id'
     ];
 
     protected $casts = [
@@ -18,6 +19,26 @@ class UserAddress extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function countryR()
+    {
+        return $this->hasOne(Country::class, 'id', 'country_id');
+    }
+
+    public function regionR()
+    {
+        return $this->hasOne(Region::class, 'id', 'region_id');
+    }
+
+    public function cityR()
+    {
+        return $this->hasOne(City::class, 'id', 'city_id');
+    }
+
+    public function streetR()
+    {
+        return $this->hasOne(Street::class, 'id', 'street_id');
     }
 
     public static function add($fields)

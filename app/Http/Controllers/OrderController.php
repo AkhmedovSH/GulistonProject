@@ -131,8 +131,10 @@ class OrderController extends Controller
         $orders = Order::where('user_id', auth()->user()->id)
         ->where('status', 0)
         ->whereIn('id', $request->order_ids)
-        ->with(['product', 'userAddress', 'user', 'region', 'city', 'street'])
-        ->get();
+        ->with(['product', 'user'])
+        ->with(['userAddress' => function($q) {
+            $q->with('streetR', 'cityR', 'regionR');
+        }])->get();
         try {
             Order::statusPurchased($orders, $request);
         } catch (\Throwable $th) {
@@ -202,31 +204,43 @@ class OrderController extends Controller
        
         
         foreach ($orders as $order) {
-            $address_city = '';
-            $address_state = '';
-            $address_street = '';
+            $userAddressCity = '';
+            $userAddressStreet = '';
+            $userAddressRoomNumber = '';
+            $userAddressRefPoint = '';
+
+            $userAddressRegionR = '';
+            $userAddressCityR = '';
+            $userAddressStreetR = '';
+
+
             if($order->userAddress != null){
-                $address_city = $order->userAddress->city != null ? $order->userAddress->city : '';
-                $address_state = $order->userAddress->state != null ? $order->userAddress->state : '';
-                $address_street = $order->userAddress->street != null ? $order->userAddress->street : '';
+                $userAddressCity = $order->userAddress->city != null ? $order->userAddress->city : '';
+                $userAddressStreet = $order->userAddress->street != null ? $order->userAddress->street : '';
+                $userAddressRoomNumber = $order->userAddress->room_number != null ? $order->userAddress->room_number : '';
+                $userAddressRefPoint = $order->userAddress->ref_point != null ? $order->userAddress->ref_point : '';
             }
-            $address2_region = $order->region != null ? $order->region->title : '';
-            $address2_city = $order->city != null ? $order->city->title : '';
-            $address2_street = $order->street != null ? $order->street->title : '';
+            if($order->userAddress != null){
+                if($order->userAddress->city != null) {
+                    $userAddressRegionR = $order->userAddress->regionR != null ? $order->userAddress->regionR->title : '';
+                    $userAddressCityR = $order->userAddress->cityR != null ? $order->userAddress->cityR->title : '';
+                    $userAddressStreetR = $order->userAddress->streetR != null ? $order->userAddress->streetR->title : '';
+                }
+            }
 
             $arr = [
                 'Фойдаланувчи: ' => $order->user['phone'],
                 'Заказ раками: ' => 'OID' . $order['id'] . '_PID' . $order->product['id'],
                 'Номи: ' => $order->product['title'] . '|' . $order['quantity'] . '|' .$order->product['price'],
-                'Манзил: ' => $address_city  . ', ' . $address_state . ', ' . $address_street,
-                'Манзил2: ' =>  $address2_region  . ', ' . $address2_city . ', ' . $address2_street,
+                'Манзил: ' => $userAddressCity  . ', ' . $userAddressStreet . ', ' . $userAddressRoomNumber . ', ' . $userAddressRefPoint,
+                'Манзил2: ' =>  $userAddressRegionR  . ', ' . $userAddressCityR . ', ' . $userAddressStreetR,
                 'Вакти: ' => $order->delivery_date . '|' . $order->delivery_time,
             ];
             $txt = "";
             foreach ($arr as $key => $value) {
                 $txt .= "<b>" . $key . "</b> " . $value . "%0A";
             };
-            
+           
             fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
         };
     }
