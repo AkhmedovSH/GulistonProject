@@ -204,36 +204,24 @@ class OrderController extends Controller
        
         
         foreach ($orders as $order) {
-            $userAddressCity = '';
-            $userAddressStreet = '';
-            $userAddressRoomNumber = '';
-            $userAddressRefPoint = '';
-
             $userAddressRegionR = '';
             $userAddressCityR = '';
             $userAddressStreetR = '';
+            $userAddressRoomNumber = '';
+            $userAddressRefPoint = '';
 
-
-            if($order->userAddress != null){
-                $userAddressCity = $order->userAddress->city != null ? $order->userAddress->city : '';
-                $userAddressStreet = $order->userAddress->street != null ? $order->userAddress->street : '';
-                $userAddressRoomNumber = $order->userAddress->room_number != null ? $order->userAddress->room_number : '';
-                $userAddressRefPoint = $order->userAddress->ref_point != null ? $order->userAddress->ref_point : '';
-            }
-            if($order->userAddress != null){
-                if($order->userAddress->city != null) {
-                    $userAddressRegionR = $order->userAddress->regionR != null ? $order->userAddress->regionR->title : '';
-                    $userAddressCityR = $order->userAddress->cityR != null ? $order->userAddress->cityR->title : '';
-                    $userAddressStreetR = $order->userAddress->streetR != null ? $order->userAddress->streetR->title : '';
-                }
-            }
+            $userAddressRoomNumber = $order->userAddress->room_number != null ? $order->userAddress->room_number : '';
+            $userAddressRefPoint = $order->userAddress->ref_point != null ? $order->userAddress->ref_point : '';
+            $userAddressRegionR = $order->userAddress->regionR != null ? $order->userAddress->regionR->title : '';
+            $userAddressCityR = $order->userAddress->cityR != null ? $order->userAddress->cityR->title : '';
+            $userAddressStreetR = $order->userAddress->streetR != null ? $order->userAddress->streetR->title : '';
 
             $arr = [
                 'Фойдаланувчи: ' => $order->user['phone'],
                 'Заказ раками: ' => 'OID' . $order['id'] . '_PID' . $order->product['id'],
                 'Номи: ' => $order->product['title'] . '|' . $order['quantity'] . '|' .$order->product['price'],
-                'Манзил: ' => $userAddressCity  . ', ' . $userAddressStreet . ', ' . $userAddressRoomNumber . ', ' . $userAddressRefPoint,
-                'Манзил2: ' =>  $userAddressRegionR  . ', ' . $userAddressCityR . ', ' . $userAddressStreetR,
+                'Манзил: ' =>  $userAddressRegionR  . ', ' . $userAddressCityR . ', ' . $userAddressStreetR,
+                'Мулжал: ' => $userAddressRoomNumber . ', ' . $userAddressRefPoint,
                 'Вакти: ' => $order->delivery_date . '|' . $order->delivery_time,
             ];
             $txt = "";

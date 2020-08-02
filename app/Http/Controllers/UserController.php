@@ -69,7 +69,7 @@ class UserController extends Controller
 
     public function userAddress(){
         
-        $userAddress = UserAddress::where('user_id',auth()->user()->id)->get();
+        $userAddress = UserAddress::where('user_id',auth()->user()->id)->with('regionR', 'cityR', 'streetR')->get();
         
         return response()->json([
             'result' => $userAddress
@@ -82,9 +82,6 @@ class UserController extends Controller
             'name' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'min:12', 'max:12'],
             'default' => ['nullable'],
-            'street' => ['nullable'],
-            'state' => ['nullable'],
-            'city' => ['nullable'],
             'postal_code' => ['nullable'],
         ]);
 
@@ -109,9 +106,6 @@ class UserController extends Controller
             'id' => ['required'],
             'name' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'max:15'],
-            'street' => ['nullable'],
-            'state' => ['nullable'],
-            'city' => ['nullable'],
             'postal_code' => ['nullable'],
         ]);
 

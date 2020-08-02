@@ -115,7 +115,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('id', $id)->with('attributes')->first();
+        $product = Product::where('id', $id)->with('attributes', 'category')->first();
         if($product->is_recommended == 1 && $product->recommended_ids != null){
             $recomemdedProducts = Product::whereIn('id', json_decode($product->recommended_ids))->get();
             $product['recommended'] = $recomemdedProducts;

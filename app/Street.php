@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Street extends Model
 {
     protected $fillable = [
-        'title', 'city_id'
+        'title', 'city_id', 'deliveryCost'
     ];
 
     public $timestamps = false;

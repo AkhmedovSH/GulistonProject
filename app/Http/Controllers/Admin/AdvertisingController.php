@@ -34,7 +34,7 @@ class AdvertisingController extends Controller
     {
         
         $validator = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required'],
             'description' => ['required'],
             'image' => ['nullable'],
         ]);
@@ -80,7 +80,7 @@ class AdvertisingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => ['required'],
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required'],
             'description' => ['required'],
             'image' => ['nullable'],
         ]);
