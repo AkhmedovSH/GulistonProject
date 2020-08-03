@@ -210,11 +210,15 @@ class OrderController extends Controller
             $userAddressRoomNumber = '';
             $userAddressRefPoint = '';
 
-            $userAddressRoomNumber = $order->userAddress->room_number != null ? $order->userAddress->room_number : '';
-            $userAddressRefPoint = $order->userAddress->ref_point != null ? $order->userAddress->ref_point : '';
+            if(isset($order->userAddress)) {
+                $userAddressRoomNumber = $order->userAddress->room_number != null ? $order->userAddress->room_number : '';
+                $userAddressRefPoint = $order->userAddress->ref_point != null ? $order->userAddress->ref_point : '';
+            }
+
             $userAddressRegionR = $order->userAddress->regionR != null ? $order->userAddress->regionR->title : '';
             $userAddressCityR = $order->userAddress->cityR != null ? $order->userAddress->cityR->title : '';
             $userAddressStreetR = $order->userAddress->streetR != null ? $order->userAddress->streetR->title : '';
+            
 
             $arr = [
                 'Фойдаланувчи: ' => $order->user['phone'],
