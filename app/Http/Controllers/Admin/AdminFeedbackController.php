@@ -81,7 +81,7 @@ class AdminFeedbackController extends Controller
     public function createCardPayload($user, $title, $message){
         return array(
             'to' => $user['firebase_token'],
-            'notification' => array('title' => $title, 'body' => $message),
+            'notification' => array('title' => 'Админдан жавоб келди!', 'body' => $message),
         );
     }
 
