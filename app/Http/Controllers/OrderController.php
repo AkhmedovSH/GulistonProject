@@ -133,10 +133,10 @@ class OrderController extends Controller
         ->whereIn('id', $request->order_ids)
         ->with(['product', 'user'])
         ->with(['userAddress' => function($q) {
-            $q->with('streetR', 'cityR', 'regionR');
+            $q->with(['streetR', 'cityR', 'regionR']);
         }])->get();
         try {
-            Order::statusPurchased($orders, $request);
+            //Order::statusPurchased($orders, $request);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -202,7 +202,7 @@ class OrderController extends Controller
         $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
         $chat_id = "-1001364950858";
        
-        
+        dd($orders[0]);
         foreach ($orders as $order) {
             $userAddressRegionR = '';
             $userAddressCityR = '';
@@ -214,10 +214,10 @@ class OrderController extends Controller
                 $userAddressRoomNumber = $order->userAddress->room_number != null ? $order->userAddress->room_number : '';
                 $userAddressRefPoint = $order->userAddress->ref_point != null ? $order->userAddress->ref_point : '';
             }
-
-            $userAddressRegionR = $order->userAddress->regionR != null ? $order->userAddress->regionR->title : '';
-            $userAddressCityR = $order->userAddress->cityR != null ? $order->userAddress->cityR->title : '';
-            $userAddressStreetR = $order->userAddress->streetR != null ? $order->userAddress->streetR->title : '';
+            
+            $userAddressRegionR = $order->userAddress->street_r != null ? $order->userAddress->street_r->title : '';
+            $userAddressCityR = $order->userAddress->city_r != null ? $order->userAddress->city_r->title : '';
+            $userAddressStreetR = $order->userAddress->street_r != null ? $order->userAddress->street_r->title : '';
             
 
             $arr = [
