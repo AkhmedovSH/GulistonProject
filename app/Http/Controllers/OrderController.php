@@ -136,7 +136,7 @@ class OrderController extends Controller
             $q->with(['streetR', 'cityR', 'regionR']);
         }])->get();
         try {
-            //Order::statusPurchased($orders, $request);
+            Order::statusPurchased($orders, $request);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -202,7 +202,6 @@ class OrderController extends Controller
         $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
         $chat_id = "-1001364950858";
        
-        dd($orders[0]);
         foreach ($orders as $order) {
             $userAddressRegionR = '';
             $userAddressCityR = '';
