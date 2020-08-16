@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\BonusSystem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -133,7 +134,7 @@ class OrderController extends Controller
         ->whereIn('id', $request->order_ids)
         ->with(['product', 'user'])
         ->with(['userAddress' => function($q) {
-            $q->with(['streetR', 'cityR', 'regionR']);
+            $q->with(['street_r', 'city_r', 'region_r']);
         }])->get();
 
         try {
@@ -197,62 +198,80 @@ class OrderController extends Controller
 
     public function orderSendTelegram($orders)
     {
+        $bonuses = BonusSystem::all();
         /* https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
         где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
         $token = "982493491:AAH3KSLYX3QHfwIYK5zGu4EPBCQsudq0m7c";
         $chat_id = "-1001364950858";
+        $userAddressregion_r = '';
+        $userAddresscity_r = '';
+        $userAddressstreet_r = '';
+        $userAddressRoomNumber = '';
+        $userAddressRefPoint = '';
+        if(isset($orders[0]['userAddress'])) {
+            $userAddressRoomNumber = $orders[0]['userAddress']['room_number'];
+            $userAddressRefPoint = $orders[0]['userAddress']['ref_point'];
+            $userAddressregion_r = $orders[0]['userAddress']['region_r']['title'];
+            $userAddresscity_r = $orders[0]['userAddress']['city_r']['title'];
+            $userAddressstreet_r = $orders[0]['userAddress']['street_r']['title'];
+        }
+
+        $txt = "";
+        $arr = [
+            'Фойдаланувчи: ' => $orders[0]['user']['phone'],
+            'ФИО: ' => $orders[0]['user']['name'] . $orders[0]['user']['surname'],
+            'Манзил: ' =>  $userAddressregion_r  . ', ' . $userAddresscity_r . ', ' . $userAddressstreet_r,
+            'Мулжал: ' => $userAddressRoomNumber . ', ' . $userAddressRefPoint,
+            'Вакти: ' => $orders[0]['delivery_date'] . '|' .  $orders[0]['delivery_time'],
+        ];
+       
+        foreach ($arr as $key => $value) {
+            $txt .= "<b>" . $key . "</b> " . $value . "\n";
+        };
        
         foreach ($orders as $order) {
-            $userAddressRegionR = '';
-            $userAddressCityR = '';
-            $userAddressStreetR = '';
-            $userAddressRoomNumber = '';
-            $userAddressRefPoint = '';
-
-            if(isset($order['userAddress'])) {
-                $userAddressRoomNumber = $order['userAddress']['room_number'] != null ? $order['userAddress']['room_number'] : '';
-                $userAddressRefPoint = $order['userAddress']['ref_point'] != null ? $order['userAddress']['ref_point'] : '';
-            }
-            
-            $userAddressRegionR = $order['userAddress']['regionR'] != null ? $order['userAddress']['regionR']['title'] : '';
-            $userAddressCityR = $order['userAddress']['cityR'] != null ? $order['userAddress']['cityR']['title'] : '';
-            $userAddressStreetR = $order['userAddress']['streetR'] != null ? $order['userAddress']['streetR']['title'] : '';
-            
-
-            $arr = [
-                'Фойдаланувчи: ' => $order->user['phone'],
-                'Заказ раками: ' => 'OID' . $order['id'] . '_PID' . $order->product['id'],
-                'Номи: ' => $order->product['title'] . '|' . $order['quantity'] . '|' .$order->product['price'],
-                'Манзил: ' =>  $userAddressRegionR  . ', ' . $userAddressCityR . ', ' . $userAddressStreetR,
-                'Мулжал: ' => $userAddressRoomNumber . ', ' . $userAddressRefPoint,
-                'Вакти: ' => $order->delivery_date . '|' . $order->delivery_time,
-            ];
-            $txt = "";
-            foreach ($arr as $key => $value) {
-                $txt .= "<b>" . $key . "</b> " . $value . "%0A";
-            };
-           
-            fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
+            $txt .=  "<b>" . 'Номи:' . "</b> " . 'ID-' . $order->product['id'] . ',' . $order->product['title'] 
+            . '|' . $order['quantity'] . '|' .$order->product['price']  . '|' . $order->product['discount'] . '%' . "\n";
         };
-    }
+        
+        $totalPrice = 0;
+        foreach ($orders as $order) { // product price 3500
+            $totalPrice += (($order->product->price * $order->quantity) - (($order->product->price * $order->quantity) * ($order->product->discount / 100)));
+        };
 
-    public function orderSendMail($orders)
-    {
-        $name = $request->name;
-        $phone = $request->phone;
-        $city = $request->city;
-        $country = $request->country;
-        $street = $request->street;
-        $postcode = $request->postcode;
-        $to_name = $request->name;
-        $to_email = 'info.garminuz@gmail.com';//shurikaxmedov1@gmail.com
-        $data = array('name' => $name, "phone" => $phone ,
-                     'city' => $city, "country" => $country,
-                     'street' => $street, "postcode" => $postcode);
-        Mail::send('emails.mail', ["info"=>$data], function($message) use ($to_name, $to_email) {
-            $message->to($to_email, $to_name)
-                    ->subject('DolphinDelivery.uz | Сизнинг янги заказларингиз');
-            $message->from('shurikaxmedov1@gmail.com','Хурмат билан');
-        });
+        $earnFromBonusSystem = 0;
+        foreach ($bonuses as $bonus) {
+            if($totalPrice > $bonus['price']) {
+                if($bonus['price_percentage'] != 0){
+                    $earnFromBonusSystem = $totalPrice - ($totalPrice * ($bonus['price_percentage'] / 100 ));
+                }else {
+                    $earnFromBonusSystem = $totalPrice - $bonus['price_amount'];
+                }
+            }
+        };
+        $txt .= "<b>" . 'Бонус: ' . "</b> " . $earnFromBonusSystem . "\n";
+        $txt .= "<b>" . 'Делфин хизмати: ' . "</b> " . $orders[0]['userAddress']['street_r']['deliveryCost'] . "\n";
+        $payment_type = $orders[0]['payment_type'] == 1 ? 'Да' : 'Нет';
+        $txt .= "<b>" . 'Пластик: ' . "</b> " . $payment_type . "\n";
+        $totalPrice = (int)$totalPrice - $earnFromBonusSystem;
+        $txt .= "<b>" . 'Жами: ' . "</b> " . $totalPrice . "\n";
+
+
+        $website="https://api.telegram.org/bot".$token;
+        $chatId = $chat_id;
+        $params=[
+            'chat_id'=>$chatId, 
+            'text'=> $txt,
+            'parse_mode' => 'html'
+        ];
+        $ch = curl_init($website . '/sendMessage');
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ($params));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        //fopen("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}", "r");
     }
 }

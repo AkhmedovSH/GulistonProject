@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserAddress extends Model
 {
     protected $fillable = [
-        'user_id', 'is_default', 'name', 'phone', 'postal_code', 'longitude', 'latitude', 'room_number', 'ref_point',
+        'user_id', 'is_default', 'street', 'name', 'phone', 'postal_code', 'longitude', 'latitude', 'room_number', 'ref_point',
         'country_id', 'region_id', 'city_id', 'street_id'
     ];
 
@@ -20,22 +20,22 @@ class UserAddress extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function countryR()
+    public function country_r()
     {
         return $this->hasOne(Country::class, 'id', 'country_id');
     }
 
-    public function regionR()
+    public function region_r()
     {
         return $this->hasOne(Region::class, 'id', 'region_id');
     }
 
-    public function cityR()
+    public function city_r()
     {
         return $this->hasOne(City::class, 'id', 'city_id');
     }
 
-    public function streetR()
+    public function street_r()
     {
         return $this->hasOne(Street::class, 'id', 'street_id');
     }

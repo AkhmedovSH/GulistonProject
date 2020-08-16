@@ -22,7 +22,7 @@ class OrderController extends Controller
         ->where('status', 1)
         ->with(['product', 'user'])
         ->with(['userAddress' => function($q){
-            $q->with(['streetR', 'cityR', 'regionR']);
+            $q->with(['street_r', 'city_r', 'region_r']);
         }])
         ->whereDate('created_at', Carbon::today())
         ->get();
