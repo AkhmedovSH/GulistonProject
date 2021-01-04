@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -96,10 +97,14 @@ class ProductController extends Controller
                 [
                     'error' => $validator->errors()->first()
                 ], 400);
-        }
+				}
+				$arra = ['"'];
+				$allProduct = DB::select( DB::raw("SELECT * FROM products WHERE REPLACE(LOWER(title), '$arra[0]', '') LIKE LOWER('%$request->title%')") );
 
-        $allProduct =  Product::where('title', 'LIKE', "%$request->title%")
-        ->orWhere('keywords', 'LIKE', "%$request->title%")->get();
+				if(count($allProduct) == 0) {
+					$allProduct =  Product::where('keywords', 'LIKE', "%$request->title%")->get();
+				}
+        //->orWhere('keywords', 'LIKE', "%$request->title%");
 
         return response()->json(
             [

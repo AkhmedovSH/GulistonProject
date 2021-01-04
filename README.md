@@ -14,6 +14,12 @@ error: some text
 success: some text
 result: some data
 
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=admin_DolphinDelivery
+DB_USERNAME=admin_admin
+DB_PASSWORD=998132213
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
