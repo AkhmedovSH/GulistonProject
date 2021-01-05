@@ -99,12 +99,9 @@ class ProductController extends Controller
                 ], 400);
 				}
 				$arra = ['"'];
-				$allProduct = DB::select( DB::raw("SELECT * FROM products WHERE REPLACE(LOWER(title), '$arra[0]', '') LIKE LOWER('%$request->title%')") );
-
-				if(count($allProduct) == 0) {
-					$allProduct =  Product::where('keywords', 'LIKE', "%$request->title%")->get();
-				}
-        //->orWhere('keywords', 'LIKE', "%$request->title%");
+				$allProduct =  Product::whereRaw("REPLACE(LOWER(title), '$arra[0]', '') LIKE LOWER('%$request->title%')")
+					->orWhere('keywords', 'LIKE', "%$request->title%")
+					->get();
 
         return response()->json(
             [
