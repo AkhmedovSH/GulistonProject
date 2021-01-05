@@ -100,7 +100,8 @@ class ProductController extends Controller
 				}
 				$arra = ['"'];
 				$allProduct =  Product::whereRaw("REPLACE(LOWER(title), '$arra[0]', '') LIKE LOWER('%$request->title%')")
-					->orWhere('keywords', 'LIKE', "%$request->title%")
+					->orWhereRaw("REPLACE(LOWER(keywords), ',', ' ') LIKE LOWER('%$request->title%')")
+					//->orWhere('keywords', 'LIKE', "%$request->title%")
 					->get();
 
         return response()->json(
