@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Order;
 use App\BonusSystem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -138,7 +139,7 @@ class OrderController extends Controller
         }])->get();
 
         try {
-            $this->orderSendTelegram($orders);
+            $this->orderSendTelegram($orders, $request);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -196,9 +197,9 @@ class OrderController extends Controller
             ], 200);
     }
 
-    public function orderSendTelegram($orders)
+    public function orderSendTelegram($orders, $request)
     {
-			
+				Log::info($request->all());
         $bonuses = BonusSystem::all();
         /* https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
         где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
@@ -257,8 +258,8 @@ class OrderController extends Controller
         $txt .= "<b>" . 'Бонус: ' . "</b> " . number_format($earnFromBonusSystem, 0,","," ") . "\n";
         $txt .= "<b>" . 'Делфин хизмати: ' . "</b> " . number_format($orders[0]['userAddress']['street_r']['deliveryCost'], 0,","," ") . "\n";
         $totalPrice = number_format((int)$totalPrice - $earnFromBonusSystem + $orders[0]['userAddress']['street_r']['deliveryCost'], 0,","," ");
-        $txt .= "<b>" . 'Жами: ' . "</b> " . $totalPrice . "\n";
-
+				$txt .= "<b>" . 'Жами: ' . "</b> " . $totalPrice . "\n";
+				dd($txt);
         $website="https://api.telegram.org/bot".$token;
         $chatId = $chat_id;
         $params=[
