@@ -198,6 +198,7 @@ class OrderController extends Controller
 
     public function orderSendTelegram($orders)
     {
+			
         $bonuses = BonusSystem::all();
         /* https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
         где, XXXXXXXXXXXXXXXXXXXXXXX - токен вашего бота, полученный ранее */
@@ -214,8 +215,8 @@ class OrderController extends Controller
             $userAddressregion_r = $orders[0]['userAddress']['region_r']['title'];
             $userAddresscity_r = $orders[0]['userAddress']['city_r']['title'];
             $userAddressstreet_r = $orders[0]['userAddress']['street_r']['title'];
-        }
-
+				}
+				
         $txt = "";
         $arr = [
             'Фойдаланувчи: ' => $orders[0]['user']['phone'],
@@ -224,38 +225,39 @@ class OrderController extends Controller
             'Мулжал: ' => $userAddressRoomNumber . ', ' . $userAddressRefPoint,
             'Вакти: ' => $orders[0]['delivery_date'] . '|' .  $orders[0]['delivery_time'],
         ];
-       
+				
         foreach ($arr as $key => $value) {
             $txt .= "<b>" . $key . "</b> " . $value . "\n";
         };
-       
+				
         foreach ($orders as $order) {
             $txt .=  "<b>" . 'Номи:' . "</b> " . 'ID-' . $order->product['id'] . ',' . $order->product['title'] 
             . '|' . $order['quantity'] . '|' .$order->product['price']  . '|' . $order->product['discount'] . '%' . "\n";
         };
         
         $totalPrice = 0;
-        foreach ($orders as $order) { // product price 3500
+        foreach ($orders as $order) {
             $totalPrice += (($order->product->price * $order->quantity) - (($order->product->price * $order->quantity) * ($order->product->discount / 100)));
-        };
-
+				};
+				// $totalPrice = 1128000
+				
         $earnFromBonusSystem = 0;
         foreach ($bonuses as $bonus) {
             if($totalPrice > $bonus['price']) {
                 if($bonus['price_percentage'] != 0){
-                    $earnFromBonusSystem = $totalPrice - ($totalPrice * ($bonus['price_percentage'] / 100 ));
+                    $earnFromBonusSystem = $totalPrice - ($totalPrice - ($totalPrice * ($bonus['price_percentage'] / 100 )));
                 }else {
-                    $earnFromBonusSystem = $totalPrice - $bonus['price_amount'];
+                    $earnFromBonusSystem = $totalPrice - ($totalPrice - $bonus['price_amount']);
                 }
             }
-        };
-        $txt .= "<b>" . 'Бонус: ' . "</b> " . $earnFromBonusSystem . "\n";
-        $txt .= "<b>" . 'Делфин хизмати: ' . "</b> " . $orders[0]['userAddress']['street_r']['deliveryCost'] . "\n";
-        $payment_type = $orders[0]['payment_type'] == 1 ? 'Да' : 'Нет';
-        $txt .= "<b>" . 'Пластик: ' . "</b> " . $payment_type . "\n";
-        $totalPrice = (int)$totalPrice - $earnFromBonusSystem;
-        $txt .= "<b>" . 'Жами: ' . "</b> " . $totalPrice . "\n";
+				};
 
+				$payment_type = $orders[0]['payment_type'] == 1 ? 'Да' : 'Нет';
+        $txt .= "<b>" . 'Пластик: ' . "</b> " . $payment_type . "\n";
+        $txt .= "<b>" . 'Бонус: ' . "</b> " . number_format($earnFromBonusSystem, 0,","," ") . "\n";
+        $txt .= "<b>" . 'Делфин хизмати: ' . "</b> " . number_format($orders[0]['userAddress']['street_r']['deliveryCost'], 0,","," ") . "\n";
+        $totalPrice = number_format((int)$totalPrice - $earnFromBonusSystem + $orders[0]['userAddress']['street_r']['deliveryCost'], 0,","," ");
+        $txt .= "<b>" . 'Жами: ' . "</b> " . $totalPrice . "\n";
 
         $website="https://api.telegram.org/bot".$token;
         $chatId = $chat_id;
