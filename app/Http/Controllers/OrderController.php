@@ -259,7 +259,6 @@ class OrderController extends Controller
         $txt .= "<b>" . 'Делфин хизмати: ' . "</b> " . number_format($orders[0]['userAddress']['street_r']['deliveryCost'], 0,","," ") . "\n";
         $totalPrice = number_format((int)$totalPrice - $earnFromBonusSystem + $orders[0]['userAddress']['street_r']['deliveryCost'], 0,","," ");
 				$txt .= "<b>" . 'Жами: ' . "</b> " . $totalPrice . "\n";
-				dd($txt);
         $website="https://api.telegram.org/bot".$token;
         $chatId = $chat_id;
         $params=[
